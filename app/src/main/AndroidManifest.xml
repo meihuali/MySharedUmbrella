@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.administrator.mysharedumbrella01">
+
+    <application
+        android:name=".appliction.BaseAppliction"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <activity android:name=".ui.SplashActivity"
+            android:theme="@style/AppThems"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!--扫一扫-->
+        <activity android:name=".ui.SaoYiSaoActivity"/>
+        <!--发布版本的   63:79:2D:AC:08:6F:6C:84:5D:F6:81:3E:A7:B2:47:CA:23:BA:85:CB  -->
+        <!--调试版本的 6D:D0:C4:31:73:81:EF:4E:DD:24:E9:69:89:2A:9A:65:2E:94:7F:5E   -->
+        <meta-data android:name="com.amap.api.v2.apikey"
+            android:value="92cd2b26c95ecc3ae83a0243a5dbca69">
+         <!--   //开发者申请的key-->
+        </meta-data>
+        <service android:name="com.amap.api.location.APSService"></service>
+            <!--sharSDK 要用到的-->
+        <activity
+            android:name="com.mob.tools.MobUIShell"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
+        <!--历史记录-->
+        <activity android:name=".ui.UsagelogActivity"/>
+        <!--登录界面-->
+        <activity android:name=".ui.LoginActivity"/>
+        <!--设置界面-->
+        <activity android:name=".ui.SettingsActivity"/>
+        <!--个人设置界面-->
+        <activity android:name=".ui.SettingsYusanActivity"/>
+        <!--退出登录的那个设置界面-->
+        <activity android:name=".ui.settingsssssActivity"/>
+        <!--原型头像进入后的activity-->
+        <activity android:name=".ui.YuanXingTouxiangSettingsActivity"/>
+        <activity android:name=".ui.MainActivity"/>
+        <!--注册的界面-->
+        <activity android:name=".ui.RegisterActivity"/>
+        <!--修改密码界面-->
+        <activity android:name=".ui.ModifyPasswordActivity"/>
+            <!--微信支付界面的 activity-->
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"/>
+        <!--我的钱包 页面-->
+        <activity android:name=".ui.MyWalletActivity"/>
+        <!--押金充值界面-->
+        <activity android:name=".ui.DepositRechargeActivity"/>
+        <!--邀请好友界面-->
+        <activity android:name=".ui.InvitingFriendsAcitivity"/>
+        <!--钱包 明细-->
+        <activity android:name=".ui.DetailofamountActivity" />
+       <!--充值界面-->
+        <activity android:name=".ui.RechargeActivity"/>
+
+        <!--微信 分享-->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!-- QQ精简版分享-->
+        <activity
+            android:name="com.umeng.qq.tencent.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="tencent100424468" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.umeng.qq.tencent.AssistActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
+        <!--关于我们界面-->
+        <activity android:name=".ui.AboutusActivity"/>
+        <!--友盟Key-->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="593e038975ca3537dd000eca" >
+        </meta-data>
+
+    </application>
+
+    <!--高德地图权限-->
+    <!--允许程序打开网络套接字-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!--允许程序设置内置sd卡的写权限-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--允许程序获取网络状态-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!--允许程序访问WiFi网络信息-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!--允许程序读写手机状态和身份-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!--允许程序访问CellID或WiFi热点来获取粗略的位置-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!--读取手机状态-->
+    <uses-permission android:name="android.permission.PERMISSION_GRANTED"/>
+    <uses-permission android:name="android.permission.PERMISSION_GRANTED"/>
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!--sharSDK 短信验证码 权限-->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!--微信支付权限 这里因为上面已经有了 所以这里的权限 没有写-->
+    <!--================================================================================-->
+
+    <!--友盟分享-->
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+
+
+</manifest>

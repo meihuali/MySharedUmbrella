@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:background="@color/but_color3"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <ImageView
+            android:id="@+id/image_back"
+            android:layout_marginLeft="7dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/btn_back"
+            android:layout_width="35dp"
+            android:layout_height="30dp" />
+        <TextView
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/yaoqinghaoyous"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:src="@drawable/yushan" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/wenzi"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/yaoqingwenzi"
+            android:textColor="@color/qianheise"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:text="@string/nindeyaoqingma" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/yaoqingma"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/xiugai"
+            android:textColor="@color/juse"
+            android:textSize="18sp" />
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="0dp">
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_fenxiang"
+            android:layout_marginBottom="15dp"
+            android:layout_above="@+id/ll_fenxiang"
+            android:textSize="18sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/fenxiangdao"
+            android:textColor="@color/qianheise" />
+
+        <View
+            android:layout_below="@+id/tv_fenxiang"
+            android:background="@color/huise"
+            android:layout_width="match_parent"
+            android:layout_height="0.4dp" />
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:id="@+id/ll_fenxiang"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="80dp">
+
+            <Button
+                android:id="@+id/btn_fenxiang"
+                android:textSize="20sp"
+                android:textColor="@color/juse"
+                android:background="@color/but_color3"
+                android:text="@string/fenxiang"
+                android:layout_width="match_parent"
+                android:layout_height="48dp" />
+            </LinearLayout>
+            <!-- <LinearLayout
+                 android:orientation="vertical"
+                 android:layout_weight="1"
+                 android:layout_width="0dp"
+                 android:layout_height="match_parent">
+
+                 <ImageView
+                     android:id="@+id/imageView"
+                     android:layout_width="match_parent"
+                     android:layout_height="0dp"
+                     android:layout_weight="1"
+                     android:src="@drawable/weixin" />
+
+                 <TextView
+                     android:gravity="center"
+                     android:text="@string/weixinhaoyou"
+                     android:layout_weight="1"
+                     android:layout_width="match_parent"
+                     android:layout_height="0dp" />
+                 
+             </LinearLayout>
+             <LinearLayout
+                 android:orientation="vertical"
+                 android:layout_weight="1"
+                 android:layout_width="0dp"
+                 android:layout_height="match_parent">
+                 <ImageView
+                     android:src="@drawable/qq"
+                     android:layout_width="match_parent"
+                     android:layout_height="0dp"
+                     android:layout_weight="1"/>
+                 <TextView
+                     android:gravity="center"
+                     android:text="@string/QQ"
+                     android:layout_width="match_parent"
+                     android:layout_height="0dp"
+                     android:layout_weight="1"/>
+
+             </LinearLayout>
+
+             <LinearLayout
+                 android:orientation="vertical"
+                 android:layout_weight="1"
+                 android:layout_width="0dp"
+                 android:layout_height="match_parent">
+                 <ImageView
+                     android:src="@drawable/weixin"
+                     android:layout_width="match_parent"
+                     android:layout_height="0dp"
+                     android:layout_weight="1"/>
+                 <TextView
+                     android:gravity="center"
+                     android:text="@string/weixinpyquan"
+                     android:layout_width="match_parent"
+                     android:layout_height="0dp"
+                     android:layout_weight="1"/>
+             </LinearLayout>
+        </LinearLayout>-->
+    </RelativeLayout>
+</LinearLayout>

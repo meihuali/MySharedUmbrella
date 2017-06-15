@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:background="@color/zhutiyanse"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <ImageView
+            android:id="@+id/image_back"
+            android:layout_marginLeft="8dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/btn_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+        <TextView
+            android:textColor="@color/white"
+            android:textSize="19sp"
+            android:gravity="center"
+            android:text="@string/wodeqianbaos"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/tv_mingxi"
+            android:layout_marginRight="10dp"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:text="@string/mingxi"
+            android:gravity="center"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:background="@drawable/qianbao"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:textColor="@color/white"
+                android:id="@+id/tv_yuer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/ling"
+                android:textSize="50sp" />
+
+            <TextView
+                android:textColor="@color/white"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:text="@string/chefeiyuyer"
+                android:textSize="30sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginBottom="80dp"
+            android:id="@+id/llayout"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:id="@+id/tv_yajin"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="@string/yanjin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:textSize="16sp"
+                android:textColor="@color/top_red"
+                android:layout_marginLeft="15dp"
+                android:text="@string/yajintuikuai"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginBottom="10dp"
+            android:layout_above="@+id/ll_layout"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <Button
+                android:id="@+id/btn_Recharge"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:text="@string/chongzhi"
+                android:background="@drawable/button_yuanjiao_juse"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

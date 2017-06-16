@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface IsRegisterModel {
     //注册接口
-    void register(OnRegisterListener listener,String ed_phone,String ed_pwd,String ed_name);
+    void register(OnRegisterListener listener,String ed_phone,String ed_pwd,String ed_name,String yanzhenma);
     //注册接口回调
     interface OnRegisterListener{
         void onComplete(RegisterBean rb);

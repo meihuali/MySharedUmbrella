@@ -22,14 +22,14 @@ public class RegisterPrestenet {
     }
 
     //绑定的 方法
-    public void fact(String ed_phone, String ed_pwd, String ed_name) {
+    public void fact(String ed_phone, String ed_pwd, String ed_name,String yanzhengma) {
         if (registerModel != null) {
             registerModel.register(new IsRegisterModel.OnRegisterListener() {
                 @Override
                 public void onComplete(RegisterBean rb) {
                     registerView.showUmbrella(rb);
                 }
-            },ed_phone,ed_pwd,ed_name);
+            },ed_phone,ed_pwd,ed_name,yanzhengma);
         }
     }
 }

@@ -18,13 +18,14 @@ import okhttp3.Response;
 
 public class RegisterModeImpl implements IsRegisterModel {
     @Override
-    public void register(final OnRegisterListener listener, String ed_phone, String ed_pwd, String ed_name) {
+    public void register(final OnRegisterListener listener, String ed_phone, String ed_pwd, String ed_name,String yanzhengma) {
         //这里网络请求
         String url = ConfigUtils.ZHU_YU_MING+ConfigUtils.ZHUCEJIEKOUHOUZHUO;
         OkGo.post(url)
                 .params("phone",ed_phone)
                 .params("password",ed_pwd)
                 .params("name",ed_name)
+                .params("code",yanzhengma)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {

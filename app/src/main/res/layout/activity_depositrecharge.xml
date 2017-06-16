@@ -85,30 +85,33 @@
             android:gravity="center"
             android:text="@string/weixin"
             android:textColor="@color/black" />
+
         <TextView
-            android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
         <LinearLayout
-            android:gravity="center"
             android:id="@+id/ll_llay_weixin"
-            android:layout_alignParentRight="true"
             android:layout_width="50dp"
-            android:layout_height="50dp">
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:gravity="center">
 
 
-        <ImageView
-            android:id="@+id/image_weixin_gouxuan"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/gouxuan" />
-        <ImageView
-            android:id="@+id/image_weixin_weigouxuan"
-            android:visibility="gone"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/weigouxuan" />
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/image_weixin_gouxuan"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/gouxuan" />
+
+            <ImageView
+                android:id="@+id/image_weixin_weigouxuan"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/weigouxuan"
+                android:visibility="gone" />
+        </LinearLayout>
 
 
     </LinearLayout>

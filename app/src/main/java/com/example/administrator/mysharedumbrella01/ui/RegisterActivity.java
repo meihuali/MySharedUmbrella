@@ -62,6 +62,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
     /*初始化控件*/
     private void initView() {
+        //获取验证码
+        edit_verifycode = (EditText) findViewById(R.id.edit_verifycode);
         tv_hqyzm = (TextView) findViewById(R.id.tv_hqyzm);
         tv_hqyzm.setOnClickListener(this);
         ck=(ImageView)findViewById(R.id.ck);
@@ -107,14 +109,17 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 String ed_pwd = edit_pwd.getText().toString().trim();
                 String ed_verifycode = edit_verifycode.getText().toString().trim();
                 String ed_name = ed_names.getText().toString().trim();
+                //获取输入框短信验证码
+                String yanzhengma = edit_verifycode.getText().toString().trim();
+
                 if (!TextUtils.isEmpty(ed_phone) && !TextUtils.isEmpty(ed_pwd) && !TextUtils.isEmpty(ed_verifycode) && TextUtils.isEmpty(ed_name)) {
                     init(); //跟sharSDK 服务器校验 短信验证码
                     RegisterPrestenet rp = new RegisterPrestenet(this);
-                    rp.fact(ed_phone,ed_pwd,ed_name);
+                    rp.fact(ed_phone,ed_pwd,ed_name,yanzhengma);
                 }
 
-                RegisterPrestenet rp = new RegisterPrestenet(this);
-                rp.fact(ed_phone,ed_pwd,ed_name);
+//                RegisterPrestenet rp = new RegisterPrestenet(this);
+//                rp.fact(ed_phone,ed_pwd,ed_name);
                 break;
             //登录下面的 关于阅读说明的 选择框
             case R.id.ck:

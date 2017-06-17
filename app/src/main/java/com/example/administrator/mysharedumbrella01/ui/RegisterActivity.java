@@ -109,13 +109,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 String ed_pwd = edit_pwd.getText().toString().trim();
                 String ed_verifycode = edit_verifycode.getText().toString().trim();
                 String ed_name = ed_names.getText().toString().trim();
-                //获取输入框短信验证码
-                String yanzhengma = edit_verifycode.getText().toString().trim();
 
-                if (!TextUtils.isEmpty(ed_phone) && !TextUtils.isEmpty(ed_pwd) && !TextUtils.isEmpty(ed_verifycode) && TextUtils.isEmpty(ed_name)) {
+
+
+                if (!TextUtils.isEmpty(ed_phone) & !TextUtils.isEmpty(ed_pwd) &
+                        !TextUtils.isEmpty(ed_verifycode) & !TextUtils.isEmpty(ed_name)) {
                     init(); //跟sharSDK 服务器校验 短信验证码
                     RegisterPrestenet rp = new RegisterPrestenet(this);
-                    rp.fact(ed_phone,ed_pwd,ed_name,yanzhengma);
+                    rp.fact(ed_phone,ed_pwd,ed_name,ed_verifycode);
                 }
 
 //                RegisterPrestenet rp = new RegisterPrestenet(this);

@@ -26,6 +26,7 @@ public class RegisterModeImpl implements IsRegisterModel {
                 .params("password",ed_pwd)
                 .params("name",ed_name)
                 .params("code",yanzhengma)
+                .params("app","2")
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {

@@ -94,10 +94,14 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
         longitudes = intent.getDoubleExtra("longitudes", 0.00);
         //在取出管理员账号
         zhanghao = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
-
         //获取钱包金额
         WalletManeyPerserent wmp = new WalletManeyPerserent(this);
         wmp.fach(this);
+        //获取登录账号返回得字段判断是否为管理员
+        int isroots = ShareUtils.getInt(getApplicationContext(),"isroots",0);
+        if (isroots != 1) { // 1 代表是管理员登录 如果不等于 1 代表是普通用户
+            rll_shangchaunweizi.setVisibility(View.GONE);
+        }
     }
 
     @Override

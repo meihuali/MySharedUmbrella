@@ -24,4 +24,6 @@ public class ConfigUtils {
     public static final String JINERMINGXI = "Share/userdetail.php";
     /*========================获取钱包金额=================================================*/
     public static final String QIANBAOJINE = "Afterlogin/getMoney.php";
+    /*=======================修改密码的 接口==================================================*/
+    public static final String XIUGAIMIMA = "Afterlogin/changepassword.php";
 }

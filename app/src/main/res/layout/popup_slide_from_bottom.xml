@@ -13,37 +13,46 @@
         >
 
         <LinearLayout
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:id="@+id/popup_anima"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:background="@drawable/button_yuanjiao_baise"
             android:layout_alignParentBottom="true"
-            android:background="@android:color/white"
-            >
+            android:layout_centerHorizontal="true">
             <TextView
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
                 android:id="@+id/tx_1"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:gravity="center"
-                android:text="@string/weixinzhifu"/>
+                android:text="@string/dakaixiangce"/>
             <View
                 style="@style/line_style"/>
             <TextView
+                android:textSize="20sp"
+                android:textColor="@color/colorPrimary"
                 android:id="@+id/tx_2"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:gravity="center"
-                android:text="@string/zhifubao"/>
+                android:text="@string/dakaixiangji"/>
             <View
                 style="@style/line_style"/>
             <TextView
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
                 android:id="@+id/tx_3"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:gravity="center"
-                android:text="@string/yuer"/>
+                android:text="@string/quxiao"/>
 
         </LinearLayout>
+
     </RelativeLayout>
 
 </RelativeLayout>

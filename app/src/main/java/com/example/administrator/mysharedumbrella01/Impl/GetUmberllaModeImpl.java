@@ -76,10 +76,15 @@ public class GetUmberllaModeImpl implements IsUmbrellaStandMode {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        L.e("saoyisao  扫一扫"+s);
+                        L.e("saoyisao1  扫一扫"+s);
                         Gson gson = new Gson();
                         SaoYiSaoBean syb = gson.fromJson(s, SaoYiSaoBean.class);
                         listeners.onComplete(syb,mincdeID);
+                    }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
                     }
                 });
     }

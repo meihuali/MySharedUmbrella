@@ -62,7 +62,7 @@
     <string name="quchongzhi">去充值</string>
     <string name="yajinchongzhi">押金充值</string>
     <string name="jinerwenzi">金额文字</string>
-    <string name="yuan">999元</string>
+    <string name="yuan">20元</string>
     <string name="tuiyajin">押金随心退，安全速到账</string>
     <string name="chongyajin">充押金</string>
     <string name="shuoming">共享雨伞不会以任何形式要求您输入银行账号和密码!</string>
@@ -108,6 +108,14 @@
     <string name="guanyuwomenwenzi">广州星弈电子科技有限公司成立于2014年7月，总部设在广州。公司定位为智能物联网技术方案提供商，致力于以科技创新改善人们的生活，以提供优质增值服务给客户为核心理念。星弈科技拥有强大的技术团队和研发实力，研发团队人员占全公司人数的80%1$s以上，其中本科学历以上人员占90%2$ss，取得了多项国家授权专利。经过多年的技术积累，公司已经形成以智能硬件及移动物联网系统为核心的技术平台，并在此基础上开发出一系列畅销的产品。
 </string>
 
+    <string name="jinerhanzi">金额</string>
+    <string name="meiweibuzhipsha">美味不只披萨</string>
+    <string name="xiangqing">2017年6月10日-20日欢乐因分享而加倍，超值套餐等你来！</string>
+    <string name="bishengkezhengzaiweininkaishan">必胜客正在为您开伞</string>
+    <string name="baifenzhi">50%</string>
+    <string name="dakaixiangce">打开相册</string>
+    <string name="dakaixiangji">打开相机</string>
+    <string name="quxiao">取消</string>
 
 
 

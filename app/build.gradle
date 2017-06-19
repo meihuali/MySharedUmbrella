@@ -74,7 +74,6 @@ dependencies {
     compile files('libs/MobTools-2017.0321.1624.jar')
     // 微信支付的依赖
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
-
     //以下是分享SDK 友盟分享
     compile files('libs/SocialSDK_QQ_Simplify.jar')
     compile files('libs/SocialSDK_WeChat_Simplify.jar')
@@ -82,5 +81,6 @@ dependencies {
     compile files('libs/umeng_social_tool.jar')
     compile files('libs/umeng_shareboard_widget.jar')
     compile files('libs/umeng_social_shareboard.jar')
+    compile files('libs/alipaySingle-20170510.jar')
 
 }

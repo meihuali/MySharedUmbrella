@@ -99,6 +99,19 @@
             android:name="UMENG_APPKEY"
             android:value="593e038975ca3537dd000eca" >
         </meta-data>
+        <!--支付宝需要的activity-->
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind" >
+        </activity>
+        <activity
+            android:name="com.alipay.sdk.auth.AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind" >
+        </activity>
 
     </application>
 
@@ -137,6 +150,7 @@
 
     <!--友盟分享-->
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+
 
 
 </manifest>

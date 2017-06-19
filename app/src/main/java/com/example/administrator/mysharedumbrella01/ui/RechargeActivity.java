@@ -1,6 +1,8 @@
 package com.example.administrator.mysharedumbrella01.ui;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -8,25 +10,36 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.alipay.sdk.app.PayTask;
 import com.example.administrator.mysharedumbrella01.R;
+import com.example.administrator.mysharedumbrella01.entivity.ZhiFuBaoYaJinBean;
+import com.example.administrator.mysharedumbrella01.entivity.ZhifubaoBean;
+import com.example.administrator.mysharedumbrella01.peresenet.AlipayPerserent;
 import com.example.administrator.mysharedumbrella01.utils.L;
+import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
+import com.example.administrator.mysharedumbrella01.view.IsAliPayView;
 import com.gyf.barlibrary.ImmersionBar;
+
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017/6/9 0009.
  */
 
-public class RechargeActivity extends AppCompatActivity implements View.OnClickListener {
+public class RechargeActivity extends AppCompatActivity implements View.OnClickListener, IsAliPayView {
     private ImageView image_back;
     private ImageView image_weixin_gouxuan;
     private ImageView image_zhifubao_weigouxuan;
     //金额选择的四个button
     private Button btn_yibaiyuan,btn_wushiyuan,btn_ershiyuan,btn_shiyuan;
     //声明选择的金额
-    private int moneys = 100;
+    private double moneys = 100;
     //选择支付方式的变量
     private int types = 1;
     private Button btn_Recharge;
+    private String dingdan;
+    public static final int SDK_PAY_FLAG = 0;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,7 +123,7 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
                 btn_yibaiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
                 btn_wushiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
                 btn_ershiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
-                moneys = 10;
+                moneys = 0.01;
                 break;
             //点击支付宝勾选按钮
             case R.id.image_zhifubao_weigouxuan:
@@ -125,15 +138,55 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
                 types = 1; //代表用户选择的是微信
                 break;
             case R.id.btn_Recharge:
-
                 if (types == 1) {
                     //等于1 代表选择选择的是 微信支付 这里掉微信的支付接口 然后在把moneys 金额带过去
-                    Toast.makeText(getApplicationContext(),"微信支付暂未开通 "+moneys+" 元",Toast.LENGTH_SHORT).show();
+                   Toast.makeText(getApplicationContext(), "微信支付暂未开通 " + moneys + " 元", Toast.LENGTH_SHORT).show();
+
                 } else if (types == 2) {
                     //等于2 代表选择选择的是 支付宝支付 这里掉微信的支付接口 然后在把moneys 金额带过去
-                    Toast.makeText(getApplicationContext(),"支付宝支付暂未开通 "+moneys+" 元",Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "支付宝支付暂未开通 " + moneys + " 元", Toast.LENGTH_SHORT).show();
+                    String zh = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
+                    AlipayPerserent ap = new AlipayPerserent(this);
+                    ap.fach("2", moneys + "", zh, "1");
+
                 }
                 break;
         }
     }
+        /*该方法是掉起支付宝 支付界面的 */
+    private void AlipayZhifu() {
+        final String orderInfo = dingdan;   // 订单信息
+        Runnable payRunnable = new Runnable() {
+            @Override
+            public void run() {
+                PayTask alipay = new PayTask(RechargeActivity.this);
+                Map<String, String> result = alipay.payV2(orderInfo,true);
+//                Message msg = new Message();
+//                msg.what = SDK_PAY_FLAG;
+//                msg.obj = result;
+//                mHandler.sendMessage(msg);
+            }
+        };
+        // 必须异步调用
+        Thread payThread = new Thread(payRunnable);
+        payThread.start();
+    }
+
+    /*支付宝 接口回调的 结果*/
+    @Override
+    public void showRestuel(ZhifubaoBean zhifubao) {
+        int status = zhifubao.getStatus();
+        if (status == 1) { //请求成功 拿到订单号
+             dingdan = zhifubao.getData();
+            L.e("dingdanhao 订单号 " + dingdan);
+            //这里掉起 支付宝 界面 支付
+            AlipayZhifu();
+        } else {
+            Toast.makeText(getApplicationContext(), "请求顶号服务器接口挂了···", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+
+
 }

@@ -3,6 +3,7 @@ package com.example.administrator.mysharedumbrella01.ui;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,6 +30,7 @@ import com.amap.api.maps.model.Polyline;
 import com.dyhdyh.widget.loading.dialog.LoadingDialog;
 import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.dialog.CustomDialogFactory;
+import com.example.administrator.mysharedumbrella01.dialog.PopupWindowGuanGao;
 import com.example.administrator.mysharedumbrella01.dialog.PopupWindowUtils;
 import com.example.administrator.mysharedumbrella01.entivity.GetumbrellaBean;
 import com.example.administrator.mysharedumbrella01.entivity.SaoYiSaoBean;
@@ -137,7 +139,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int statusSaoYiSao;
     private int a =0;
 
-
+    private PopupWindowGuanGao pwgg;
+    //自定义进度条
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /*=============================================================*/
 
     private void init() {
+
         //借伞
         btn_jiesan = (Button) findViewById(R.id.btn_jiesan);
         btn_jiesan.setOnClickListener(this);
@@ -252,6 +256,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void showSaoYiSao(SaoYiSaoBean syb,String mincdeID,String phone) {
         statusSaoYiSao =  syb.getStatus();
         L.e("statusSaoYiSao "+statusSaoYiSao);
+        //这里就是 回调 的结果 扫描开锁后的 结果
+
     }
 
     /**
@@ -332,7 +338,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 a = 1;
                 aMap.clear();
                 //雨伞空位分布的 坐标 有多少个雨伞
-               addMarkerss(latLng_xianludian,vacancynumber);
+                addMarkerss(latLng_xianludian,vacancynumber);
                 try {
                     timetask(laitudes, longitudes, a);
                 } catch (Exception e) {
@@ -359,6 +365,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 btn_jiesan.setBackground(getDrawable(R.drawable.image_conent));
                 btn_haisan.setBackgroundColor(getResources().getColor(R.color.zhutiyanse));
                 break;
+
 
         }
     }
@@ -429,18 +436,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //Toast.makeText(getApplicationContext(),"扫描成功"+scanResult,Toast.LENGTH_SHORT).show();
 //                //定时刷新
                 timetask(laitudes, longitudes,a);
-                Dialog dialog = LoadingDialog.make(this, new CustomDialogFactory())
-                        .setMessage(getResources().getString(R.string.qingwuguanbi))//提示消息
-                        .setCancelable(false)
-                        .create();
-                dialog.show();
+
+//                Dialog dialog = LoadingDialog.make(this, new CustomDialogFactory())
+//                        .setMessage(getResources().getString(R.string.qingwuguanbi))//提示消息
+//                        .setCancelable(false)
+//                        .create();
+//                dialog.show();
+                pwgg = new PopupWindowGuanGao(this);
+                pwgg.showPopupWindow();
+
                 //30秒钟后自动取消 dialog
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(), "借伞成功", Toast.LENGTH_SHORT).show();
-                        LoadingDialog.cancel();
+                        if (statusSaoYiSao != 0) {
+                            Toast.makeText(getApplicationContext(), "借伞成功", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Toast.makeText(getApplicationContext(), "借伞失败", Toast.LENGTH_SHORT).show();
+                            int statsus = statusSaoYiSao;
+                            pwgg.stopUpdata(statsus);
+                        }
+
+
                     }
                 }, 20000);
             } else {
@@ -488,5 +507,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         };
         timer.schedule(task,15000,15000);
     }
+
+
 
 }

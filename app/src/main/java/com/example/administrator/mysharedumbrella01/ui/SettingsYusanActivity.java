@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.mysharedumbrella01.R;
-import com.example.administrator.mysharedumbrella01.dialog.PopUpWindowBootom;
 import com.example.administrator.mysharedumbrella01.entivity.ManeyBean;
 import com.example.administrator.mysharedumbrella01.peresenet.WalletManeyPerserent;
 import com.example.administrator.mysharedumbrella01.view.IsWalletManeyView;

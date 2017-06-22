@@ -31,12 +31,13 @@ public class LoginModelImpl implements IsLognModel {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+
                         L.e("login   登录中··· "+s);
                         //解析
                         Gson gson = new Gson();
                         try {
                             LoginBean lb = gson.fromJson(s, LoginBean.class);
-                             LoginBean.DataBean  logdata =  lb.getData();
+                            LoginBean.DataBean  logdata =  lb.getData();
                             if (linistener != null) {
                                 linistener.onComplete(lb);
                             }

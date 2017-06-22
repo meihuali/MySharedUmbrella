@@ -1,8 +1,11 @@
 package com.example.administrator.mysharedumbrella01.ui;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,6 +23,8 @@ import com.example.administrator.mysharedumbrella01.view.IsAliPayYaJinView;
 import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.Map;
+
+import static com.example.administrator.mysharedumbrella01.ui.RechargeActivity.SDK_PAY_FLAG;
 
 /**
  * Created by Administrator on 2017/6/8 0008.
@@ -84,7 +89,7 @@ public class DepositRechargeActivity extends AppCompatActivity implements View.O
             case R.id.image_zhifubao_weigouxuan:
                 image_zhifubao_weigouxuan.setImageDrawable(getDrawable(R.drawable.gouxuan));
                 image_weixin_gouxuan.setImageDrawable(getDrawable(R.drawable.weigouxuan));
-                moneys = 0.01; //暂时未了测试 写成 0.01
+                moneys = 20.00; //暂时未了测试 写成 0.01
                 break;
             //点击微信勾选按钮
             case R.id.image_weixin_gouxuan:
@@ -109,16 +114,49 @@ public class DepositRechargeActivity extends AppCompatActivity implements View.O
             public void run() {
                 PayTask alipay = new PayTask(DepositRechargeActivity.this);
                 Map<String, String> result = alipay.payV2(orderInfo,true);
-//                Message msg = new Message();
-//                msg.what = SDK_PAY_FLAG;
-//                msg.obj = result;
-//                mHandler.sendMessage(msg);
+                Message msg = new Message();
+                msg.what = SDK_PAY_FLAG;
+                msg.obj = result;
+                mHandler.sendMessage(msg);
             }
         };
         // 必须异步调用
         Thread payThread = new Thread(payRunnable);
         payThread.start();
     }
+
+    /*
+    * 支付宝结果回调
+    * */
+    Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case SDK_PAY_FLAG :
+                {
+                    @SuppressWarnings("unchecked")
+                    PayResult payResult = new PayResult((Map<String, String>) msg.obj);
+                    /**
+                     对于支付结果，请商户依赖服务端的异步通知结果。同步通知结果，仅作为支付结束的通知。
+                     */
+                    String resultInfo = payResult.getResult();// 同步返回需要验证的信息
+                    String resultStatus = payResult.getResultStatus();
+                    // 判断resultStatus 为9000则代表支付成功
+                    if (TextUtils.equals(resultStatus, "9000")) {
+                        // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
+                        Toast.makeText(DepositRechargeActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
+                        Toast.makeText(DepositRechargeActivity.this, "支付失败", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                }
+
+            }
+        }
+    };
+
 
         /*充值押金 结果回调*/
     @Override

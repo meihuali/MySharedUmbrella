@@ -95,11 +95,11 @@
     <string name="quchongzhis">去充值</string>
     <string name="yajintuikuai">押金退款</string>
     <string name="fenxiang">分享朋友</string>
-    <string name="umeng_socialize_text_weixin_key">微信</string>
-    <string name="umeng_socialize_text_weixin_circle_key">微信朋友圈</string>
-    <string name="umeng_socialize_text_weixin_fav_key">微信收藏</string>
-    <string name="umeng_socialize_text_qq_key">QQ</string>
-    <string name="umeng_socialize_text_qq_zone_key">QQ空间</string>
+    <!--<string name="umeng_socialize_text_weixin_key">微信</string>-->
+    <!--<string name="umeng_socialize_text_weixin_circle_key">微信朋友圈</string>-->
+    <!--<string name="umeng_socialize_text_weixin_fav_key">微信收藏</string>-->
+    <!--<string name="umeng_socialize_text_qq_key">QQ</string>-->
+    <!--<string name="umeng_socialize_text_qq_zone_key">QQ空间</string>-->
     <string name="network_err">加载失败</string>
 
     <string name="huanyingye">欢迎页面</string>
@@ -116,7 +116,19 @@
     <string name="dakaixiangce">打开相册</string>
     <string name="dakaixiangji">打开相机</string>
     <string name="quxiao">取消</string>
-
+    <string name="kehufuwu">客户服务</string>
+    <string name="kaibuqisuo">开不起锁</string>
+    <string name="faxianyushanguzhang">发现雨伞故障</string>
+    <string name="jubaoweixiu">举报违乱扔</string>
+    <string name="qitawent">其他问题</string>
+    <string name="saomiaoerweima">扫描二维码获取编码</string>
+    <string name="qingshuruxinxi">把您所有的问题都可以写入到上面输入框，我们会尽快处理！</string>
+    <string name="tijiao">提交</string>
+    <string name="zhuceyudenglu">注册与登录</string>
+    <string name="yushanfeiyuyajin">雨伞费与押金</string>
+    <string name="wodeyushanyuxinwent">我的雨伞信用问题</string>
+    <string name="haishanxiangguan">还伞相关</string>
+    <string name="kehufujinduchaxuan">客户服务进度查询</string>
 
 
 </resources>

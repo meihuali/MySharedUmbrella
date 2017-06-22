@@ -13,7 +13,6 @@ import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMap;
 import com.example.administrator.mysharedumbrella01.ui.MainActivity;
 import com.example.administrator.mysharedumbrella01.R;
-import com.example.administrator.mysharedumbrella01.ui.SettingsActivity;
 import com.example.administrator.mysharedumbrella01.ui.ShangChuanLocation;
 import com.example.administrator.mysharedumbrella01.ui.UsagelogActivity;
 import com.example.administrator.mysharedumbrella01.utils.L;
@@ -85,9 +84,7 @@ public class MyPopuopWindowsRigth extends BasePopupWindow implements View.OnClic
             case R.id.tx_2:
                 activity.startActivity(new Intent(activity,UsagelogActivity.class));
                 break;
-            case R.id.tx_3:
-                activity.startActivity(new Intent(activity, SettingsActivity.class));
-                break;
+
             case R.id.tx_4:
                 activity.startActivity(new Intent(activity, ShangChuanLocation.class));
                 break;

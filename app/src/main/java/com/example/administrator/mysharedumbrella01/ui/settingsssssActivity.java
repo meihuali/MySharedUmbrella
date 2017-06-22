@@ -8,10 +8,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
 import com.gyf.barlibrary.ImmersionBar;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.utils.SocializeUtils;
+
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017/6/3 0003.
@@ -51,12 +58,38 @@ public class settingsssssActivity extends AppCompatActivity implements View.OnCl
                 finish();
                 break;
             case R.id.btn_exits:
-                ShareUtils.deleShare(getApplicationContext(),"mima");
+                ShareUtils.deleShare(getApplicationContext(),"zhanghao");
+                //退出登录 删除微信授权
+                UMShareAPI.get(this).deleteOauth(this, SHARE_MEDIA.WEIXIN, authListener);
                 finish();
                 break;
             case R.id.rl_guanyuwomen:
                 startActivity(new Intent(this,AboutusActivity.class));
                 break;
         }
+    }
+
+    UMAuthListener authListener = new UMAuthListener() {
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+        }
+
+        @Override
+        public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform, int action) {
+        }
+    };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 }

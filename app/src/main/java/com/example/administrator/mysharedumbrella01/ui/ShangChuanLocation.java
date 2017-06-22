@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.example.administrator.mysharedumbrella01.R;
-import com.xys.libzxing.zxing.activity.CaptureActivity;
 
 /**
  * Created by Administrator on 2017/6/3 0003.
@@ -24,8 +23,7 @@ public class ShangChuanLocation extends AppCompatActivity {
     /*启动扫描二维码*/
     private void initView() {
         //打开扫描界面扫描条形码或二维码
-        Intent openCameraIntent = new Intent(this, CaptureActivity.class);
-        startActivityForResult(openCameraIntent, 0);
+
     }
 
     @Override

@@ -18,8 +18,9 @@ public class BaseAppliction extends Application {
         super.onCreate();
         //初始化sharSDK 这个是短信验证码
         SMSSDK.initSDK(this, "1e77fb8c8ce52", "c1a2e85e199b25c410740fac344fab4a");
-        UMShareAPI.get(this);
         //友盟分享
+        UMShareAPI.get(this);
+
         {
 
             PlatformConfig.setWeixin("wxac2d038a3a418057", "e4447ce67dd243f917ec07992c2ac6ba");

@@ -1,10 +1,17 @@
 package com.example.administrator.mysharedumbrella01.ui;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -12,8 +19,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.mysharedumbrella01.R;
+import com.example.administrator.mysharedumbrella01.SaoYiSao.ScannerActivity;
+import com.example.administrator.mysharedumbrella01.dialog.PopupWindowGuanGao;
 import com.example.administrator.mysharedumbrella01.entivity.ManeyBean;
 import com.example.administrator.mysharedumbrella01.peresenet.WalletManeyPerserent;
+import com.example.administrator.mysharedumbrella01.utils.GlideUtils;
 import com.example.administrator.mysharedumbrella01.view.IsWalletManeyView;
 import com.example.administrator.mysharedumbrella01.wxapi.WXPayEntryActivity;
 import com.example.administrator.mysharedumbrella01.entivity.LoginBean;
@@ -24,7 +34,7 @@ import com.example.administrator.mysharedumbrella01.view.IsLoginView;
 import com.example.administrator.mysharedumbrella01.view.IsShangChuanLocationView;
 import com.example.administrator.mysharedumbrella01.wxapi.WxPayUtils;
 import com.gyf.barlibrary.ImmersionBar;
-import com.xys.libzxing.zxing.activity.CaptureActivity;
+import com.mylhyl.zxing.scanner.common.Intents;
 
 import java.util.List;
 
@@ -51,6 +61,7 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
     //账户押金
     private String deposit;
     private String money;
+    private int laserMode;
 
 
     @Override
@@ -80,6 +91,11 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
         rl_layout_settings.setOnClickListener(this);
         image_yuanxing = (CircleImageView) findViewById(R.id.image_yuanxing);
         image_yuanxing.setOnClickListener(this);
+        //进来该界面的时候去取图片路径设置在控件上
+        String  imageurl = ShareUtils.getString(getApplicationContext(),"touxiangURL","");
+        if (!TextUtils.isEmpty(imageurl)) {
+            GlideUtils.loadImageViewCache(getApplicationContext(),imageurl,image_yuanxing);
+        }
         rll_shangchaunweizi = (RelativeLayout) findViewById(R.id.rll_shangchaunweizi);
         rll_shangchaunweizi.setOnClickListener(this);
         //获取主界面传过来的 经纬度
@@ -111,7 +127,14 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
                 break;
             //历史记录
             case R.id.rl_layout_jilu:
-                startActivity(new Intent(this, UsagelogActivity.class));
+                int isroot = ShareUtils.getInt(getApplicationContext(),"isroots",0);
+                if (isroot == 1) { //1 表示是管理的历史记录
+                    Toast.makeText(getApplicationContext(),"管理员暂时没有历史记录",Toast.LENGTH_SHORT).show();
+                } else {
+                    //否则表示是 普通用户的 历史记录
+                    startActivity(new Intent(this, UsagelogActivity.class));
+                }
+
                 break;
             //设置界面
             case R.id.rl_layout_settings:
@@ -141,30 +164,6 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-    /*启动扫描二维码*/
-    private void initViewes() {
-        //打开扫描界面扫描条形码或二维码
-        Intent openCameraIntent = new Intent(this, CaptureActivity.class);
-        startActivityForResult(openCameraIntent, 0);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        //扫描后 回调结果
-        if (resultCode == RESULT_OK) {
-            Bundle bundle = data.getExtras();
-            //获取扫描后的结果
-            scanResult = bundle.getString("result");
-            Toast.makeText(getApplicationContext(),"账号："+zhanghao+"二维码结果"+scanResult,Toast.LENGTH_SHORT).show();
-            L.e("scanResult+zhanghao "+scanResult+zhanghao);
-            LocatinPeresenet lps = new LocatinPeresenet(this);
-            lps.fact(laitudes,longitudes,zhanghao,scanResult);
-//            finish();
-
-        }
-    }
-
 
     @Override
     public void showLoction(double laitudes, double longitudes,  String zhanghao, String scanResult) {
@@ -182,5 +181,41 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
         money =  list.getMoney();
         tv_jiner.setText(money+"元");
         deposit =  list.getDeposit();
+    }
+
+    /*启动扫描二维码*/
+    private void initViewes() {
+        //打开扫描界面扫描条形码或二维码
+
+
+        if (ContextCompat.checkSelfPermission(SettingsYusanActivity.this,
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            //权限还没有授予，需要在这里写申请权限的代码
+            ActivityCompat.requestPermissions(SettingsYusanActivity.this,
+                    new String[]{Manifest.permission.CAMERA}, 60);
+        } else {
+            //权限已经被授予，在这里直接写要执行的相应方法即可
+            ScannerActivity.gotoActivity(SettingsYusanActivity.this,
+                    true, laserMode);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_CANCELED && resultCode == Activity.RESULT_OK) {
+            if (requestCode == ScannerActivity.REQUEST_CODE_SCANNER) {
+                if (data != null) {
+                    String stringExtra = data.getStringExtra(Intents.Scan.RESULT);
+                    Log.e("扫描结果 " ,""+stringExtra);
+                    Toast.makeText(getApplicationContext(),"账号："+zhanghao+"二维码结果"+scanResult,Toast.LENGTH_SHORT).show();
+                    L.e("scanResult+zhanghao "+scanResult+zhanghao);
+                    LocatinPeresenet lps = new LocatinPeresenet(this);
+                    lps.fact(laitudes,longitudes,zhanghao,scanResult);
+
+                }
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.administrator.mysharedumbrella01">
 
     <application
@@ -9,7 +10,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:name">
 
         <activity android:name=".ui.SplashActivity"
             android:theme="@style/AppThems"
@@ -26,10 +28,10 @@
         <!--调试版本的 6D:D0:C4:31:73:81:EF:4E:DD:24:E9:69:89:2A:9A:65:2E:94:7F:5E   -->
         <meta-data android:name="com.amap.api.v2.apikey"
             android:value="92cd2b26c95ecc3ae83a0243a5dbca69">
-         <!--   //开发者申请的key-->
+            <!--   //开发者申请的key-->
         </meta-data>
         <service android:name="com.amap.api.location.APSService"></service>
-            <!--sharSDK 要用到的-->
+        <!--sharSDK 要用到的-->
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
@@ -52,7 +54,7 @@
         <activity android:name=".ui.RegisterActivity"/>
         <!--修改密码界面-->
         <activity android:name=".ui.ModifyPasswordActivity"/>
-            <!--微信支付界面的 activity-->
+        <!--微信支付界面的 activity-->
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
@@ -65,7 +67,7 @@
         <activity android:name=".ui.InvitingFriendsAcitivity"/>
         <!--钱包 明细-->
         <activity android:name=".ui.DetailofamountActivity" />
-       <!--充值界面-->
+        <!--充值界面-->
         <activity android:name=".ui.RechargeActivity"/>
 
         <!--微信 分享-->
@@ -74,7 +76,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
         <!-- QQ精简版分享-->
         <activity
             android:name="com.umeng.qq.tencent.AuthActivity"
@@ -111,6 +113,36 @@
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
             android:screenOrientation="behind" >
+        </activity>
+
+        <!--扫一扫的 activity-->
+        <activity
+            android:name=".SaoYiSao.ScannerActivity"
+            >
+            <intent-filter>
+                <action android:name="com.mylhyl.zxing.scanner.client.android.SCAN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <!--客户服务反馈信息的 界面-->
+        <activity android:name=".ui.KeHuFuWuActivity"/>
+        <!--客户服务 第4个按钮 中的其他问题 界面-->
+        <activity android:name=".ui.QiTaWenTiAcitivity" />
+
+        <!--登录回调-->
+        <activity
+            android:name="jp.line.android.sdk.activity.LineAuthCompleteActivity"
+            android:configChanges="keyboard|orientation"
+            android:exported="true"
+            android:screenOrientation="sensor">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="line.1471474450"/>
+            </intent-filter>
         </activity>
 
     </application>

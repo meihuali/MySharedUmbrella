@@ -31,10 +31,10 @@ public class GetUmberllaModeImpl implements IsUmbrellaStandMode {
     @Override
     public void GetUmbrellaStand(final OnGetUmbrellaLiseners liseners, final Activity activity, double longitude, double latitude) {
         //这里从网络获取数据
-       // String url = "http://u.sunyie.com/Share/umbrellaindex.php";
+        // String url = "http://u.sunyie.com/Share/umbrellaindex.php";
         String url = ConfigUtils.ZHU_YU_MING+ConfigUtils.FENBUTU_HOUZHUI;
         //获取设备ID
-         appid = ToolsGetAppId.getinitAppId(activity);
+        appid = ToolsGetAppId.getinitAppId(activity);
         OkGo.post(url)
                 .params("appid",appid)
                 .params("longitude",longitude)
@@ -52,7 +52,7 @@ public class GetUmberllaModeImpl implements IsUmbrellaStandMode {
                             }
 
                         } catch (Exception e) {
-                           Toast.makeText(activity,"获取雨伞分布接口奔了",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity,"获取雨伞分布接口奔了",Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -68,18 +68,20 @@ public class GetUmberllaModeImpl implements IsUmbrellaStandMode {
 
     /*扫描二维码 借伞*/
     @Override
-    public void SaoYiSao(final OnSaoYiSaoListeners listeners, final String mincdeID,final String phone) {
+    public void SaoYiSao(final OnSaoYiSaoListeners listeners,  String mincdeID, String phone) {
         String url = ConfigUtils.ZHU_YU_MING+ConfigUtils.SAOMIAOERWEIMA_HOUZHUI;
+        final String shebeihao = mincdeID;
+        final String ph = phone;
         OkGo.post(url)
-                .params("appid",phone)
-                .params("machineid", mincdeID)
+                .params("appid",ph)
+                .params("machineid", shebeihao)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         L.e("saoyisao1  扫一扫"+s);
                         Gson gson = new Gson();
                         SaoYiSaoBean syb = gson.fromJson(s, SaoYiSaoBean.class);
-                        listeners.onComplete(syb,mincdeID);
+                        listeners.onComplete(syb,ph);
                     }
 
                     @Override

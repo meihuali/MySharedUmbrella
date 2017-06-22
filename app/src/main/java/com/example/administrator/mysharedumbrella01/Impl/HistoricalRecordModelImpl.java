@@ -30,11 +30,11 @@ public class HistoricalRecordModelImpl implements HistoricalRecordModel {
         if (isroot == 1) {
             OkGo.post(url)
                     .params("appid", phone)
-                    .params("limit", "0,100")
+                    .params("limit", "0,1000")
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
-                            L.e("lishijili 历史记录 " + s);
+                            L.e("lishijili 管理历史记录 " + s);
                             //这里直接就 解析了
                             Gson gson = new Gson();
                             try {
@@ -57,7 +57,7 @@ public class HistoricalRecordModelImpl implements HistoricalRecordModel {
         } else { //否则就是普通用户登录
             OkGo.post(url)
                     .params("appid",ptuser)
-                    .params("limit","0,100")
+                    .params("limit","0,1000")
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {

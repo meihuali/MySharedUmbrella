@@ -1,15 +1,21 @@
 package com.example.administrator.mysharedumbrella01.ui;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -29,9 +35,12 @@ import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.Polyline;
 import com.dyhdyh.widget.loading.dialog.LoadingDialog;
 import com.example.administrator.mysharedumbrella01.R;
+import com.example.administrator.mysharedumbrella01.SaoYiSao.ScannerActivity;
 import com.example.administrator.mysharedumbrella01.dialog.CustomDialogFactory;
+import com.example.administrator.mysharedumbrella01.dialog.KaiSuohoudeGuanggao;
+import com.example.administrator.mysharedumbrella01.dialog.PopupWindowBotoom;
 import com.example.administrator.mysharedumbrella01.dialog.PopupWindowGuanGao;
-import com.example.administrator.mysharedumbrella01.dialog.PopupWindowUtils;
+import com.example.administrator.mysharedumbrella01.dialog.ZhuYeGuangGao;
 import com.example.administrator.mysharedumbrella01.entivity.GetumbrellaBean;
 import com.example.administrator.mysharedumbrella01.entivity.SaoYiSaoBean;
 import com.example.administrator.mysharedumbrella01.peresenet.UmbrellaPresenet;
@@ -41,13 +50,15 @@ import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
 import com.example.administrator.mysharedumbrella01.utils.SystemUiUtils;
 import com.example.administrator.mysharedumbrella01.view.IsUmbrellaView;
 import com.gyf.barlibrary.ImmersionBar;
-import com.xys.libzxing.zxing.activity.CaptureActivity;
+import com.mylhyl.zxing.scanner.common.Intents;
 
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * 项目名：MyAppDemoBaidu
@@ -63,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Polyline polyline;
     private MarkerOptions markerOption;
     /*
-	 * 为方便展示多线段纹理颜色等示例事先准备好的经纬度
+     * 为方便展示多线段纹理颜色等示例事先准备好的经纬度
 	 */
     private double Lat_A = 35.909736;
     private double Lon_A = 80.947266;
@@ -118,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String xianlushij;
     long db = 80000;
     private String xianlushijs;
-    LatLng latLng_xianludian;
+
     private String shengyu;
     private ImageView image_backs;
     private TextView tv_adds;
@@ -128,29 +139,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String umbrellanubers;
     private UmbrellaPresenet up;
     private String scanResult;
-    private Button btn_haisan,btn_jiesan;
+    private Button btn_haisan, btn_jiesan;
     private Button btn_scatcs;
     private String vacancynumber;
     //定时器
     private final Timer timer = new Timer();
-    private TimerTask task,task2;
+    private TimerTask task, task2;
     private double laitudes;
     private double longitudes;
     private int statusSaoYiSao;
-    private int a =0;
+    private int a = 0;
 
     private PopupWindowGuanGao pwgg;
-    //自定义进度条
+    // 扫一扫相关 颜色  如果不赋值的话· 扫描上下滚动的就是绿色这里默认 赋值为 支付宝 那种网格的
+    private int laserMode = ScannerActivity.EXTRA_LASER_LINE_MODE_1;
+    private double latitudes;
+    private LatLng latLng_xianludian;
+    //右下角的 用户反馈按钮
+    private CircleImageView image_kehu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //  Fresco.initialize(getApplicationContext());
         //沉浸式
         ImmersionBar.with(this)
                 .statusBarColor(R.color.zhutiyanse) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
                 .fitsSystemWindows(true) //解决状态栏和布局重叠问题，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色
                 .init();
+
         /*
          * 设置离线地图存储目录，在下载离线地图或初始化地图设置;
          * 使用过程中可自行设置, 若自行设置了离线地图存储的路径，
@@ -160,20 +178,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        MapsInitializer.sdcardDir =OffLineMapUtils.getSdCacheDir(this);
         mapView = (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);// 此方法必须重写
-        /*获取第一个页面传过来的ID*/
-//        getDatas();
         init();
+
     }
+
+
 
     /*=============================================================*/
 
     private void init() {
-
+        image_kehu = (CircleImageView) findViewById(R.id.image_kehu);
+        image_kehu.setOnClickListener(this);
         //借伞
         btn_jiesan = (Button) findViewById(R.id.btn_jiesan);
         btn_jiesan.setOnClickListener(this);
         //还伞按钮
-        btn_haisan = (Button)findViewById(R.id.btn_haisan);
+        btn_haisan = (Button) findViewById(R.id.btn_haisan);
         btn_haisan.setOnClickListener(this);
         btn_scatcs = (Button) findViewById(R.id.btn_scatcs);
         btn_scatcs.setOnClickListener(this);
@@ -181,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //初始化控件以及地图
         image_backs = (ImageView) findViewById(R.id.image_backs);
         image_backs.setOnClickListener(this);
-        btn_scatc = (Button)findViewById(R.id.btn_scatc);
+        btn_scatc = (Button) findViewById(R.id.btn_scatc);
         btn_scatc.setOnClickListener(this);
         tv_adds = (TextView) findViewById(R.id.tv_adds);
         tv_adds.setOnClickListener(this);
@@ -203,9 +223,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //       设置marker点击 监听
         aMap.setOnMarkerClickListener(this);
         // 设置地图可视缩放大小
-        aMap.moveCamera(CameraUpdateFactory.zoomTo(18));
+        aMap.moveCamera(CameraUpdateFactory.zoomTo(22));
         aMap.getUiSettings().setCompassEnabled(true);// 设置指南针
-        aMap.getUiSettings().setScaleControlsEnabled(true);// 设置比例尺
+        aMap.getUiSettings().setZoomControlsEnabled(false); // 设置右下角的按钮缩放
 //        定位成功后的回调
         aMap.setOnMyLocationChangeListener(new AMap.OnMyLocationChangeListener() {
             @Override
@@ -213,51 +233,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 laitudes = location.getLatitude();
                 longitudes = location.getLongitude();
                 up = new UmbrellaPresenet(MainActivity.this);
-                up.fech(MainActivity.this,laitudes,longitudes);
+                up.fech(MainActivity.this, laitudes, longitudes);
                 //定时刷新
                 // timetask(laitudes,longitudes);
+                //定位成功弹出 主页广告
+                initShowZhuYeGuangGao();
+
             }
         });
-    }
-    /*获取 雨伞分布图·从这里开始 ·已经开始 学习 了 MVP 架构设计模式了*/
-    @Override
-    public void showUmbrella(List<GetumbrellaBean.DataBean> list) {
-        int sizes = list.size();
-        L.e("sizes"+sizes);
-        for (int i = 0; i < list.size(); i++) {
-            String longitude = list.get(i).getLongitude();
-            String latitude = list.get(i).getLatitude();
-            //剩余 雨伞个数
-            int umbrellanuber =  list.get(i).getUmbrellanumber();
-            umbrellanubers = String.valueOf(umbrellanuber);
-            //剩余空位个数
-            vacancynumber = list.get(i).getVacancynumber();
-
-            double longitudes =  Double.parseDouble(longitude);
-            double latitudes =  Double.parseDouble(latitude);
-            latLng_xianludian = new LatLng(latitudes,longitudes);
-
-        }
-        //雨伞分布的 坐标 有多少个雨伞
-        if (a == 0) {
-            addMarkers(latLng_xianludian,umbrellanubers);
-        } else if (a == 1) { //用户点击还伞后再次请求 网络
-            addMarkerss(latLng_xianludian, vacancynumber);
-        } else if (a==2){ //用户再次点击 借伞 的时候请求网络
-            addMarkers(latLng_xianludian,umbrellanubers);
-        }
-    }
-
-
-
-    //  扫一扫的接口回调
-
-    @Override
-    public void showSaoYiSao(SaoYiSaoBean syb,String mincdeID,String phone) {
-        statusSaoYiSao =  syb.getStatus();
-        L.e("statusSaoYiSao "+statusSaoYiSao);
-        //这里就是 回调 的结果 扫描开锁后的 结果
-
     }
 
     /**
@@ -268,6 +251,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
         mapView.onResume();
     }
+
     /**
      * 方法必须重写
      */
@@ -276,6 +260,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onPause();
         mapView.onPause();
     }
+
     /**
      * 方法必须重写
      */
@@ -284,6 +269,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
     }
+
     /**
      * 方法必须重写
      */
@@ -291,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
-        if(null != mlocationClient){
+        if (null != mlocationClient) {
             mlocationClient.onDestroy();
             mlocationClient.stopLocation();
         }
@@ -305,16 +291,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.image_backs:
                 marker = null;
-                String zh = ShareUtils.getString(getApplicationContext(),"zhanghao","");
-                String mi  = ShareUtils.getString(getApplicationContext(),"mima","");
-                if (!TextUtils.isEmpty(zh) && !TextUtils.isEmpty(mi)) {
+                String zh = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
+//                String mi = ShareUtils.getString(getApplicationContext(), "mima", "");
+                if (!TextUtils.isEmpty(zh)) {
                     //laitudes,longitudes 当前经纬度
                     Intent intent = new Intent(this, SettingsYusanActivity.class);
                     intent.putExtra("laitudes", laitudes);
                     intent.putExtra("longitudes", longitudes);
                     startActivity(intent);
                 } else {
-                    startActivity(new Intent(this,LoginActivity.class));
+                    startActivity(new Intent(this, LoginActivity.class));
 //                    PopupWindowUtils pwu = new PopupWindowUtils(this);
 //                    pwu.showPopupWindow();
                 }
@@ -324,27 +310,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.tv_adds:
-                MyPopuopWindowsRigth pwr = new MyPopuopWindowsRigth(this,aMap);
+                MyPopuopWindowsRigth pwr = new MyPopuopWindowsRigth(this, aMap);
                 pwr.showPopupWindow(R.id.tv_adds);
                 break;
             case R.id.btn_scatc:
-                //启动一个activity 打开二维码扫描
-//                startActivity(new Intent(getApplicationContext(),SaoYiSaoActivity.class));
-                 /*启动扫描二维码*/
                 initViewes();
                 break;
             //点击还伞
             case R.id.btn_haisan:
                 a = 1;
                 aMap.clear();
-                //雨伞空位分布的 坐标 有多少个雨伞
-                addMarkerss(latLng_xianludian,vacancynumber);
-                try {
-                    timetask(laitudes, longitudes, a);
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(),"关闭网络从新打开网络",Toast.LENGTH_SHORT).show();
-                }
-
+                //借伞再次请求网络查询 分布的雨伞架子还有多少雨伞
+                up.fech(MainActivity.this, laitudes, longitudes);
                 btn_haisan.setBackground(getDrawable(R.drawable.image_conent));
                 btn_jiesan.setBackgroundColor(getResources().getColor(R.color.zhutiyanse));
                 break;
@@ -352,20 +329,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_jiesan:
                 a = 2;
                 aMap.clear();
-                //雨伞分布的覆盖物 还有多少个空位
-                addMarkers(latLng_xianludian,umbrellanubers);
-                try {
-                    timetask(laitudes, longitudes, a);
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(),"关闭网络从新打开网络",Toast.LENGTH_SHORT).show();
-                }
-
+                //借伞再次请求网络查询 分布的雨伞架子还有多少雨伞
+                up.fech(MainActivity.this, laitudes, longitudes);
 
                 //设置背景
                 btn_jiesan.setBackground(getDrawable(R.drawable.image_conent));
                 btn_haisan.setBackgroundColor(getResources().getColor(R.color.zhutiyanse));
                 break;
-
+            //右下角的客户返回 按钮
+            case R.id.image_kehu:
+                PopupWindowBotoom pwb = new PopupWindowBotoom(this);
+                pwb.showPopupWindow();
+                break;
 
         }
     }
@@ -373,7 +348,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onMarkerClick(final Marker marker) {
         String id = marker.getId();
-        L.e("marker     "+id);
+        L.e("marker     " + id);
 
         if (aMap != null) {
             if (marker.equals(marker2)) {
@@ -388,11 +363,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /*点击线条中间覆盖物显示气泡*/
-    private void addMarkers(LatLng latLng,String umbrellanubers) {
+    private void addMarkers(LatLng latLng, String umbrellanubers) {
         MarkerOptions markerOption1 = new MarkerOptions().anchor(0.5f, 0.5f)
-                .position(latLng).title("雨伞个数:")
+                .position(latLng)
+                .title("雨伞个数:")
                 .snippet(umbrellanubers)
-                .icon( BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.purple_pin)))
+                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.purple_pin)))
                 .draggable(true).period(10);
         ArrayList<MarkerOptions> markerOptionlst = new ArrayList<MarkerOptions>();
         markerOptionlst.add(markerOption1);
@@ -401,11 +377,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /*点击线条中间覆盖物显示气泡*/
-    private void addMarkerss(LatLng latLng,String vacancynumber) {
+    private void addMarkerss(LatLng latLng, String vacancynumber) {
         MarkerOptions markerOption1 = new MarkerOptions().anchor(0.5f, 0.5f)
                 .position(latLng).title("空位个数:")
                 .snippet(vacancynumber)
-                .icon( BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.purple_pin)))
+                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.purple_pin)))
                 .draggable(true).period(10);
         ArrayList<MarkerOptions> markerOptionlst = new ArrayList<MarkerOptions>();
 
@@ -417,63 +393,87 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /*===================扫描二维码============================================*/
  /*启动扫描二维码*/
     private void initViewes() {
-        //打开扫描界面扫描条形码或二维码
-        Intent openCameraIntent = new Intent(this, CaptureActivity.class);
-        startActivityForResult(openCameraIntent, 0);
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            //权限还没有授予，需要在这里写申请权限的代码
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.CAMERA}, 60);
+        } else {
+            //权限已经被授予，在这里直接写要执行的相应方法即可
+            ScannerActivity.gotoActivity(MainActivity.this,
+                    true, laserMode);
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //扫描后 回调结果
-        if (resultCode == RESULT_OK) {
-            Bundle bundle = data.getExtras();
-            scanResult = bundle.getString("result");
-            String  zhanghao = ShareUtils.getString(getApplicationContext(),"zhanghao","");
-            String  mima = ShareUtils.getString(getApplicationContext(),"mima","");
-            if (!TextUtils.isEmpty(zhanghao) && !TextUtils.isEmpty(mima)) {
-                up.binds(scanResult,zhanghao);
-                //Toast.makeText(getApplicationContext(),"扫描成功"+scanResult,Toast.LENGTH_SHORT).show();
+        if (resultCode != Activity.RESULT_CANCELED && resultCode == Activity.RESULT_OK) {
+            if (requestCode == ScannerActivity.REQUEST_CODE_SCANNER) {
+                if (data != null) {
+                    String stringExtra = data.getStringExtra(Intents.Scan.RESULT);
+                    Log.e("扫描结果 ", "" + stringExtra);
+                    Toast.makeText(getApplicationContext(), "扫描结果" + stringExtra, Toast.LENGTH_SHORT).show();
+                    String zhanghao = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
+                    String mima = ShareUtils.getString(getApplicationContext(), "mima", "");
+                    if (!TextUtils.isEmpty(zhanghao) && !TextUtils.isEmpty(mima)) {
+                        //扫描请求借伞
+                        up.binds(stringExtra, zhanghao);
+                        //扫描成功后再次请求下网络获取雨伞个数
+                        up.fech(MainActivity.this, laitudes, longitudes);
 //                //定时刷新
-                timetask(laitudes, longitudes,a);
-
-//                Dialog dialog = LoadingDialog.make(this, new CustomDialogFactory())
-//                        .setMessage(getResources().getString(R.string.qingwuguanbi))//提示消息
-//                        .setCancelable(false)
-//                        .create();
-//                dialog.show();
-                pwgg = new PopupWindowGuanGao(this);
-                pwgg.showPopupWindow();
-
-                //30秒钟后自动取消 dialog
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (statusSaoYiSao != 0) {
-                            Toast.makeText(getApplicationContext(), "借伞成功", Toast.LENGTH_SHORT).show();
-
-                        } else {
-                            Toast.makeText(getApplicationContext(), "借伞失败", Toast.LENGTH_SHORT).show();
-                            int statsus = statusSaoYiSao;
-                            pwgg.stopUpdata(statsus);
-                        }
-
-
+//                        timetask(laitudes, longitudes,2);
+                        pwgg = new PopupWindowGuanGao(this);
+                        pwgg.showPopupWindow();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "请登录", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(this, LoginActivity.class));
+                        finish();
                     }
-                }, 20000);
-            } else {
-                Toast.makeText(getApplicationContext(),"请登录",Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(this,LoginActivity.class));
-            }
 
+
+                }
+            }
         }
+    }
+
+
+    //  扫一扫的接口回调
+    @Override
+    public void showSaoYiSao(SaoYiSaoBean syb, String mincdeID, String phone) {
+        statusSaoYiSao = syb.getStatus();
+        L.e("statusSaoYiSao " + statusSaoYiSao);
+        //这里就是 回调 的结果 扫描开锁后的 结果
+        if (statusSaoYiSao == 1) {
+            //雨伞分布的 坐标 有多少个雨伞
+            aMap.clear();
+            up.fech(MainActivity.this, laitudes, longitudes);
+            Toast.makeText(getApplicationContext(), "借伞成功", Toast.LENGTH_SHORT).show();
+            int statsus = statusSaoYiSao;
+            pwgg.stopUpdata(statsus);
+            //隐藏开锁广告popup
+            pwgg.dismiss();
+            //开锁成功 又开启一个popupwindow
+            KaiSuohoudeGuanggao zy = new KaiSuohoudeGuanggao(this);
+            zy.showPopupWindow();
+        } else {
+            Toast.makeText(getApplicationContext(), "借伞失败", Toast.LENGTH_SHORT).show();
+            int statsus = statusSaoYiSao;
+            pwgg.stopUpdata(statsus);
+            //隐藏开锁广告popup
+            pwgg.dismiss();
+            //开锁失败 又开启一个popupwindow
+            KaiSuohoudeGuanggao zy = new KaiSuohoudeGuanggao(this);
+            zy.showPopupWindow();
+        }
+
     }
 
     /*==========================定时轮询======================================================*/
 
     /*借伞的定时器定时轮询方法*/
-    public void timetask( final double litudes, final double latitudes,final int a) {
+    public void timetask(final double litudes, final double latitudes, final int a) {
         final Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -481,18 +481,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     // 要做的事情
                     L.e("dingshi  定时");
                     up = new UmbrellaPresenet(MainActivity.this);
-                    up.fech(MainActivity.this,litudes,latitudes);
-                    //雨伞分布的 坐标 有多少个雨伞
+                    up.fech(MainActivity.this, litudes, latitudes);
+                    //雨伞分布的 空位个数 坐标 有多少个雨伞
                     aMap.clear();
-                    addMarkerss(latLng_xianludian,vacancynumber);
+                    addMarkerss(latLng_xianludian, vacancynumber);
                 } else if (a == 2) {
                     // 要做的事情
                     L.e("dingshi  定时");
                     up = new UmbrellaPresenet(MainActivity.this);
-                    up.fech(MainActivity.this,litudes,latitudes);
+                    up.fech(MainActivity.this, litudes, latitudes);
                     //雨伞分布的 坐标 有多少个雨伞
                     aMap.clear();
-                    addMarkers(latLng_xianludian,umbrellanubers);
+                    addMarkers(latLng_xianludian, umbrellanubers);
                 }
                 super.handleMessage(msg);
             }
@@ -505,9 +505,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 handler.sendMessage(message);
             }
         };
-        timer.schedule(task,15000,15000);
+        timer.schedule(task, 15000, 15000);
     }
 
+    /*获取 雨伞分布图·从这里开始 ·已经开始 学习 了 MVP 架构设计模式了*/
+    @Override
+    public void showUmbrella(List<GetumbrellaBean.DataBean> list) {
+        int sizes = list.size();
+        L.e("sizes" + sizes);
+        for (int i = 0; i < list.size(); i++) {
+            String longitude = list.get(i).getLongitude();
+            String latitude = list.get(i).getLatitude();
+            //剩余 雨伞个数
+            int umbrellanuber = list.get(i).getUmbrellanumber();
+            umbrellanubers = String.valueOf(umbrellanuber);
+            //剩余空位个数
+            vacancynumber = list.get(i).getVacancynumber();
 
+            longitudes = Double.parseDouble(longitude);
+            latitudes = Double.parseDouble(latitude);
+            latLng_xianludian = new LatLng(latitudes, longitudes);
+            //雨伞架子分布个数
+            addMarkers(latLng_xianludian, umbrellanubers);
+            if (a == 1) { //a== 1表示 还伞 剩余空位个数
+                addMarkerss(latLng_xianludian, vacancynumber);
+            }
+        }
+    }
+
+    /*
+* 显示主要广告
+* */
+    private void initShowZhuYeGuangGao() {
+        ZhuYeGuangGao zygg = new ZhuYeGuangGao(this);
+        zygg.showPopupWindow();
+    }
 
 }

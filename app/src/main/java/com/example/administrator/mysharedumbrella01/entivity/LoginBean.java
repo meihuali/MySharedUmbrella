@@ -40,6 +40,15 @@ public class LoginBean {
         private String id;
         private String phone;
         private int isroot;
+        private String photo;
+
+        public String getPhoto() {
+            return photo;
+        }
+
+        public void setPhoto(String photo) {
+            this.photo = photo;
+        }
 
         public int getIsroot() {
             return isroot;

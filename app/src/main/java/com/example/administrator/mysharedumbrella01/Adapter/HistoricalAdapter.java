@@ -34,7 +34,13 @@ public class HistoricalAdapter extends BaseQuickAdapter<HistoryBean.DataBean,Bas
             //雨伞编号
             helper.setText(R.id.tv_bianhao, item.getId());
             //借伞总时间
-            helper.setText(R.id.tv_time,item.getDuration()+"分钟");
+           double duration =  item.getDuration();
+            if (duration <= 0) {
+                helper.setText(R.id.tv_time, "正在使用中···");
+            } else {
+                helper.setText(R.id.tv_time,item.getDuration()+"分钟");
+            }
+
             //借伞话费的金额
             helper.setText(R.id.tv_money,item.getExpense()+"元");
         }

@@ -2,12 +2,14 @@ package com.example.administrator.mysharedumbrella01.ui;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -19,7 +21,9 @@ import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.dialog.CustomDialog;
 import com.example.administrator.mysharedumbrella01.entivity.ShangChuanTouXiangBean;
 import com.example.administrator.mysharedumbrella01.peresenet.ShangChuanTouXiangPersernet;
+import com.example.administrator.mysharedumbrella01.utils.GlideUtils;
 import com.example.administrator.mysharedumbrella01.utils.L;
+import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
 import com.example.administrator.mysharedumbrella01.view.IsShangChuanTouXiangView;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -27,9 +31,13 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import me.leefeng.promptlibrary.PromptButton;
+import me.leefeng.promptlibrary.PromptButtonListener;
+import me.leefeng.promptlibrary.PromptDialog;
 
 /**
  * Created by Administrator on 2017/6/5 0005.
@@ -42,11 +50,14 @@ public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implemen
     private TextView btn_cancel;
     private Button btn_picture;
     private Button btn_camera;
+    private PromptDialog promptDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settingsyuanxingtouxiang);
+        //创建dialog对象
+        promptDialog = new PromptDialog(this);
         //沉浸式
         ImmersionBar.with(this)
                 .statusBarColor(R.color.top_red) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
@@ -60,6 +71,11 @@ public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implemen
 
         image_yuanxing = (CircleImageView) findViewById(R.id.image_yuanxing);
         image_yuanxing.setOnClickListener(this);
+        //进来该界面的时候去取图片路径设置在控件上
+        String  imageurl = ShareUtils.getString(getApplicationContext(),"touxiangURL","");
+        if (!TextUtils.isEmpty(imageurl)) {
+            GlideUtils.loadImageViewCache(getApplicationContext(),imageurl,image_yuanxing);
+        }
         imge_backes = (ImageView) findViewById(R.id.imge_backes);
         imge_backes.setOnClickListener(this);
 
@@ -84,7 +100,9 @@ public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implemen
                 break;
             case R.id.image_yuanxing:
                 //打开dialog
-                dialog.show();
+//                dialog.show();
+                //打开dialog
+                openDialog();
                 break;
             //取消
             case R.id.btn_cancel:
@@ -95,11 +113,36 @@ public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implemen
                 toPicture(); //打开相册
                 break;
             case R.id.btn_camera:
-                toCamera();
+                toCamera(); //打开相机
                 break;
 
 
         }
+    }
+
+    private void openDialog() {
+        //可创建android效果的底部Sheet选择，默认IOS效果，sheetCellPad=0为Android效果的Sheet
+//                promptDialog.getAlertDefaultBuilder().sheetCellPad(0).round(0);
+        //设置按钮的特点，颜色大小什么的，具体看PromptButton的成员变量
+        PromptButton cancle = new PromptButton("取消", null);
+        cancle.setTextColor(Color.parseColor("#0076ff"));
+        //设置显示的文字大小及颜色
+//                promptDialog.getAlertDefaultBuilder().textSize(12).textColor(Color.GRAY);
+        //默认两个按钮为Alert对话框，大于三个按钮的为底部SHeet形式展现
+        promptDialog.showAlertSheet("", true, cancle,
+                new PromptButton("打开相册", new PromptButtonListener() {
+                    @Override
+                    public void onClick(PromptButton button) {
+                        toPicture(); //打开相册
+                    }
+                }),
+                new PromptButton("打开相机", new PromptButtonListener() {
+                    @Override
+                    public void onClick(PromptButton promptButton) {
+                        toCamera(); //打开相机
+                    }
+                }),
+                new PromptButton("请选择上传头像的方式", null));
     }
 
     //跳转相册
@@ -173,11 +216,11 @@ public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implemen
         Bundle bundle = data.getExtras();
         if (bundle != null) {
             Bitmap bitmap = bundle.getParcelable("data");
-            image_yuanxing.setImageBitmap(bitmap);
             File file =  saveBitmapFile(bitmap);
             L.e("xiangce "+file);
             ShangChuanTouXiangPersernet sctxp = new ShangChuanTouXiangPersernet(this);
             sctxp.fach(file,this);
+            image_yuanxing.setImageBitmap(bitmap);
         }
     }
 
@@ -193,7 +236,8 @@ public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implemen
 
     //Bitmap对象保存图片文件
     public File saveBitmapFile(Bitmap bitmap){
-        String path =  "/mnt/sdcard/pic"+UUID.randomUUID()+"01.jpg";
+        String zh = ShareUtils.getString(getApplicationContext(),"zhanghao","");
+        String path =  "/mnt/sdcard/pic"+zh+".jpg";
         File file=new File(path);//将要保存图片的路径
         try {
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));

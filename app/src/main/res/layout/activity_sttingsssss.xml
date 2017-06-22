@@ -209,26 +209,27 @@
     </ScrollView>
 
     <LinearLayout
-        android:layout_marginTop="20dp"
-        android:background="@color/huise"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="20dp"
         android:layout_weight="1"
-        >
+        android:background="@color/huise"
+        android:orientation="vertical">
+
         <LinearLayout
-            android:layout_marginTop="20dp"
-            android:gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="48dp">
+            android:layout_height="48dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center">
+
             <Button
                 android:id="@+id/btn_exits"
-                android:textSize="20sp"
-                android:textColor="@color/white"
-                android:text="@string/tuichudenglu"
-                android:background="@drawable/image_conent"
                 android:layout_width="260dp"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:background="@drawable/image_conent"
+                android:text="@string/tuichudenglu"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
         </LinearLayout>
 
 

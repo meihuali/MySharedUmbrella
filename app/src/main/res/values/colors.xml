@@ -6,6 +6,7 @@
 
     <color name="txt_while">#ffffff</color>
     <color name="huise">#CCC</color>
+    <color name="huise2">#f1f1f1</color>
 
 
     <color name="top_color2">#ffa064</color>
@@ -24,6 +25,7 @@
     <color name="qianheise">#666666</color>
     <color name="color_light_blue">#00DDB6</color>
     <color name="qianhuise">#ffc7c7cd</color>
+    <color name="huisebeijing">#646464</color>
 
 
 </resources>

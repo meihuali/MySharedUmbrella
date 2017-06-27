@@ -42,24 +42,25 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical">
 
             <TextView
+                android:layout_marginTop="6dp"
                 android:textColor="@color/white"
                 android:id="@+id/tv_yuer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/ling"
-                android:textSize="50sp" />
+                android:textSize="30sp" />
 
             <TextView
                 android:textColor="@color/white"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="38dp"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/chefeiyuyer"
                 android:textSize="30sp" />

@@ -30,4 +30,13 @@ public class ConfigUtils {
     public static final String ZHIFUBAO_CHONGZHI_JINER = "Alipay/pay.php";
     /*============================上传头像 接口============================================*/
     public static final String SHANGCHUANTOUXIANG = "Afterlogin/ModifyAvatar.php";
+    /*==================================三方微信登录*/
+    public static final String WECHAT_LOGING = "Feedback/thirdlogin.php";
+
+    /*
+    * 用户反馈 1
+    * */
+    public static final String YONGHUFANKUI_ONE = "Feedback/check_feedback.php";
+
+
 }

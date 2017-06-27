@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <RelativeLayout
         android:background="@color/zhutiyanse"
         android:layout_width="match_parent"
@@ -24,10 +26,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:background="@drawable/gerenjiemian">
+        android:background="@drawable/gerenzhongxin">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/image_yuanxing"
@@ -40,6 +44,7 @@
             app:civ_border_width="2dp" />
 
         <TextView
+            android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/image_yuanxing"
@@ -50,6 +55,12 @@
             android:textColor="@color/txt_balck"
             android:textSize="16sp" />
     </RelativeLayout>
+
+
+
+
+
+
     <View
         android:background="@color/huise"
         android:layout_width="match_parent"

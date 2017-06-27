@@ -33,7 +33,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:src="@drawable/yushan" />
+            android:src="@drawable/fenxiang" />
 
         <TextView
             android:layout_width="match_parent"

@@ -32,6 +32,7 @@ public class PopupWindowGuanGao extends BasePopupWindow implements View.OnClickL
     Thread downLoadThread;
     private int status;
     Button btn_stop;
+
     Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -118,6 +119,8 @@ public class PopupWindowGuanGao extends BasePopupWindow implements View.OnClickL
             e.printStackTrace();
         }
     }
+
+
 
     public void stopUpdata(int status) {
         round_flikerbar.finishLoad(status);

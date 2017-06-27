@@ -21,6 +21,7 @@ import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.dialog.CustomDialog;
 import com.example.administrator.mysharedumbrella01.entivity.ShangChuanTouXiangBean;
 import com.example.administrator.mysharedumbrella01.peresenet.ShangChuanTouXiangPersernet;
+import com.example.administrator.mysharedumbrella01.utils.ConfigUtils;
 import com.example.administrator.mysharedumbrella01.utils.GlideUtils;
 import com.example.administrator.mysharedumbrella01.utils.L;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
@@ -74,7 +75,12 @@ public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implemen
         //进来该界面的时候去取图片路径设置在控件上
         String  imageurl = ShareUtils.getString(getApplicationContext(),"touxiangURL","");
         if (!TextUtils.isEmpty(imageurl)) {
-            GlideUtils.loadImageViewCache(getApplicationContext(),imageurl,image_yuanxing);
+            if (imageurl.contains("http")) {
+                GlideUtils.loadImageViewCache(getApplicationContext(), imageurl, image_yuanxing);
+            } else {
+                String url = ConfigUtils.ZHU_YU_MING+"public/avatar/"+imageurl;
+                GlideUtils.loadImageViewCache(getApplicationContext(), url, image_yuanxing);
+            }
         }
         imge_backes = (ImageView) findViewById(R.id.imge_backes);
         imge_backes.setOnClickListener(this);

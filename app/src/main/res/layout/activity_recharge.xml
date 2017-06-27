@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:background="@color/top_red"
+        android:background="@color/zhutiyanse"
         android:layout_width="match_parent"
         android:layout_height="50dp">
         <ImageView
@@ -47,7 +47,7 @@
             <Button
                 android:textColor="@color/white"
                 android:id="@+id/btn_yibaiyuan"
-                android:background="@color/juse"
+                android:background="@color/qianjuse"
                 android:layout_marginLeft="15dp"
                 android:text="@string/yibaiyuan"
                 android:layout_width="0dp"

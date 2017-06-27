@@ -17,20 +17,43 @@ android {
     }
     defaultConfig {
         applicationId "com.example.administrator.mysharedumbrella01"
-        minSdkVersion 21
+        minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0"
+        versionName "V1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
     buildTypes {
-        release {
-            minifyEnabled false
+        debug {
+            // 显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            versionNameSuffix "-debug"
+            minifyEnabled true
+            zipAlignEnabled false
+            shrinkResources true
+            //混淆规则配置文件
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+
+        release {
+            // 不显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            //混肴
+            minifyEnabled true
+            shrinkResources true
+            //Zipalign优化
+            zipAlignEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
         }
 
     }
+
+
+
+
     //添加本地仓库
     repositories {
         flatDir {

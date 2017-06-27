@@ -129,6 +129,9 @@
     <string name="wodeyushanyuxinwent">我的雨伞信用问题</string>
     <string name="haishanxiangguan">还伞相关</string>
     <string name="kehufujinduchaxuan">客户服务进度查询</string>
+    <string name="ruanjiangengxintishi">软件更新提示</string>
+    <string name="gongxiangyushanzhenghan">共享雨伞震撼上线！</string>
+    <string name="gongxiangyushangengxinneirong">共享雨伞更新内容！</string>
 
 
 </resources>

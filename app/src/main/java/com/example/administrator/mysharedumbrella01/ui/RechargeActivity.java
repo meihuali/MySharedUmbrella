@@ -25,6 +25,7 @@ import java.util.Map;
 
 /**
  * Created by Administrator on 2017/6/9 0009.
+ *   充值界面
  */
 
 public class RechargeActivity extends AppCompatActivity implements View.OnClickListener, IsAliPayView {
@@ -47,7 +48,7 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_recharge);
         //沉浸式
         ImmersionBar.with(this)
-                .statusBarColor(R.color.top_red) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
+                .statusBarColor(R.color.zhutiyanse) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
                 // .statusBarDarkFont(true,0.2f)    如果是白色或者透明状态的时候就加上他
                 .fitsSystemWindows(true) //解决状态栏和布局重叠问题，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色
                 .init();
@@ -85,7 +86,7 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
                 btn_wushiyuan.setTextColor(getResources().getColor(R.color.txt_balck));
                 btn_shiyuan.setTextColor(getResources().getColor(R.color.txt_balck));
                 btn_ershiyuan.setTextColor(getResources().getColor(R.color.txt_balck));
-                btn_yibaiyuan.setBackgroundColor(getResources().getColor(R.color.juse));
+                btn_yibaiyuan.setBackgroundColor(getResources().getColor(R.color.qianjuse));
                 btn_wushiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
                 btn_ershiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
                 btn_shiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
@@ -97,7 +98,7 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
                 btn_yibaiyuan.setTextColor(getResources().getColor(R.color.txt_balck));
                 btn_ershiyuan.setTextColor(getResources().getColor(R.color.black));
                 btn_shiyuan.setTextColor(getResources().getColor(R.color.txt_balck));
-                btn_wushiyuan.setBackgroundColor(getResources().getColor(R.color.juse));
+                btn_wushiyuan.setBackgroundColor(getResources().getColor(R.color.qianjuse));
                 btn_yibaiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
                 btn_ershiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
                 btn_shiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
@@ -109,7 +110,7 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
                 btn_yibaiyuan.setTextColor(getResources().getColor(R.color.txt_balck));
                 btn_wushiyuan.setTextColor(getResources().getColor(R.color.txt_balck));
                 btn_shiyuan.setTextColor(getResources().getColor(R.color.txt_balck));
-                btn_ershiyuan.setBackgroundColor(getResources().getColor(R.color.juse));
+                btn_ershiyuan.setBackgroundColor(getResources().getColor(R.color.qianjuse));
                 btn_yibaiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
                 btn_wushiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
                 btn_shiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
@@ -120,11 +121,11 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
                 btn_yibaiyuan.setTextColor(getResources().getColor(R.color.txt_balck));
                 btn_wushiyuan.setTextColor(getResources().getColor(R.color.txt_balck));
                 btn_ershiyuan.setTextColor(getResources().getColor(R.color.txt_balck));
-                btn_shiyuan.setBackgroundColor(getResources().getColor(R.color.juse));
+                btn_shiyuan.setBackgroundColor(getResources().getColor(R.color.qianjuse));
                 btn_yibaiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
                 btn_wushiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
                 btn_ershiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
-                moneys = 10;
+                moneys = 0.01;
                 break;
             //点击支付宝勾选按钮
             case R.id.image_zhifubao_weigouxuan:

@@ -35,7 +35,7 @@ public class settingsssssActivity extends AppCompatActivity implements View.OnCl
         setContentView(R.layout.activity_sttingsssss);
         //沉浸式
         ImmersionBar.with(this)
-                .statusBarColor(R.color.colorAccent) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
+                .statusBarColor(R.color.zhutiyanse) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
                 .fitsSystemWindows(true) //解决状态栏和布局重叠问题，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色
                 .init();
 
@@ -58,7 +58,10 @@ public class settingsssssActivity extends AppCompatActivity implements View.OnCl
                 finish();
                 break;
             case R.id.btn_exits:
+                //清空账号
                 ShareUtils.deleShare(getApplicationContext(),"zhanghao");
+                //清空微信的昵称
+                ShareUtils.deleShare(getApplicationContext(),"username");
                 //退出登录 删除微信授权
                 UMShareAPI.get(this).deleteOauth(this, SHARE_MEDIA.WEIXIN, authListener);
                 finish();

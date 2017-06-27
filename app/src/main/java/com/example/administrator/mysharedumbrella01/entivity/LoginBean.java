@@ -41,6 +41,15 @@ public class LoginBean {
         private String phone;
         private int isroot;
         private String photo;
+        private String username;
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
 
         public String getPhoto() {
             return photo;

@@ -15,6 +15,7 @@ import com.gyf.barlibrary.ImmersionBar;
 
 /**
  * Created by Administrator on 2017/6/8 0008.
+ *  我的钱包
  */
 
 public class MyWalletActivity extends AppCompatActivity implements View.OnClickListener {

@@ -4,10 +4,11 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -33,32 +34,40 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.Polyline;
-import com.dyhdyh.widget.loading.dialog.LoadingDialog;
 import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.SaoYiSao.ScannerActivity;
-import com.example.administrator.mysharedumbrella01.dialog.CustomDialogFactory;
 import com.example.administrator.mysharedumbrella01.dialog.KaiSuohoudeGuanggao;
 import com.example.administrator.mysharedumbrella01.dialog.PopupWindowBotoom;
 import com.example.administrator.mysharedumbrella01.dialog.PopupWindowGuanGao;
+import com.example.administrator.mysharedumbrella01.dialog.UpdataDialog;
 import com.example.administrator.mysharedumbrella01.dialog.ZhuYeGuangGao;
 import com.example.administrator.mysharedumbrella01.entivity.GetumbrellaBean;
 import com.example.administrator.mysharedumbrella01.entivity.SaoYiSaoBean;
+import com.example.administrator.mysharedumbrella01.entivity.UpdataBean;
 import com.example.administrator.mysharedumbrella01.peresenet.UmbrellaPresenet;
+import com.example.administrator.mysharedumbrella01.peresenet.UpdataAppPerserent;
+import com.example.administrator.mysharedumbrella01.utils.FlikerProgressBar;
 import com.example.administrator.mysharedumbrella01.utils.L;
 import com.example.administrator.mysharedumbrella01.dialog.MyPopuopWindowsRigth;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
-import com.example.administrator.mysharedumbrella01.utils.SystemUiUtils;
+import com.example.administrator.mysharedumbrella01.utils.UpdataProgressBar;
 import com.example.administrator.mysharedumbrella01.view.IsUmbrellaView;
+import com.example.administrator.mysharedumbrella01.view.IsUpdataAPPView;
 import com.gyf.barlibrary.ImmersionBar;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.FileCallback;
 import com.mylhyl.zxing.scanner.common.Intents;
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * 项目名：MyAppDemoBaidu
@@ -68,32 +77,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * 创建时间： 2017/4/26 0026 下午 3:25
  * 描述：TODO
  */
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, AMap.OnMarkerClickListener, IsUmbrellaView {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, AMap.OnMarkerClickListener, IsUmbrellaView, IsUpdataAPPView,Runnable{
     private AMap aMap;
     private MapView mapView;
     private Polyline polyline;
     private MarkerOptions markerOption;
-    /*
-     * 为方便展示多线段纹理颜色等示例事先准备好的经纬度
-	 */
-    private double Lat_A = 35.909736;
-    private double Lon_A = 80.947266;
-
-    private double Lat_B = 35.909736;
-    private double Lon_B = 89.947266;
-
-    private double Lat_C = 31.909736;
-    private double Lon_C = 89.947266;
-
-    private double Lat_D = 31.909736;
-    private double Lon_D = 99.947266;
-    // private List<GuiJiShuJuBean.MsgBean> list2;
-    private String j;
-    private String w;
-    private String stopj;
-    private String stopw;
-    private String stopjkiss;
-    private String stopwkiss;
     private List<LatLng> list1 = new ArrayList<>();
 
     //    OnLocationChangedListener mListener;
@@ -157,12 +145,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LatLng latLng_xianludian;
     //右下角的 用户反馈按钮
     private CircleImageView image_kehu;
+    private int bendiVersionCode;
+    private String bendiVersionName;
+    private int qiangzhiUdata;
+    private Thread downLoadThread;
+    private String path;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //  Fresco.initialize(getApplicationContext());
+
         //沉浸式
         ImmersionBar.with(this)
                 .statusBarColor(R.color.zhutiyanse) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
@@ -236,53 +230,63 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 up.fech(MainActivity.this, laitudes, longitudes);
                 //定时刷新
                 // timetask(laitudes,longitudes);
-                //定位成功弹出 主页广告
+                //定位成功弹出 主页广告（商业广告）
                 initShowZhuYeGuangGao();
+                //更新APP的广告
+                initShowUpdataApp();
 
             }
         });
     }
 
-    /**
-     * 方法必须重写
-     */
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mapView.onResume();
+    private void initShowUpdataApp() {
+        UpdataAppPerserent uap = new UpdataAppPerserent(this);
+        uap.fach();
     }
-
-    /**
-     * 方法必须重写
-     */
+    /*
+    *  更新APP 后 的接口回调
+    *  */
     @Override
-    protected void onPause() {
-        super.onPause();
-        mapView.onPause();
-    }
+    public void showUpdataResltout(UpdataBean updataBean) {
+        //修复过哪些内容
+        String content = updataBean.getContent();
+        //是否为强制更新 0为不强制更新 1为强制更新
+         qiangzhiUdata = updataBean.getQiangzhi();
+        //新的apk 地址
+        String url = updataBean.getUrl();
+        //服务器版本APK versionCode
+        int serviceVersionCode = updataBean.getVersionCode();
+        //服务器版本的 apk versionName
+        String servideVersionName = updataBean.getVersionName();
 
-    /**
-     * 方法必须重写
-     */
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        mapView.onSaveInstanceState(outState);
-    }
+        /*============下面是获取本地 APK 版本 ================= */
+        try {
+            PackageManager pm = getPackageManager();
+            PackageInfo info = pm.getPackageInfo(getPackageName(),0);
+            //获取本地版本号
+            bendiVersionCode = info.versionCode;
+            //获取本地版本的名字
+            bendiVersionName = info.versionName;
 
-    /**
-     * 方法必须重写
-     */
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mapView.onDestroy();
-        if (null != mlocationClient) {
-            mlocationClient.onDestroy();
-            mlocationClient.stopLocation();
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(),"更新当前版本号获取失败",Toast.LENGTH_SHORT).show();
         }
-        marker = null;
+        /*
+        * 判断服务器版本号是否大于本地版本号
+        *  qiangzhiUdata 为0 不强制更新, 不为0则强制更新 隐藏取消按钮
+        * */
+        if (serviceVersionCode > bendiVersionCode) {
+            UpdataDialog.show(this,"修复了一些bug","共享雨伞震撼上线",qiangzhiUdata,false,null);
+            UpdataDialog.setOutside(false);
+            //注册 取消按钮的 监听
+            UpdataDialog.btn_cancel.setOnClickListener(this);
+            //注册 确认按钮的 监听
+            UpdataDialog.btn_confirm.setOnClickListener(this);
+        }
+
     }
+
+
 
 //    点击返回按钮
 
@@ -299,15 +303,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     intent.putExtra("laitudes", laitudes);
                     intent.putExtra("longitudes", longitudes);
                     startActivity(intent);
+                    //  finish();
                 } else {
                     startActivity(new Intent(this, LoginActivity.class));
 //                    PopupWindowUtils pwu = new PopupWindowUtils(this);
 //                    pwu.showPopupWindow();
                 }
-
-
-                //  Toast.makeText(getApplicationContext(),"暂未开放",Toast.LENGTH_SHORT).show();
-
                 break;
             case R.id.tv_adds:
                 MyPopuopWindowsRigth pwr = new MyPopuopWindowsRigth(this, aMap);
@@ -341,8 +342,98 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 PopupWindowBotoom pwb = new PopupWindowBotoom(this);
                 pwb.showPopupWindow();
                 break;
-
+            //更新APP 弹出的dialog 取消按钮
+            case R.id.btn_cancel:
+                if (qiangzhiUdata == 0) {
+                    UpdataDialog.dialogcancle();
+                } else {
+                    return;
+                }
+                break;
+            //更新APP 弹出的dialog 确认按钮
+            case R.id.btn_confirm:
+                   // UpdataDialog.dialogcancle(); //隐藏dialog
+                    // 点击确认后 首先显示 出进度条
+                UpdataDialog.round_flikerbar.setVisibility(View.VISIBLE);
+                downLoad(); //加载进度条
+                break;
         }
+    }
+    private void downLoad() {
+        downLoadThread = new Thread(this);
+        downLoadThread.start();
+        //获取下载后的APK 路径
+        path =System.currentTimeMillis()+"/storage/emulated/0/download/app-release" + ".apk";
+        String url = "http://kxy.sunyie.com/android/app-release.apk";
+        OkGo.<File>get(url)
+                .execute(new FileCallback() {
+                    @Override
+                    public void onSuccess(File file, Call call, Response response) {
+                        //file 即为 文件数据文件保存在指定目录
+                        L.e("下载成功 "+file);
+                        //启动这个应用安装
+                        startInstallApk();
+                    }
+                    @Override
+                    public void downloadProgress(long currentSize, long totalSize, float progress, long networkSpeed) {
+                        super.downloadProgress(currentSize, totalSize, progress, networkSpeed);
+                        //这里回调 下载进度 （该回调在主线程 直接更新UI 即可）
+                        L.e("当前进度cunrrentSize "+currentSize+" 总进度 "+totalSize+ " 进度 "+progress);
+
+                    }
+                });
+    }
+
+    private void startInstallApk() {
+        Intent i = new Intent();
+        i.setAction(Intent.ACTION_VIEW);
+        i.addCategory(Intent.CATEGORY_DEFAULT);
+        i.setDataAndType(Uri.fromFile(new File(path)), "application/vnd.android.package-archive");
+        startActivity(i);
+        finish();
+    }
+
+    private int status;
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+           UpdataDialog.round_flikerbar.setProgress(msg.arg1);
+            if(msg.arg1 == 100){
+                UpdataDialog.round_flikerbar.finishLoad();
+            }
+        }
+    };
+
+
+
+
+    @Override
+    public void run() {
+        try {
+            while(!downLoadThread.isInterrupted()){
+                float progress =  UpdataDialog.round_flikerbar.getProgress();
+                progress  += 2;
+                Thread.sleep(200);
+                Message message = handler.obtainMessage();
+                message.arg1 = (int) progress;
+                handler.sendMessage(message);
+                if(progress == 100){
+                    break;
+                }
+            }
+        }catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /*
+* 显示主要广告
+* */
+    private void initShowZhuYeGuangGao() {
+        ZhuYeGuangGao zygg = new ZhuYeGuangGao(this);
+        zygg.showPopupWindow();
     }
 
     @Override
@@ -368,7 +459,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .position(latLng)
                 .title("雨伞个数:")
                 .snippet(umbrellanubers)
-                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.purple_pin)))
+                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.yushan1)))
                 .draggable(true).period(10);
         ArrayList<MarkerOptions> markerOptionlst = new ArrayList<MarkerOptions>();
         markerOptionlst.add(markerOption1);
@@ -381,7 +472,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         MarkerOptions markerOption1 = new MarkerOptions().anchor(0.5f, 0.5f)
                 .position(latLng).title("空位个数:")
                 .snippet(vacancynumber)
-                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.purple_pin)))
+                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.shanjiazi)))
                 .draggable(true).period(10);
         ArrayList<MarkerOptions> markerOptionlst = new ArrayList<MarkerOptions>();
 
@@ -431,8 +522,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         startActivity(new Intent(this, LoginActivity.class));
                         finish();
                     }
-
-
                 }
             }
         }
@@ -533,12 +622,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    /*
-* 显示主要广告
-* */
-    private void initShowZhuYeGuangGao() {
-        ZhuYeGuangGao zygg = new ZhuYeGuangGao(this);
-        zygg.showPopupWindow();
+
+
+    /**
+     * 方法必须重写
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    /**
+     * 方法必须重写
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    /**
+     * 方法必须重写
+     */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mapView.onSaveInstanceState(outState);
+    }
+
+    /**
+     * 方法必须重写
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+        if (null != mlocationClient) {
+            mlocationClient.onDestroy();
+            mlocationClient.stopLocation();
+        }
+        marker = null;
     }
 
 }

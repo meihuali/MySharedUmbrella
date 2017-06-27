@@ -26,6 +26,8 @@
     <color name="color_light_blue">#00DDB6</color>
     <color name="qianhuise">#ffc7c7cd</color>
     <color name="huisebeijing">#646464</color>
-
+    <color name="qianjuse">#ff8000</color>
+    <color name="transparent">#00000000</color>
+    <color name="txt_main">#666666</color>
 
 </resources>

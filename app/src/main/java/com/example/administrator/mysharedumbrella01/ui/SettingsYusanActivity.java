@@ -23,6 +23,7 @@ import com.example.administrator.mysharedumbrella01.SaoYiSao.ScannerActivity;
 import com.example.administrator.mysharedumbrella01.dialog.PopupWindowGuanGao;
 import com.example.administrator.mysharedumbrella01.entivity.ManeyBean;
 import com.example.administrator.mysharedumbrella01.peresenet.WalletManeyPerserent;
+import com.example.administrator.mysharedumbrella01.utils.ConfigUtils;
 import com.example.administrator.mysharedumbrella01.utils.GlideUtils;
 import com.example.administrator.mysharedumbrella01.view.IsWalletManeyView;
 import com.example.administrator.mysharedumbrella01.wxapi.WXPayEntryActivity;
@@ -60,9 +61,9 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
     private TextView tv_jiner;
     //账户押金
     private String deposit;
-    private String money;
     private int laserMode;
-
+    private String money;
+    private TextView tv_name;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,10 +74,16 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
                 .statusBarColor(R.color.zhutiyanse) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
                 .fitsSystemWindows(true) //解决状态栏和布局重叠问题，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色
                 .init();
+
         initView();
     }
 
     private void initView() {
+        tv_name = (TextView) findViewById(R.id.tv_name);
+        //程序进来取出用户名来显示 不管是微信还是 QQ 还是普通用户都要取
+        String username = ShareUtils.getString(getApplicationContext(),"username","");
+        tv_name.setText(username);
+
         tv_jiner = (TextView) findViewById(R.id.tv_jiner);
         rll_Invitingfriends = (RelativeLayout) findViewById(R.id.rll_Invitingfriends);
         rll_Invitingfriends.setOnClickListener(this);
@@ -94,7 +101,12 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
         //进来该界面的时候去取图片路径设置在控件上
         String  imageurl = ShareUtils.getString(getApplicationContext(),"touxiangURL","");
         if (!TextUtils.isEmpty(imageurl)) {
-            GlideUtils.loadImageViewCache(getApplicationContext(),imageurl,image_yuanxing);
+            if (imageurl.contains("http")) {
+                GlideUtils.loadImageViewCache(getApplicationContext(), imageurl, image_yuanxing);
+            } else {
+                String url = ConfigUtils.ZHU_YU_MING+"public/avatar/"+imageurl;
+                GlideUtils.loadImageViewCache(getApplicationContext(), url, image_yuanxing);
+            }
         }
         rll_shangchaunweizi = (RelativeLayout) findViewById(R.id.rll_shangchaunweizi);
         rll_shangchaunweizi.setOnClickListener(this);

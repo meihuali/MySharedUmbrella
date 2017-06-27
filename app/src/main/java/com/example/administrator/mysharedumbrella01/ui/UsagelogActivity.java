@@ -38,7 +38,7 @@ public class UsagelogActivity extends AppCompatActivity implements HisyoricalRec
         setContentView(R.layout.activity_usagelog);
         //沉浸式
         ImmersionBar.with(this)
-                .statusBarColor(R.color.juse) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
+                .statusBarColor(R.color.zhutiyanse) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
                 .fitsSystemWindows(true) //解决状态栏和布局重叠问题，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色
                 .init();
         initView();

@@ -1,5 +1,7 @@
 package com.example.administrator.mysharedumbrella01.Impl;
 
+import android.widget.Toast;
+
 import com.example.administrator.mysharedumbrella01.entivity.RegisterBean;
 import com.example.administrator.mysharedumbrella01.model.IsRegisterModel;
 import com.example.administrator.mysharedumbrella01.utils.ConfigUtils;
@@ -40,7 +42,7 @@ public class RegisterModeImpl implements IsRegisterModel {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-
+                        L.e("zhucejieguo  注释失败 "+call);
                     }
                 });
 

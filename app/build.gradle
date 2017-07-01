@@ -29,9 +29,9 @@ android {
             // 显示Log
             buildConfigField "boolean", "LOG_DEBUG", "true"
             versionNameSuffix "-debug"
-            minifyEnabled true
+            minifyEnabled false
             zipAlignEnabled false
-            shrinkResources true
+            shrinkResources false
             //混淆规则配置文件
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug

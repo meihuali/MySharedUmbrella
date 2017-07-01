@@ -38,5 +38,13 @@ public class ConfigUtils {
     * */
     public static final String YONGHUFANKUI_ONE = "Feedback/check_feedback.php";
 
+    /*
+    * 主页广告
+    * */
+    public static final String ZHUYEGUANGGAO = "/Feedback/check_adimg.php";
+    /*
+    * 开锁中的广告
+    * */
+    public static final String KAISUOZHONGGUANGGAO = "Feedback/advertisement_img.php";
 
 }

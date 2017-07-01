@@ -64,6 +64,8 @@ public class settingsssssActivity extends AppCompatActivity implements View.OnCl
                 ShareUtils.deleShare(getApplicationContext(),"username");
                 //退出登录 删除微信授权
                 UMShareAPI.get(this).deleteOauth(this, SHARE_MEDIA.WEIXIN, authListener);
+                //清空本地 头像
+                ShareUtils.deleShare(getApplicationContext(),"touxiangURL");
                 finish();
                 break;
             case R.id.rl_guanyuwomen:

@@ -268,7 +268,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
                 //获取登录后返回的头像
                 String  url = list.getPhoto();
-                if (!TextUtils.isEmpty(url)) {
+                if (!url.equals("0")) {
                     String urls =  ConfigUtils.ZHU_YU_MING+"public/avatar/"+url;
                     ShareUtils.putString(getApplicationContext(),"touxiangURL",urls);
                 }

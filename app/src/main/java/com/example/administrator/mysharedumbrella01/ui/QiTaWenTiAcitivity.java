@@ -9,13 +9,16 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.example.administrator.mysharedumbrella01.R;
+import com.example.administrator.mysharedumbrella01.peresenet.QiTaWeiTiPerserent;
+import com.example.administrator.mysharedumbrella01.view.IsQiTaWenTiView;
 import com.gyf.barlibrary.ImmersionBar;
 
 /**
  * Created by Administrator on 2017/6/22 0022.
+ * /// 其他问题
  */
 
-public class QiTaWenTiAcitivity extends AppCompatActivity implements View.OnClickListener {
+public class QiTaWenTiAcitivity extends AppCompatActivity implements View.OnClickListener, IsQiTaWenTiView {
     private RelativeLayout ll_layout_lishijilu;
     private ImageView image_back1;
     @Override
@@ -36,6 +39,12 @@ public class QiTaWenTiAcitivity extends AppCompatActivity implements View.OnClic
         ll_layout_lishijilu.setOnClickListener(this);
         image_back1 = (ImageView) findViewById(R.id.image_back1);
         image_back1.setOnClickListener(this);
+
+        /*
+        * 测试中···
+        * */
+//        QiTaWeiTiPerserent qtwtp = new QiTaWeiTiPerserent(this);
+//        qtwtp.fach();
     }
 
     @Override
@@ -49,5 +58,10 @@ public class QiTaWenTiAcitivity extends AppCompatActivity implements View.OnClic
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public void showqitawenti(Object object) {
+
     }
 }

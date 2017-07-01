@@ -69,24 +69,28 @@ public class PopupWindowBotoom extends BasePopupWindow implements View.OnClickLi
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            //开不了锁
             case R.id.ll_layout_kaibuqisuo:
                 Intent i1 = new Intent(activity, KeHuFuWuActivity.class);
                 i1.putExtra("fuwu","1");
                 activity.startActivity(i1);
                 dismiss();
                 break;
+            //故障
             case R.id.ll_layout_guzhang:
                 Intent i2 = new Intent(activity, KeHuFuWuActivity.class);
                 i2.putExtra("fuwu","2");
                 activity.startActivity(i2);
                 dismiss();
                 break;
+            //举报
             case R.id.ll_layout_jubao:
                 Intent i3 = new Intent(activity, KeHuFuWuActivity.class);
                 i3.putExtra("fuwu","3");
                 activity.startActivity(i3);
                 dismiss();
                 break;
+            //其他问题
             case R.id.ll_layout_qitawenti:
                 Intent i4 = new Intent(activity, QiTaWenTiAcitivity.class);
                 activity.startActivity(i4);

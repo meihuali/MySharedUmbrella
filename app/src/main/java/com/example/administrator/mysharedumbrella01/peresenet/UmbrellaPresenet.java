@@ -32,14 +32,14 @@ public class UmbrellaPresenet {
         },activity,longitude,latitude);
     }
 
-    public void binds(String mincdeID, final String phone) {
+    public void binds(String mincdeID, final String phone,Activity activity) {
         if (isUmbrellaStand != null) {
             isUmbrellaStand.SaoYiSao(new IsUmbrellaStandMode.OnSaoYiSaoListeners() {
                 @Override
                 public void onComplete(SaoYiSaoBean syb,String mincdeID) {
                     isUmbrellaViewl.showSaoYiSao(syb,mincdeID,phone);
                 }
-            },mincdeID,phone);
+            },mincdeID,phone,activity);
         }
     }
 

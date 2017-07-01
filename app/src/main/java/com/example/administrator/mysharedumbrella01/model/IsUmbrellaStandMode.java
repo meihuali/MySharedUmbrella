@@ -23,7 +23,7 @@ public interface IsUmbrellaStandMode {
     }
 
     //扫描二维码接口
-    void SaoYiSao(OnSaoYiSaoListeners listeners,String mincdeID,String phone);
+    void SaoYiSao(OnSaoYiSaoListeners listeners,String mincdeID,String phone,Activity activity);
     //扫一扫接口回调
      interface OnSaoYiSaoListeners{
         void onComplete(SaoYiSaoBean syb ,String mincdeID);

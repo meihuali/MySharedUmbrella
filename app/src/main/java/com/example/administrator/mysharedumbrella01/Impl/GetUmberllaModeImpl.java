@@ -3,6 +3,7 @@ package com.example.administrator.mysharedumbrella01.Impl;
 import android.app.Activity;
 import android.widget.Toast;
 
+import com.example.administrator.mysharedumbrella01.dialog.PopupWindowGuanGao;
 import com.example.administrator.mysharedumbrella01.entivity.GetumbrellaBean;
 import com.example.administrator.mysharedumbrella01.entivity.SaoYiSaoBean;
 import com.example.administrator.mysharedumbrella01.model.IsUmbrellaStandMode;
@@ -68,7 +69,7 @@ public class GetUmberllaModeImpl implements IsUmbrellaStandMode {
 
     /*扫描二维码 借伞*/
     @Override
-    public void SaoYiSao(final OnSaoYiSaoListeners listeners,  String mincdeID, String phone) {
+    public void SaoYiSao(final OnSaoYiSaoListeners listeners, String mincdeID, String phone, final Activity activity) {
         String url = ConfigUtils.ZHU_YU_MING+ConfigUtils.SAOMIAOERWEIMA_HOUZHUI;
         final String shebeihao = mincdeID;
         final String ph = phone;

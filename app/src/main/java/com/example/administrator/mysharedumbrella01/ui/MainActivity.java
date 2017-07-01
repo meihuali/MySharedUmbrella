@@ -233,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //定位成功弹出 主页广告（商业广告）
                 initShowZhuYeGuangGao();
                 //更新APP的广告
-                initShowUpdataApp();
+//                initShowUpdataApp();
 
             }
         });
@@ -251,7 +251,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //修复过哪些内容
         String content = updataBean.getContent();
         //是否为强制更新 0为不强制更新 1为强制更新
-         qiangzhiUdata = updataBean.getQiangzhi();
+        qiangzhiUdata = updataBean.getQiangzhi();
         //新的apk 地址
         String url = updataBean.getUrl();
         //服务器版本APK versionCode
@@ -352,8 +352,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             //更新APP 弹出的dialog 确认按钮
             case R.id.btn_confirm:
-                   // UpdataDialog.dialogcancle(); //隐藏dialog
-                    // 点击确认后 首先显示 出进度条
+                // UpdataDialog.dialogcancle(); //隐藏dialog
+                // 点击确认后 首先显示 出进度条
                 UpdataDialog.round_flikerbar.setVisibility(View.VISIBLE);
                 downLoad(); //加载进度条
                 break;
@@ -398,7 +398,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-           UpdataDialog.round_flikerbar.setProgress(msg.arg1);
+            UpdataDialog.round_flikerbar.setProgress(msg.arg1);
             if(msg.arg1 == 100){
                 UpdataDialog.round_flikerbar.finishLoad();
             }
@@ -510,13 +510,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     String mima = ShareUtils.getString(getApplicationContext(), "mima", "");
                     if (!TextUtils.isEmpty(zhanghao) && !TextUtils.isEmpty(mima)) {
                         //扫描请求借伞
-                        up.binds(stringExtra, zhanghao);
+                        up.binds(stringExtra, zhanghao,this);
                         //扫描成功后再次请求下网络获取雨伞个数
                         up.fech(MainActivity.this, laitudes, longitudes);
 //                //定时刷新
 //                        timetask(laitudes, longitudes,2);
-                        pwgg = new PopupWindowGuanGao(this);
+                        //开锁中的广告
+                        pwgg = new PopupWindowGuanGao(this,stringExtra);
                         pwgg.showPopupWindow();
+
                     } else {
                         Toast.makeText(getApplicationContext(), "请登录", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(this, LoginActivity.class));
@@ -532,7 +534,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void showSaoYiSao(SaoYiSaoBean syb, String mincdeID, String phone) {
         statusSaoYiSao = syb.getStatus();
-        L.e("statusSaoYiSao " + statusSaoYiSao);
+
         //这里就是 回调 的结果 扫描开锁后的 结果
         if (statusSaoYiSao == 1) {
             //雨伞分布的 坐标 有多少个雨伞
@@ -540,11 +542,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             up.fech(MainActivity.this, laitudes, longitudes);
             Toast.makeText(getApplicationContext(), "借伞成功", Toast.LENGTH_SHORT).show();
             int statsus = statusSaoYiSao;
+            String datas =  syb.getData();
+            L.e("开锁成功拿到伞的id  "+datas);
             pwgg.stopUpdata(statsus);
             //隐藏开锁广告popup
             pwgg.dismiss();
             //开锁成功 又开启一个popupwindow
-            KaiSuohoudeGuanggao zy = new KaiSuohoudeGuanggao(this);
+            KaiSuohoudeGuanggao zy = new KaiSuohoudeGuanggao(this,datas);
             zy.showPopupWindow();
         } else {
             Toast.makeText(getApplicationContext(), "借伞失败", Toast.LENGTH_SHORT).show();
@@ -552,9 +556,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             pwgg.stopUpdata(statsus);
             //隐藏开锁广告popup
             pwgg.dismiss();
-            //开锁失败 又开启一个popupwindow
-            KaiSuohoudeGuanggao zy = new KaiSuohoudeGuanggao(this);
-            zy.showPopupWindow();
+//            //开锁失败 又开启一个popupwindow
+//            KaiSuohoudeGuanggao zy = new KaiSuohoudeGuanggao(this,datas);
+//            zy.showPopupWindow();
         }
 
     }

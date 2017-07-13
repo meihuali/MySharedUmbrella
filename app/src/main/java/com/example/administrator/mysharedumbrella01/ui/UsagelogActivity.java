@@ -7,7 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.administrator.mysharedumbrella01.Adapter.HistoricalAdapter;
@@ -18,6 +20,8 @@ import com.example.administrator.mysharedumbrella01.utils.L;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
 import com.example.administrator.mysharedumbrella01.view.HisyoricalRecordView;
 import com.gyf.barlibrary.ImmersionBar;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +36,10 @@ public class UsagelogActivity extends AppCompatActivity implements HisyoricalRec
     private RecyclerView mRecyclerView;
     private HistoricalAdapter historicalAdapter;
     private ImageView image_back;
+    private int curPage = 0;
+    private String zhanghao;
+    private  int isroot;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,27 +61,52 @@ public class UsagelogActivity extends AppCompatActivity implements HisyoricalRec
         mRecyclerView.setHasFixedSize(true);
         //设置 mRecyclerView 的管理器
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         historicalAdapter = new HistoricalAdapter(R.layout.hisyoriccal_item,list1,getApplicationContext());
         mRecyclerView.setAdapter(historicalAdapter);
 //        这一句是开启 item 动画
         historicalAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
 
+        //初始化刷新的 smartlayout
+        final RefreshLayout refreshLayout = (RefreshLayout) findViewById(R.id.smartLayout);
+        //开启自动加载功能（非必须，也就是说可以不加这句话·）
+//        refreshLayout.setEnableAutoLoadmore(true);
+        //关闭 上拉加载功能
+        refreshLayout.setEnableAutoLoadmore(false);
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(final RefreshLayout refreshlayout) {
+
+                ((View)refreshlayout).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        list1.clear();
+                        //这里做业务处理
+                        curPage+=10;
+                        HisyoricalPeresenet hp = new HisyoricalPeresenet(UsagelogActivity.this);
+                        hp.fach(UsagelogActivity.this,isroot,zhanghao,zhanghao,"10",curPage+"");
+                        refreshlayout.finishRefresh();
+                    }
+                },2000);
+            }
+        });
     }
 
     private void initData() {
-        int isroot = ShareUtils.getInt(getApplicationContext(),"isroots",0);
-        String zhanghao  =  ShareUtils.getString(getApplicationContext(),"zhanghao","");
+        isroot = ShareUtils.getInt(getApplicationContext(),"isroots",0);
+        zhanghao  =  ShareUtils.getString(getApplicationContext(),"zhanghao","");
         HisyoricalPeresenet hp = new HisyoricalPeresenet(this);
-        hp.fach(this,isroot,zhanghao,zhanghao);
+        hp.fach(this,isroot,zhanghao,zhanghao,"10","10");
 
     }
 
     @Override
     public void showHisyor(List<HistoryBean.DataBean> list,int isroot,String zhanghao) {
         int sizes = list.size();
-        L.e("sizes"+sizes );
+        L.e("sizes "+sizes );
         list1.addAll(list);
         historicalAdapter.notifyDataSetChanged();
+
 
     }
 

@@ -2,9 +2,14 @@ package com.example.administrator.mysharedumbrella01.SaoYiSao;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.hardware.Camera;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -12,18 +17,23 @@ import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.administrator.mysharedumbrella01.R;
+import com.example.administrator.mysharedumbrella01.utils.L;
 import com.google.zxing.Result;
+import com.gyf.barlibrary.ImmersionBar;
 import com.mylhyl.zxing.scanner.ScannerView;
 import com.mylhyl.zxing.scanner.common.Intents;
+
+import java.security.Policy;
 
 /**
  * 扫描
  */
-public class ScannerActivity extends DeCodeActivity {
+public class ScannerActivity extends DeCodeActivity implements View.OnClickListener {
 
     public static final String EXTRA_LASER_LINE_MODE = "laser_line_mode";
     public static final int EXTRA_LASER_LINE_MODE_0 = 0;
@@ -34,20 +44,42 @@ public class ScannerActivity extends DeCodeActivity {
     private ScannerView mScannerView;
     private Result mLastResult;
     private int laserMode;
+    private ToggleButton img_open;
+    private Camera camera;
+    private ImageView image_back;
+    private  boolean IsFreset = true;
+    private CameraManager manager;
+    private Camera.Parameters parameters = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanner);
-
+        //沉浸式
+        ImmersionBar.with(this)
+                .statusBarColor(R.color.zhutiyanse) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
+                .statusBarDarkFont(true,0.2f)   // 如果是白色或者透明状态的时候就加上他
+                .fitsSystemWindows(true) //解决状态栏和布局重叠问题，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色
+                .init();
         mScannerView = (ScannerView) findViewById(R.id.scanner_view);
         mScannerView.setOnScannerCompletionListener(this);
+        image_back = (ImageView)findViewById(R.id.image_back);
+        image_back.setOnClickListener(this);
+        manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+        final ToggleButton toggleButton = (ToggleButton) findViewById(R.id.toggleButton);
 
-        ToggleButton toggleButton = (ToggleButton) findViewById(R.id.toggleButton);
         toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                L.e("灯泡状态 "+isChecked);
+                if (isChecked) {
+                    toggleButton.setBackground(getResources().getDrawable(R.drawable.dakaidengpao));
+                } else {
+                    toggleButton.setBackground(getResources().getDrawable(R.drawable.guanbidengpao));
+                }
                 mScannerView.toggleLight(isChecked);
+
+
             }
         });
 
@@ -61,6 +93,7 @@ public class ScannerActivity extends DeCodeActivity {
                 }
             }
         });
+
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -148,5 +181,36 @@ public class ScannerActivity extends DeCodeActivity {
                         .putExtra(ScannerActivity.EXTRA_RETURN_SCANNER_RESULT, isBackResult)
                         .putExtra(EXTRA_LASER_LINE_MODE, laserMode)
                 , ScannerActivity.REQUEST_CODE_SCANNER);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            //返回键
+            case R.id.image_back:
+                finish();
+                break;
+
+        }
+    }
+
+    /**
+     * 是否开启了闪光灯
+     * @return
+     */
+    public boolean isFlashlightOn() {
+        if (camera == null) {
+            camera = Camera.open();
+        }
+
+        Camera.Parameters parameters = camera.getParameters();
+        String flashMode = parameters.getFlashMode();
+
+        if (flashMode.equals(Camera.Parameters.FLASH_MODE_TORCH)) {
+
+            return true;
+        } else {
+            return false;
+        }
     }
 }

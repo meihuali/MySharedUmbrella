@@ -1,13 +1,19 @@
 package com.example.administrator.mysharedumbrella01.ui;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -18,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.mysharedumbrella01.R;
+import com.example.administrator.mysharedumbrella01.SaoYiSao.ScannerActivity;
 import com.example.administrator.mysharedumbrella01.dialog.CustomDialog;
 import com.example.administrator.mysharedumbrella01.entivity.ShangChuanTouXiangBean;
 import com.example.administrator.mysharedumbrella01.peresenet.ShangChuanTouXiangPersernet;
@@ -25,14 +32,20 @@ import com.example.administrator.mysharedumbrella01.utils.ConfigUtils;
 import com.example.administrator.mysharedumbrella01.utils.GlideUtils;
 import com.example.administrator.mysharedumbrella01.utils.L;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
+import com.example.administrator.mysharedumbrella01.utils.SystemUiUtils;
 import com.example.administrator.mysharedumbrella01.view.IsShangChuanTouXiangView;
 import com.gyf.barlibrary.ImmersionBar;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.PermissionListener;
+import com.yanzhenjie.permission.Rationale;
+import com.yanzhenjie.permission.RationaleListener;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -42,6 +55,7 @@ import me.leefeng.promptlibrary.PromptDialog;
 
 /**
  * Created by Administrator on 2017/6/5 0005.
+ *  这个是圆形头像的界面
  */
 
 public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implements View.OnClickListener, IsShangChuanTouXiangView {
@@ -52,6 +66,14 @@ public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implemen
     private Button btn_picture;
     private Button btn_camera;
     private PromptDialog promptDialog;
+    private static final int REQUEST_CODE_PERMISSION_SD = 100;
+    private static final int REQUEST_CODE_PERMISSION_OTHER = 101;
+    private static final int REQUEST_CODE_PERMISSION_CAMER = 102;
+
+    private static final int REQUEST_CODE_SETTING = 300;
+    private File myCaptureFile;
+    private TextView tv_UserNick;
+    private TextView tv_userPhone;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +91,16 @@ public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implemen
     }
     /*初始化 */
     private void intiview() {
+        tv_UserNick = (TextView)findViewById(R.id.tv_UserNick);
+        tv_userPhone = (TextView)findViewById(R.id.tv_userPhone);
+        String shoujiPhone = ShareUtils.getString(getApplicationContext(),"zhanghao","");
+        String UserNick = ShareUtils.getString(getApplicationContext(),"username","");
+        if (!TextUtils.isEmpty(shoujiPhone)) {
+            tv_userPhone.setText(shoujiPhone);
+        }
+        if (!TextUtils.isEmpty(UserNick)) {
+            tv_UserNick.setText(UserNick);
+        }
 
         image_yuanxing = (CircleImageView) findViewById(R.id.image_yuanxing);
         image_yuanxing.setOnClickListener(this);
@@ -119,12 +151,72 @@ public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implemen
                 toPicture(); //打开相册
                 break;
             case R.id.btn_camera:
-                toCamera(); //打开相机
+
+
                 break;
 
 
         }
     }
+
+    /**
+     * 回调监听。
+     */
+    private PermissionListener permissionListener = new PermissionListener() {
+        @Override
+        public void onSucceed(int requestCode, @NonNull List<String> grantPermissions) {
+            switch (requestCode) {
+                case REQUEST_CODE_PERMISSION_SD: {
+                    Toast.makeText(YuanXingTouxiangSettingsActivity.this, R.string.message_calendar_succeed, Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                case REQUEST_CODE_PERMISSION_OTHER: {
+                    Toast.makeText(YuanXingTouxiangSettingsActivity.this, R.string.message_post_succeed, Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                case REQUEST_CODE_PERMISSION_CAMER: {
+                    Toast.makeText(YuanXingTouxiangSettingsActivity.this, R.string.xiangjiqyuanxian, Toast.LENGTH_SHORT).show();
+                    toCamera(); //打开相机
+
+                    break;
+                }
+            }
+        }
+
+        @Override
+        public void onFailed(int requestCode, @NonNull List<String> deniedPermissions) {
+            switch (requestCode) {
+                case REQUEST_CODE_PERMISSION_SD: {
+                    Toast.makeText(YuanXingTouxiangSettingsActivity.this, R.string.message_calendar_failed, Toast.LENGTH_SHORT).show();
+                    break;
+                }
+                case REQUEST_CODE_PERMISSION_OTHER: {
+                    Toast.makeText(YuanXingTouxiangSettingsActivity.this, R.string.message_post_failed, Toast.LENGTH_SHORT).show();
+                    break;
+                }
+            }
+
+            // 用户否勾选了不再提示并且拒绝了权限，那么提示用户到设置中授权。
+            if (AndPermission.hasAlwaysDeniedPermission(YuanXingTouxiangSettingsActivity.this, deniedPermissions)) {
+                // 第一种：用默认的提示语。
+                AndPermission.defaultSettingDialog(YuanXingTouxiangSettingsActivity.this, REQUEST_CODE_SETTING).show();
+
+                // 第二种：用自定义的提示语。
+//             AndPermission.defaultSettingDialog(this, REQUEST_CODE_SETTING)
+//                     .setTitle("权限申请失败")
+//                     .setMessage("我们需要的一些权限被您拒绝或者系统发生错误申请失败，请您到设置页面手动授权，否则功能无法正常使用！")
+//                     .setPositiveButton("好，去设置")
+//                     .show();
+
+//            第三种：自定义dialog样式。
+//            SettingService settingService = AndPermission.defineSettingDialog(this, REQUEST_CODE_SETTING);
+//            你的dialog点击了确定调用：
+//            settingService.execute();
+//            你的dialog点击了取消调用：
+//            settingService.cancel();
+            }
+        }
+    };
 
     private void openDialog() {
         //可创建android效果的底部Sheet选择，默认IOS效果，sheetCellPad=0为Android效果的Sheet
@@ -145,10 +237,32 @@ public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implemen
                 new PromptButton("打开相机", new PromptButtonListener() {
                     @Override
                     public void onClick(PromptButton promptButton) {
-                        toCamera(); //打开相机
+
+                        //动态授权 相机权限
+                        dongtaishouquan();
                     }
                 }),
                 new PromptButton("请选择上传头像的方式", null));
+    }
+
+    private void dongtaishouquan() {
+        // 申请单个权限。
+        AndPermission.with(this)
+                .requestCode(REQUEST_CODE_PERMISSION_CAMER)
+                .permission(Manifest.permission.CAMERA)
+                .callback(permissionListener)
+                // rationale作用是：用户拒绝一次权限，再次申请时先征求用户同意，再打开授权对话框；
+                // 这样避免用户勾选不再提示，导致以后无法申请权限。
+                // 你也可以不设置。
+                .rationale(new RationaleListener() {
+                    @Override
+                    public void showRequestPermissionRationale(int requestCode, Rationale rationale) {
+                        // 这里的对话框可以自定义，只要调用rationale.resume()就可以继续申请。
+                        AndPermission.rationaleDialog(YuanXingTouxiangSettingsActivity.this, rationale).
+                                show();
+                    }
+                })
+                .start();
     }
 
     //跳转相册
@@ -160,8 +274,6 @@ public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implemen
     }
 
     //回调
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != this.RESULT_CANCELED) {
@@ -243,19 +355,36 @@ public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implemen
     //Bitmap对象保存图片文件
     public File saveBitmapFile(Bitmap bitmap){
         String zh = ShareUtils.getString(getApplicationContext(),"zhanghao","");
-        String path =  "/mnt/sdcard/pic"+zh+".jpg";
-        File file=new File(path);//将要保存图片的路径
         try {
-            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            String path = getSDPath() +"/revoeye/";
+            File dirFile = new File(path);
+            if(!dirFile.exists()){
+                dirFile.mkdir();
+            }
+            myCaptureFile = new File(path + UUID.randomUUID());
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(myCaptureFile));
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bos);
             bos.flush();
             bos.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return file;
+        return myCaptureFile;
     }
-        /*这个是 打开相册 上传图片后的 回调结果*/
+    /*
+    * 获取sd卡的 路径
+    * */
+    public static String getSDPath(){
+        File sdDir = null;
+        boolean sdCardExist = Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED); //判断sd卡是否存在
+        if (sdCardExist)
+        {
+            sdDir = Environment.getExternalStorageDirectory();//获取跟目录
+        }
+        return sdDir.toString();
+    }
+
+    /*这个是 打开相册 上传图片后的 回调结果*/
     @Override
     public void ShowRest(ShangChuanTouXiangBean sctxb) {
 

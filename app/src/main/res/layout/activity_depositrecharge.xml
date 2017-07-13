@@ -103,7 +103,7 @@
                 android:id="@+id/image_weixin_gouxuan"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@drawable/gouxuan" />
+                android:src="@drawable/dagou" />
 
             <ImageView
                 android:id="@+id/image_weixin_weigouxuan"
@@ -152,14 +152,14 @@
         <ImageView
             android:layout_alignParentRight="true"
             android:id="@+id/image_zhifubao_weigouxuan"
-            android:src="@drawable/weigouxuan"
+            android:src="@drawable/budagou"
             android:layout_width="25dp"
             android:layout_height="25dp" />
         <ImageView
             android:layout_alignParentRight="true"
             android:visibility="gone"
             android:id="@+id/image_zhifubao_gouxuan"
-            android:src="@drawable/gouxuan"
+            android:src="@drawable/dagou"
             android:layout_width="25dp"
             android:layout_height="25dp" />
         </LinearLayout>

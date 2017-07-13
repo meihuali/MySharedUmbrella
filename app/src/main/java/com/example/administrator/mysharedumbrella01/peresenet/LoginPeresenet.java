@@ -1,5 +1,7 @@
 package com.example.administrator.mysharedumbrella01.peresenet;
 
+import android.app.Activity;
+
 import com.example.administrator.mysharedumbrella01.Impl.LoginModelImpl;
 import com.example.administrator.mysharedumbrella01.entivity.LoginBean;
 import com.example.administrator.mysharedumbrella01.model.IsLognModel;
@@ -20,14 +22,14 @@ public class LoginPeresenet {
     }
 
     //绑定下
-    public void fach(final String phone, final String password) {
+    public void fach(final String phone, final String password, Activity activity) {
         if (isLognModel != null) {
             isLognModel.loginmode(new IsLognModel.onLoginmodeLinistener() {
                 @Override
                 public void onComplete(LoginBean logindata) {
                     isLoginView.showLogin(phone,password,logindata);
                 }
-            },phone,password);
+            },phone,password,activity);
         }
     }
 }

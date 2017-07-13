@@ -320,6 +320,27 @@
 
 -keep class com.example.administrator.mysharedumbrella01.entivity.** { *; }
 
+#sharSDK 短信验证码 不加入 混肴
+# SMSSDK
+-dontwarn com.mob.**
+-keep class com.mob.**{*;}
+
+-dontwarn cn.smssdk.**
+-keep class cn.smssdk.**{*;}
+
+# 6.0 权限库
+-keepclassmembers class ** {
+    @com.yanzhenjie.permission.PermissionYes <methods>;
+}
+-keepclassmembers class ** {
+    @com.yanzhenjie.permission.PermissionNo <methods>;
+}
+
+#腾讯 bugliy 暂时没混肴
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
+
+
 
 
 

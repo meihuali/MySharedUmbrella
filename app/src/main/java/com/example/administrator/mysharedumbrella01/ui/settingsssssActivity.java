@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.administrator.mysharedumbrella01.R;
+import com.example.administrator.mysharedumbrella01.appliction.BaseAppliction;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.umeng.socialize.UMAuthListener;
@@ -29,6 +30,9 @@ public class settingsssssActivity extends AppCompatActivity implements View.OnCl
     private ImageView image_back;
     private Button btn_exits;
     private RelativeLayout rl_guanyuwomen;
+    private RelativeLayout rll_user_xieyi;
+    private RelativeLayout rll_user_chongzhixieyi;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +53,10 @@ public class settingsssssActivity extends AppCompatActivity implements View.OnCl
         image_back.setOnClickListener(this);
         btn_exits = (Button) findViewById(R.id.btn_exits);
         btn_exits.setOnClickListener(this);
+        rll_user_xieyi = (RelativeLayout)findViewById(R.id.rll_user_xieyi);
+        rll_user_xieyi.setOnClickListener(this);
+        rll_user_chongzhixieyi = (RelativeLayout) findViewById(R.id.rll_user_chongzhixieyi);
+        rll_user_chongzhixieyi.setOnClickListener(this);
     }
 
     @Override
@@ -66,12 +74,22 @@ public class settingsssssActivity extends AppCompatActivity implements View.OnCl
                 UMShareAPI.get(this).deleteOauth(this, SHARE_MEDIA.WEIXIN, authListener);
                 //清空本地 头像
                 ShareUtils.deleShare(getApplicationContext(),"touxiangURL");
+                // 销毁上一个界面的activit
+                BaseAppliction.destoryActivity("SettingsYusanActivity");
                 finish();
                 break;
             case R.id.rl_guanyuwomen:
                 startActivity(new Intent(this,AboutusActivity.class));
                 break;
+            case R.id.rll_user_xieyi:
+                startActivity(new Intent(getApplicationContext(),UserXieYiActivity.class));
+                break;
+            case R.id.rll_user_chongzhixieyi:
+                startActivity(new Intent(getApplicationContext(),User_chongzhixieyiActivity.class));
+                break;
         }
+
+
     }
 
     UMAuthListener authListener = new UMAuthListener() {

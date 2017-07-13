@@ -23,7 +23,9 @@ import okhttp3.Response;
 
 public class HistoricalRecordModelImpl implements HistoricalRecordModel {
     @Override
-    public void historicalrecord(final OnHistoricalrecordListener listener, final Activity activity,int isroot,String phone,String ptuser) {
+    public void historicalrecord(final OnHistoricalrecordListener listener, final Activity activity,int isroot,String phone,String ptuser,String limt, String shangla) {
+       //下来刷新 用的
+        String sl = "0"+","+shangla;
         String url = ConfigUtils.ZHU_YU_MING+ConfigUtils.HUOQULISHILI;
         String appid = ToolsGetAppId.getinitAppId(activity);
         //1表示 是管理员
@@ -57,7 +59,8 @@ public class HistoricalRecordModelImpl implements HistoricalRecordModel {
         } else { //否则就是普通用户登录
             OkGo.post(url)
                     .params("appid",ptuser)
-                    .params("limit","0,1000")
+                   // .params("limit","0,1000")
+                    .params("limit",sl)
                     .execute(new StringCallback() {
                         @Override
                         public void onSuccess(String s, Call call, Response response) {
@@ -71,7 +74,7 @@ public class HistoricalRecordModelImpl implements HistoricalRecordModel {
                                     listener.onComplete(list);
                                 }
                             } catch (Exception e) {
-                                Toast.makeText(activity,"历史记录接口挂了",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity,"暂时没有历史记录",Toast.LENGTH_SHORT).show();
                             }
                         }
 

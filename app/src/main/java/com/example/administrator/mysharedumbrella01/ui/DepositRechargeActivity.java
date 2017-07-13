@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -87,14 +88,14 @@ public class DepositRechargeActivity extends AppCompatActivity implements View.O
                 break;
             //点击支付宝勾选按钮
             case R.id.image_zhifubao_weigouxuan:
-                image_zhifubao_weigouxuan.setImageDrawable(getDrawable(R.drawable.gouxuan));
-                image_weixin_gouxuan.setImageDrawable(getDrawable(R.drawable.weigouxuan));
+                image_zhifubao_weigouxuan.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.dagou));
+                image_weixin_gouxuan.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.budagou));
                 moneys = 20.00; //暂时未了测试 写成 0.01
                 break;
             //点击微信勾选按钮
             case R.id.image_weixin_gouxuan:
-                image_weixin_gouxuan.setImageDrawable(getDrawable(R.drawable.gouxuan));
-                image_zhifubao_weigouxuan.setImageDrawable(getDrawable(R.drawable.weigouxuan));
+                image_weixin_gouxuan.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.dagou));
+                image_zhifubao_weigouxuan.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.budagou));
                 moneys = 20.00;
                 break;
             //充值押金 按钮

@@ -22,14 +22,14 @@ public class HisyoricalPeresenet {
         historicalRecordModel = new HistoricalRecordModelImpl();
     }
         //view 掉他 整个方法
-    public void fach(Activity activity, final int isroot,final String phone,final String ptuser) {
+    public void fach(Activity activity, final int isroot,final String phone,final String ptuser,String limt, String shangla) {
         if (historicalRecordModel != null) {
             historicalRecordModel.historicalrecord(new HistoricalRecordModel.OnHistoricalrecordListener() {
                 @Override
                 public void onComplete(List<HistoryBean.DataBean> list) {
                     hisyoricalRecordView.showHisyor(list,isroot,phone);
                 }
-            },activity,isroot,phone,ptuser);
+            },activity,isroot,phone,ptuser,limt,shangla);
         }
     }
 }

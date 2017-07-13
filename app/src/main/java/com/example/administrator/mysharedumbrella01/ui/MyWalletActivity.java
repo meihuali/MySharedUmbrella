@@ -27,6 +27,9 @@ public class MyWalletActivity extends AppCompatActivity implements View.OnClickL
     private TextView tv_mingxi;
     //押金 jine
     private TextView tv_yajin,tv_yuer;
+    private Button btn_chongzhiYaJin;
+    private String yajin;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,9 +45,10 @@ public class MyWalletActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void initView() {
+        btn_chongzhiYaJin = (Button)findViewById(R.id.btn_chongzhiYaJin);
+        btn_chongzhiYaJin.setOnClickListener(this);
         tv_yajin = (TextView) findViewById(R.id.tv_yajin);
         tv_yuer = (TextView) findViewById(R.id.tv_yuer);
-
         tv_mingxi = (TextView) findViewById(R.id.tv_mingxi);
         tv_mingxi.setOnClickListener(this);
         image_back = (ImageView) findViewById(R.id.image_back);
@@ -57,8 +61,8 @@ public class MyWalletActivity extends AppCompatActivity implements View.OnClickL
 
     private void initDatas() {
 
-      Intent intent =   getIntent();
-        String yajin = intent.getStringExtra("moneysss");
+        Intent intent =   getIntent();
+        yajin = intent.getStringExtra("moneysss");
         String yuer = intent.getStringExtra("yuer");
         tv_yuer.setText(yuer+"元");
         tv_yajin.setText("账户押金"+yajin+"元");
@@ -72,12 +76,23 @@ public class MyWalletActivity extends AppCompatActivity implements View.OnClickL
                 finish();
                 break;
             case R.id.btn_Recharge:
-                PopupWindowCenter pwc = new PopupWindowCenter(this);
-                pwc.showPopupWindow();
+                double yajinmoney =  Double.parseDouble(yajin);
+                if (yajinmoney < 20.00) {
+                    PopupWindowCenter pwc = new PopupWindowCenter(this);
+                    pwc.showPopupWindow();
+                } else {
+                    //充值余额
+                    startActivity(new Intent(getApplicationContext(),RechargeActivity.class));
+                }
+
                 break;
             //明细
             case R.id.tv_mingxi:
                 startActivity(new Intent(this,DetailofamountActivity.class));
+                break;
+            //充值押金
+            case R.id.btn_chongzhiYaJin:
+                startActivity(new Intent(getApplicationContext(), DepositRechargeActivity.class));
                 break;
         }
     }

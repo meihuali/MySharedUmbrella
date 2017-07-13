@@ -90,21 +90,34 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
         <LinearLayout
-            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            android:layout_marginBottom="18dp"
             android:layout_above="@+id/ll_layout"
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="48dp">
             <Button
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:id="@+id/btn_Recharge"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
                 android:textSize="18sp"
                 android:textColor="@color/white"
-                android:text="@string/chongzhi"
-                android:background="@drawable/button_yuanjiao_juse"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:text="@string/chongzhiYuEr"
+                android:background="@drawable/button_xiaoyuanjiao_juse"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+            <Button
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:id="@+id/btn_chongzhiYaJin"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:text="@string/chongzhiyajin"
+                android:background="@drawable/button_xiaoyuanjiao_juse"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
 
         </LinearLayout>
 

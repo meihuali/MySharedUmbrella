@@ -35,7 +35,7 @@ public class HistoricalAdapter extends BaseQuickAdapter<HistoryBean.DataBean,Bas
             helper.setText(R.id.tv_bianhao, item.getId());
             //借伞总时间
            double duration =  item.getDuration();
-            if (duration <= 0) {
+            if (duration < 0) {
                 helper.setText(R.id.tv_time, "正在使用中···");
             } else {
                 helper.setText(R.id.tv_time,item.getDuration()+"分钟");

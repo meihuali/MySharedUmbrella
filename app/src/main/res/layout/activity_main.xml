@@ -108,30 +108,34 @@
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="8dp" />
 
-        <LinearLayout
+        <RelativeLayout
             android:gravity="center"
             android:layout_marginBottom="10dp"
             android:layout_alignParentBottom="true"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="50dp">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_marginLeft="15dp"
+                android:id="@+id/image_shuaxin"
+                android:layout_marginBottom="15dp"
+                app:civ_border_width="2dp"
+                app:civ_border_color="@color/white"
+                android:src="@drawable/kehu"
+                android:layout_width="35dp"
+                android:layout_height="35dp" />
 
             <Button
+                android:layout_centerHorizontal="true"
                 android:id="@+id/btn_scatc"
                 android:layout_width="132dp"
                 android:layout_height="50dp"
                 android:background="@drawable/saoyisao"
                 android:textColor="@color/txt_while"
                 android:textSize="18sp" />
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/image_kehu"
+                android:layout_alignParentRight="true"
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="15dp"
                 app:civ_border_width="2dp"
@@ -139,7 +143,12 @@
                 android:src="@drawable/kehu"
                 android:layout_width="35dp"
                 android:layout_height="35dp" />
-        </LinearLayout>
+
+        </RelativeLayout>
+
+
+
+
 
 
     </RelativeLayout>

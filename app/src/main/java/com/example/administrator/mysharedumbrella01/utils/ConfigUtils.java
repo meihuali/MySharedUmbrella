@@ -31,7 +31,8 @@ public class ConfigUtils {
     /*============================上传头像 接口============================================*/
     public static final String SHANGCHUANTOUXIANG = "Afterlogin/ModifyAvatar.php";
     /*==================================三方微信登录*/
-    public static final String WECHAT_LOGING = "Feedback/thirdlogin.php";
+   // public static final String WECHAT_LOGING = "Feedback/thirdlogin.php";
+    public static final String WECHAT_LOGING = "Member/thirdpartylogin.php";
 
     /*
     * 用户反馈 1
@@ -46,5 +47,17 @@ public class ConfigUtils {
     * 开锁中的广告
     * */
     public static final String KAISUOZHONGGUANGGAO = "Feedback/advertisement_img.php";
+    /*
+    * APP版本更新
+    * */
+    public static final String UDUPDATAAPP = "Feedback/version.php";
+    /*
+    * 获取雨伞图标的 接口
+    * */
+    public static final String HUOQUYUSHANTUBIAO = "Feedback/check_adimg.php";
+    /*
+    * 第三方登录绑定手机号码
+    * */
+    public static final String BANGDINGSHOUJIHAOMA = "Member/bindingmyphone.php";
 
 }

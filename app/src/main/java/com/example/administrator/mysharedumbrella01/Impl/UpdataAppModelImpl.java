@@ -2,6 +2,7 @@ package com.example.administrator.mysharedumbrella01.Impl;
 
 import com.example.administrator.mysharedumbrella01.entivity.UpdataBean;
 import com.example.administrator.mysharedumbrella01.model.IsUpdataAppModel;
+import com.example.administrator.mysharedumbrella01.utils.ConfigUtils;
 import com.example.administrator.mysharedumbrella01.utils.L;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
@@ -19,7 +20,7 @@ public class UpdataAppModelImpl implements IsUpdataAppModel {
 
     @Override
     public void updataApp(final OnUpdataAppListener listener) {
-     String url = "http://kxy.sunyie.com/api/sengji.php";
+     String url = ConfigUtils.ZHU_YU_MING+ConfigUtils.UDUPDATAAPP;
 
         OkGo.get(url).execute(new StringCallback() {
             @Override

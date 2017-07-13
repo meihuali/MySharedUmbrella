@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.SaoYiSao.ScannerActivity;
+import com.example.administrator.mysharedumbrella01.appliction.BaseAppliction;
 import com.example.administrator.mysharedumbrella01.dialog.PopupWindowGuanGao;
 import com.example.administrator.mysharedumbrella01.entivity.ManeyBean;
 import com.example.administrator.mysharedumbrella01.peresenet.WalletManeyPerserent;
@@ -69,6 +70,8 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settingsyusana);
+        //这句话的意思 将activity添加到Activity管理的方法中以便在别的activity销毁
+        BaseAppliction.addDestoryActivity(this,"SettingsYusanActivity");
         //沉浸式
         ImmersionBar.with(this)
                 .statusBarColor(R.color.zhutiyanse) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色

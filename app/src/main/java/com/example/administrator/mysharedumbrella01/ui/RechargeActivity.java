@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -41,6 +42,7 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
     private Button btn_Recharge;
     private String dingdan;
     public static final int SDK_PAY_FLAG = 0;
+    private String bodyZhuTi = "充值100元";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,6 +94,8 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
                 btn_shiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
                 //点击一百元 赋值为100
                 moneys = 100;
+                //充值内容主题
+                bodyZhuTi = "充值100元";
                 break;
             case R.id.btn_wushiyuan:
                 btn_wushiyuan.setTextColor(getResources().getColor(R.color.white));
@@ -104,6 +108,8 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
                 btn_shiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
                 // 点击五十元 赋值为50；
                 moneys = 50;
+                //充值内容主题
+                bodyZhuTi = "充值50元";
                 break;
             case R.id.btn_ershiyuan:
                 btn_ershiyuan.setTextColor(getResources().getColor(R.color.white));
@@ -115,6 +121,8 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
                 btn_wushiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
                 btn_shiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
                 moneys = 20;
+                //充值内容主题
+                bodyZhuTi = "充值20元";
                 break;
             case R.id.btn_shiyuan:
                 btn_shiyuan.setTextColor(getResources().getColor(R.color.white));
@@ -125,18 +133,22 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
                 btn_yibaiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
                 btn_wushiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
                 btn_ershiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
-                moneys = 0.01;
+                moneys = 10;
+                //充值内容主题
+                bodyZhuTi = "充值10元";
                 break;
             //点击支付宝勾选按钮
             case R.id.image_zhifubao_weigouxuan:
-                image_zhifubao_weigouxuan.setImageDrawable(getDrawable(R.drawable.gouxuan));
-                image_weixin_gouxuan.setImageDrawable(getDrawable(R.drawable.weigouxuan));
+                image_zhifubao_weigouxuan.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.dagou));
+                image_weixin_gouxuan.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.budagou));
                 types = 2; //代表用户选择的是支付宝
                 break;
             //点击微信勾选按钮
             case R.id.image_weixin_gouxuan:
-                image_weixin_gouxuan.setImageDrawable(getDrawable(R.drawable.gouxuan));
-                image_zhifubao_weigouxuan.setImageDrawable(getDrawable(R.drawable.weigouxuan));
+//                image_weixin_gouxuan.setImageDrawable(getDrawable(R.drawable.gouxuan));
+//                image_zhifubao_weigouxuan.setImageDrawable(getDrawable(R.drawable.weigouxuan));
+                image_weixin_gouxuan.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.dagou));
+                image_zhifubao_weigouxuan.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.budagou));
                 types = 1; //代表用户选择的是微信
                 break;
             /*
@@ -149,7 +161,6 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
                     String zh = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
                     AlipayPerserent ap = new AlipayPerserent(this);
                     ap.fach("2", moneys + "", zh, "1");
-
                 }
                 break;
         }

@@ -6,253 +6,183 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
         <RelativeLayout
-            android:background="@color/top_red"
             android:layout_width="match_parent"
-            android:layout_height="55dp">
+            android:layout_height="55dp"
+            android:background="@color/top_red">
+
             <ImageView
                 android:id="@+id/imge_backes"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="15dp"
-                android:background="@drawable/btn_back"
-                android:layout_width="30dp"
-                android:layout_height="30dp" />
+                android:background="@drawable/btn_back" />
+
             <TextView
-                android:layout_centerVertical="true"
-                android:textSize="18sp"
-                android:textColor="@color/txt_while"
-                android:text="@string/gerenxinxin"
-                android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="@string/gerenxinxin"
+                android:textColor="@color/txt_while"
+                android:textSize="18sp" />
         </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <TextView
-                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:text="@string/touxiang"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textSize="18sp" />
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_marginRight="15dp"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
                 android:id="@+id/image_yuanxing"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
                 android:layout_marginTop="30dp"
                 android:src="@drawable/liuyifei"
                 app:civ_border_color="@color/mediumorchid"
                 app:civ_border_width="2dp" />
         </RelativeLayout>
+
         <View
-            android:layout_marginTop="5dp"
-            android:background="@color/huise"
             android:layout_width="match_parent"
-            android:layout_height="0.4dp"/>
+            android:layout_height="0.4dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/huise" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50dp">
+
             <TextView
-                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:text="@string/nicheng"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_UserNick"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-                <TextView
-                    android:layout_marginRight="15dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:text="@string/shoujihaoma"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:text="@string/shoujihaoma" />
         </RelativeLayout>
+
         <View
-            android:layout_marginTop="5dp"
-            android:background="@color/huise"
             android:layout_width="match_parent"
-            android:layout_height="0.4dp"/>
+            android:layout_height="0.4dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/huise" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50dp">
+
             <TextView
-                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:text="@string/xingming"
+                android:textSize="18sp" />
+
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-                <TextView
-                    android:layout_marginRight="15dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:text="@string/shoujihaoma"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:text="@string/shoujihaoma2" />
         </RelativeLayout>
+
         <View
-            android:layout_marginTop="5dp"
-            android:background="@color/huise"
             android:layout_width="match_parent"
-            android:layout_height="0.4dp"/>
+            android:layout_height="0.4dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/huise" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50dp">
+
             <TextView
-                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:text="@string/shimingrenzheng"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textSize="18sp" />
+
             <TextView
-                android:textColor="@color/top_red"
-                android:layout_toLeftOf="@+id/imge_renzhengs"
                 android:id="@+id/tv_renzhengs"
-                android:layout_centerVertical="true"
-                android:text="@string/weirenzheng"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <ImageView
-                android:layout_marginRight="15dp"
-                android:id="@+id/imge_renzhengs"
-                android:background="@drawable/backs"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
+                android:layout_toLeftOf="@+id/imge_renzhengs"
+                android:text="@string/weirenzheng"
+                android:textColor="@color/top_red" />
+
+            <ImageView
+                android:id="@+id/imge_renzhengs"
                 android:layout_width="25dp"
-                android:layout_height="25dp" />
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/backs" />
         </RelativeLayout>
+
         <View
-            android:layout_marginTop="5dp"
-            android:background="@color/huise"
             android:layout_width="match_parent"
-            android:layout_height="0.4dp"/>
+            android:layout_height="0.4dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/huise" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50dp">
+
             <TextView
-                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:text="@string/shoujihaomaa"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-                <TextView
-                    android:layout_marginRight="15dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:text="@string/shoujihaoma"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-        </RelativeLayout>
-        <View
-            android:layout_marginTop="5dp"
-            android:background="@color/huise"
-            android:layout_width="match_parent"
-            android:layout_height="0.4dp"/>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp">
-            <TextView
-                android:textSize="18sp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:text="@string/weixin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:layout_toLeftOf="@+id/imge_weibangdings"
-                android:id="@+id/tv_weibang"
-                android:layout_centerVertical="true"
-                android:text="@string/weirenzheng"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <ImageView
-                android:layout_marginRight="15dp"
-                android:id="@+id/imge_weibangdings"
-                android:background="@drawable/backs"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_width="25dp"
-                android:layout_height="25dp" />
-        </RelativeLayout>
-        <View
-            android:layout_marginTop="5dp"
-            android:background="@color/huise"
-            android:layout_width="match_parent"
-            android:layout_height="0.4dp"/>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp">
-            <TextView
-                android:textSize="18sp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:text="@string/QQ"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:layout_toLeftOf="@+id/imge_weibangding"
-                android:id="@+id/tv_weibangding"
-                android:layout_centerVertical="true"
-                android:text="@string/weirenzheng"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <ImageView
-                android:layout_marginRight="15dp"
-                android:id="@+id/imge_weibangding"
-                android:background="@drawable/backs"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_width="25dp"
-                android:layout_height="25dp" />
-        </RelativeLayout>
-        <View
-            android:layout_marginTop="5dp"
-            android:background="@color/huise"
-            android:layout_width="match_parent"
-            android:layout_height="0.4dp"/>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp">
-            <TextView
-                android:textSize="18sp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:text="@string/xiaoyuanrenzheng"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-                <TextView
-                    android:textColor="@color/top_red"
-                    android:layout_toLeftOf="@+id/imge_renzheng"
-                    android:id="@+id/tv_renzheng"
-                    android:layout_centerVertical="true"
-                    android:text="@string/weirenzheng"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <ImageView
-                    android:layout_marginRight="15dp"
-                    android:id="@+id/imge_renzheng"
-                    android:background="@drawable/backs"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp" />
+                android:textSize="18sp" />
 
+            <TextView
+                android:id="@+id/tv_userPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:text="@string/shoujihaoma" />
         </RelativeLayout>
+
         <View
-            android:layout_marginTop="5dp"
-            android:background="@color/huise"
             android:layout_width="match_parent"
-            android:layout_height="0.4dp"/>
+            android:layout_height="0.4dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/huise" />
 
 
     </LinearLayout>

@@ -61,10 +61,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //忘记密码
     private TextView tv_forget;
     private LinearLayout btn_weixinLogin;
-    private PromptDialog promptDialog;
+    public static PromptDialog promptDialog;
     private SHARE_MEDIA share_media;
     private boolean isauth;
     private LinearLayout btn_login_QQ;
+    private String userImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +83,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         initView();
         initData();
     }
+
 
 
 
@@ -121,30 +123,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            //点击登录
+            //点击普通账号登录
             case R.id.btn_login:
                 final String phone = edit_phone.getText().toString().trim();
                 final String pwd = edit_pwd.getText().toString().trim();
                 if (!TextUtils.isEmpty(phone) && !TextUtils.isEmpty(pwd)) {
-//                    Dialog dialog = LoadingDialog.make(this, new CustomDialogFactory())
-//                            .setMessage("正在登录中···")//提示消息
-//                            .create();
-//                    dialog.show();
                     promptDialog.showLoading("正在登录中···");
-                    Handler handler =  new Handler();
-                    handler.postDelayed(new Thread() {
-                        @Override
-                        public void run() {
-                            //用MD5 加密工具 加密
-                            String pwdone = MD5Util.getStringMD5(pwd);
-                            String pwdtwo = MD5Util.getStringMD5(pwdone);
-                            lp.fach(phone, pwdtwo);
-                            //默认显示登录 圆圈进度
-                        }
-                    },3000);
-
+//                    promptDialog.showLoading("正在登录中");
+                    //用MD5 加密工具 加密
+                    String pwdone = MD5Util.getStringMD5(pwd);
+                    String pwdtwo = MD5Util.getStringMD5(pwdone);
+                    lp.fach(phone, pwdtwo,this);
                 } else {
-                    Toast.makeText(getApplicationContext(),"账号或者密码不能为空",Toast.LENGTH_SHORT).show();
+                    promptDialog.showError("账号密码不能为空");
+                    //Toast.makeText(getApplicationContext(),"账号或者密码不能为空",Toast.LENGTH_SHORT).show();
                 }
                 break;
             //点击注册
@@ -155,14 +147,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.tv_forget:
                 startActivity(new Intent(this,ModifyPasswordActivity.class));
                 break;
-            //第三方微信登录
+            /*
+            * 第三方微信登录
+            * */
             case R.id.btn_weixinLogin:
                 promptDialog = new PromptDialog(this);
                 //微信授权以及登录
                 UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.WEIXIN, authListener);
                 break;
+            /*
+            * 第三方QQ 登录
+            * */
             case R.id.btn_login_QQ:
-
+                //QQ授权以及登录
+                UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.QQ, authListener);
                 break;
         }
     }
@@ -189,7 +187,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 //微信用户头像
                 String profile_image_url = data.get("profile_image_url");
                 Log.e("微信登录",str);
-//                ShareUtils.putString(getApplicationContext(),"touxiangURL",profile_image_url);
                 //MVP 调用网络请求
                 WechatPerenest wp = new WechatPerenest(LoginActivity.this);
                 wp.fach(str,profile_image_url,openID);
@@ -210,7 +207,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     };
 
     /*
-* 微信登录接口回调的 结果
+* 微信 QQ 登录接口回调的 结果
 * */
     @Override
     public void showLogin(WechatLoginBean wlb) {
@@ -223,34 +220,49 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             //用户标识符
             String openid = wchatbean.getPhone();
             //用户头像
-            String userImg = wchatbean.getPhoto();
+             userImg = wchatbean.getPhoto();
             //用户微信登录后 的金额
             String money = wchatbean.getMoney();
             //授权成功保存openID 这里跟真实手机号码一样保存同一个key
-            ShareUtils.putString(getApplicationContext(), "zhanghao", openid);
+         //   ShareUtils.putString(getApplicationContext(), "zhanghao", openid);
             //保存用户名字
             ShareUtils.putString(getApplicationContext(), "username", username);
             //保存用户头像
             ShareUtils.putString(getApplicationContext(), "touxiangURL", userImg);
             //保存用户微信登录号上的金额
             ShareUtils.putString(getApplicationContext(),"wechatMoney",money);
-            //然后跳转到主界面
-//            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//            startActivity(intent);
-            finish();
+            //获取mobileID
+            String mobileID = wchatbean.getMobilephone();
+            //获取r_id
+            String r_id = wchatbean.getR_id();
+            if (mobileID.length() == 11) {
+                ShareUtils.putString(getApplicationContext(),"zhanghao",mobileID);
+                finish();
+            } else {
+                //然后跳转到手机验证界面
+                Intent intent = new Intent(LoginActivity.this, BangDingZhangHaoActivity.class);
+                intent.putExtra("r_id", r_id);
+                intent.putExtra("userImg",userImg);
+                startActivity(intent);
+            }
+//            finish();
         } else {
             promptDialog.showError("登录失败···");
         }
     }
 
 
-
+    /*
+    * 这里是普通账号登录返回的 接口 回调
+    * */
     @Override
     public void showLogin(String phone,String password ,LoginBean logindata) {
         zhanghao = phone;
         mima = password;
         if (logindata != null) {
             int status = logindata.getStatus();
+            L.e("普通账号返回接口 "+status);
+
             if (status == 1) {
                 promptDialog.dismiss();
                 //登录成功后保存账号密码
@@ -278,6 +290,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                Intent intent = new Intent(this,MainActivity.class);
 //                startActivity(intent);
                 finish();
+            } else if (status == 2) {
+                promptDialog.dismiss();
+                promptDialog.showError("密码错误");
             }
         }
     }

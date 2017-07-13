@@ -31,6 +31,7 @@
             <!--   //开发者申请的key-->
         </meta-data>
         <service android:name="com.amap.api.location.APSService"></service>
+
         <!--sharSDK 要用到的-->
         <activity
             android:name="com.mob.tools.MobUIShell"
@@ -144,6 +145,14 @@
                 <data android:scheme="line.1471474450"/>
             </intent-filter>
         </activity>
+        <!--用户协议-->
+        <activity android:name=".ui.UserXieYiActivity"/>
+        <!--这个是用户充值协议-->
+        <activity android:name=".ui.User_chongzhixieyiActivity"/>
+        <!-- 客户反馈-->
+        <activity android:name=".ui.KeHuFanKuiActivity"/>
+        <!--第三方登录 绑定 手机-->
+        <activity android:name=".ui.BangDingZhangHaoActivity"/>
 
     </application>
 
@@ -178,10 +187,10 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!--微信支付权限 这里因为上面已经有了 所以这里的权限 没有写-->
     <!--================================================================================-->
-
     <!--友盟分享-->
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-
+    <!--腾讯bugliy-->
+    <uses-permission android:name="android.permission.READ_LOGS" />
 
 
 </manifest>

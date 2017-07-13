@@ -22,14 +22,18 @@ public class UmbrellaPresenet {
         this.isUmbrellaViewl = isUmbrellaViewl;
         isUmbrellaStand  = new GetUmberllaModeImpl();
     }
-
-    public void fech(Activity activity,double longitude,double latitude) {
+    /*
+    * 雨伞分布系列·
+    * */
+    public void fech(Activity activity, double longitude, double latitude, final int types) {
         isUmbrellaStand.GetUmbrellaStand(new IsUmbrellaStandMode.OnGetUmbrellaLiseners() {
             @Override
             public void onComlete(List<GetumbrellaBean.DataBean> list) {
-                isUmbrellaViewl.showUmbrella(list);
+                isUmbrellaViewl.showUmbrella(list,types);
             }
         },activity,longitude,latitude);
+
+
     }
 
     public void binds(String mincdeID, final String phone,Activity activity) {

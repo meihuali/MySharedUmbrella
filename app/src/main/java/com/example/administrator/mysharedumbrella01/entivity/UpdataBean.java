@@ -7,57 +7,114 @@ package com.example.administrator.mysharedumbrella01.entivity;
 
 public class UpdataBean {
 
+
     /**
-     * versionName : 2.0
-     * versionCode : 4
-     * content : 修复多项bug
-     * url : http://kxy.sunyie.com/android/app-release.apk
-     * qiangzhi : 0
+     * status : 1
+     * data : {"id":"1","versionName":"1.0","versioncode":"1","content":"修复了什么事？、","url":"http://kxy.sunyie.com/api/sengji.php","qiangzhi":"0","c_time":"0","u_time":"0"}
      */
 
-    private String versionName;
-    private int versionCode;
-    private String content;
-    private String url;
-    private int qiangzhi;
+    private int status;
+    private DataBean data;
 
-    public String getVersionName() {
-        return versionName;
+    public int getStatus() {
+        return status;
     }
 
-    public void setVersionName(String versionName) {
-        this.versionName = versionName;
+    public void setStatus(int status) {
+        this.status = status;
     }
 
-    public int getVersionCode() {
-        return versionCode;
+    public DataBean getData() {
+        return data;
     }
 
-    public void setVersionCode(int versionCode) {
-        this.versionCode = versionCode;
+    public void setData(DataBean data) {
+        this.data = data;
     }
 
-    public String getContent() {
-        return content;
-    }
+    public static class DataBean {
+        /**
+         * id : 1
+         * versionName : 1.0
+         * versioncode : 1
+         * content : 修复了什么事？、
+         * url : http://kxy.sunyie.com/api/sengji.php
+         * qiangzhi : 0
+         * c_time : 0
+         * u_time : 0
+         */
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+        private String id;
+        private String versionName;
+        private String versioncode;
+        private String content;
+        private String url;
+        private String qiangzhi;
+        private String c_time;
+        private String u_time;
 
-    public String getUrl() {
-        return url;
-    }
+        public String getId() {
+            return id;
+        }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
+        public void setId(String id) {
+            this.id = id;
+        }
 
-    public int getQiangzhi() {
-        return qiangzhi;
-    }
+        public String getVersionName() {
+            return versionName;
+        }
 
-    public void setQiangzhi(int qiangzhi) {
-        this.qiangzhi = qiangzhi;
+        public void setVersionName(String versionName) {
+            this.versionName = versionName;
+        }
+
+        public String getVersioncode() {
+            return versioncode;
+        }
+
+        public void setVersioncode(String versioncode) {
+            this.versioncode = versioncode;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public String getQiangzhi() {
+            return qiangzhi;
+        }
+
+        public void setQiangzhi(String qiangzhi) {
+            this.qiangzhi = qiangzhi;
+        }
+
+        public String getC_time() {
+            return c_time;
+        }
+
+        public void setC_time(String c_time) {
+            this.c_time = c_time;
+        }
+
+        public String getU_time() {
+            return u_time;
+        }
+
+        public void setU_time(String u_time) {
+            this.u_time = u_time;
+        }
     }
 }

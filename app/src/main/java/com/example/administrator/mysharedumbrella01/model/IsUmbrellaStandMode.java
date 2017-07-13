@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.example.administrator.mysharedumbrella01.entivity.GetumbrellaBean;
 import com.example.administrator.mysharedumbrella01.entivity.SaoYiSaoBean;
+import com.example.administrator.mysharedumbrella01.entivity.SaoYiSaoErrorBean;
 
 import java.util.List;
 
@@ -15,17 +16,26 @@ import java.util.List;
 
 public interface IsUmbrellaStandMode {
     //获取雨伞接口
-    void GetUmbrellaStand(OnGetUmbrellaLiseners liseners,Activity activity,double longitude,double latitude );
+    void GetUmbrellaStand(OnGetUmbrellaLiseners liseners,Activity activity,double longitude,double latitude);
 
     //获取雨伞接口回调
-    public interface OnGetUmbrellaLiseners{
+     interface OnGetUmbrellaLiseners{
+
         void onComlete(List<GetumbrellaBean.DataBean> list);
     }
 
-    //扫描二维码接口
+    /*
+    * 扫描二维码接口
+    * */
     void SaoYiSao(OnSaoYiSaoListeners listeners,String mincdeID,String phone,Activity activity);
-    //扫一扫接口回调
+      /*
+      * 扫一扫接口回调
+      * */
      interface OnSaoYiSaoListeners{
+        //这个是 扫描成功 的回调
         void onComplete(SaoYiSaoBean syb ,String mincdeID);
+
+          //这个是扫描失败的回调
+//          void onCompleteErrer(SaoYiSaoErrorBean syberror);
     }
 }

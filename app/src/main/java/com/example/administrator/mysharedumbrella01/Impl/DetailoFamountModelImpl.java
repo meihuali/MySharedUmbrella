@@ -24,6 +24,8 @@ import okhttp3.Response;
 
 /**
  * Created by Administrator on 2017/6/12 0012.
+ *
+ *  金额明细
  */
 
 public class DetailoFamountModelImpl implements IsDetailoFamountModel {

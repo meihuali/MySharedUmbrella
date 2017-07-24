@@ -59,5 +59,9 @@ public class ConfigUtils {
     * 第三方登录绑定手机号码
     * */
     public static final String BANGDINGSHOUJIHAOMA = "Member/bindingmyphone.php";
+    /*
+    *  微信支付
+    * */
+    public static final String WECHATPAYZHIFU = "Weixin/pay.php";
 
 }

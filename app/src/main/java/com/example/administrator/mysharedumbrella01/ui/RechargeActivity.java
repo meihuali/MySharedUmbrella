@@ -14,12 +14,15 @@ import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
 import com.example.administrator.mysharedumbrella01.R;
-import com.example.administrator.mysharedumbrella01.entivity.ZhiFuBaoYaJinBean;
+import com.example.administrator.mysharedumbrella01.entivity.WeiXinDingDanJieGuoBean;
 import com.example.administrator.mysharedumbrella01.entivity.ZhifubaoBean;
 import com.example.administrator.mysharedumbrella01.peresenet.AlipayPerserent;
+import com.example.administrator.mysharedumbrella01.peresenet.WeChatZhiFuJinErPerserent;
 import com.example.administrator.mysharedumbrella01.utils.L;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
 import com.example.administrator.mysharedumbrella01.view.IsAliPayView;
+import com.example.administrator.mysharedumbrella01.view.IsWeChatPayJinErView;
+import com.example.administrator.mysharedumbrella01.wxapi.WxPayUtils;
 import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.Map;
@@ -29,7 +32,7 @@ import java.util.Map;
  *   充值界面
  */
 
-public class RechargeActivity extends AppCompatActivity implements View.OnClickListener, IsAliPayView {
+public class RechargeActivity extends AppCompatActivity implements View.OnClickListener, IsAliPayView, IsWeChatPayJinErView {
     private ImageView image_back;
     private ImageView image_weixin_gouxuan;
     private ImageView image_zhifubao_weigouxuan;
@@ -133,7 +136,7 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
                 btn_yibaiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
                 btn_wushiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
                 btn_ershiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
-                moneys = 10;
+                moneys = 0.01;
                 //充值内容主题
                 bodyZhuTi = "充值10元";
                 break;
@@ -156,7 +159,13 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
             * */
             case R.id.btn_Recharge:
                 if (types == 1) { //等于1 代表选择选择的是 微信支付 这里掉微信的支付接口 然后在把moneys 金额带过去
-                    Toast.makeText(getApplicationContext(), "微信支付暂未开通 " + moneys + " 元", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(getApplicationContext(), "微信支付暂未开通 " + moneys + " 元", Toast.LENGTH_SHORT).show();
+                    //微信请求订单接口
+                    //获取用户登录成功后的手机号码
+                    String phone =   ShareUtils.getString(getApplicationContext(),"zhanghao","");
+                    WeChatZhiFuJinErPerserent weixinzhifujiner = new WeChatZhiFuJinErPerserent(this);
+                    weixinzhifujiner.weixinjiner("2",moneys,"2",phone);
+
                 } else if (types == 2) { //等于2 代表选择选择的是 支付宝支付 这里掉微信的支付接口 然后在把moneys 金额带过去
                     String zh = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
                     AlipayPerserent ap = new AlipayPerserent(this);
@@ -168,7 +177,9 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
 
 
 
-    /*该方法是掉起支付宝 支付界面的 */
+    /*
+      *该方法是掉起支付宝 支付界面的
+    * **/
     private void AlipayZhifu() {
         final String orderInfo = dingdan;   // 订单信息
         Runnable payRunnable = new Runnable() {
@@ -234,6 +245,23 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
+    /*
+    *   微信支付 充值金额 的那个回调
+    * */
+    @Override
+    public void showWeChatPay(Object object) {
+        WeiXinDingDanJieGuoBean weixindingdanhao = (WeiXinDingDanJieGuoBean) object;
+        int time =  weixindingdanhao.getTime();
+        String sign = weixindingdanhao.getSign();
+        String appid =   weixindingdanhao.getAppid();
+        String mch_id =   weixindingdanhao.getMch_id();
+        String prepay = weixindingdanhao.getPrepay_id();
+        String noce_str =  weixindingdanhao.getNonce_str();
 
+        WxPayUtils payUtils = new WxPayUtils(this);
+        //将int 型时间 转成字符串
+        String times =  String.valueOf(time);
+        payUtils.pay_wechat(appid,mch_id,prepay,noce_str,times,"Sign=WXPay",sign);
 
+    }
 }

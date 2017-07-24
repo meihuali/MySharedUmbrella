@@ -19,6 +19,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -179,6 +180,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int typeHaisan = 1;
     private HaiYuSanTuIconPerserent haisanIcon;
     private String haisanURL;
+    private boolean FINISH;
 
 
     @Override
@@ -623,7 +625,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         pwgg.showPopupWindow();
 
                     } else {
-                        Toast.makeText(getApplicationContext(), "请登录", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "请登录", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(this, LoginActivity.class));
                         finish();
                     }
@@ -791,4 +793,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    //当点击回退键key时执行此方法
+    /**
+     * 退出程序提醒
+     */
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN
+                && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+
+            if (!FINISH) {
+               // Toast backToast = Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT);
+              //  backToast.show();
+                promptDialog.showError("再按一次退出程序");
+                FINISH = true;
+                new Timer().schedule(new TimerTask() {
+
+                    @Override
+                    public void run() {
+                        FINISH = false;
+
+                    }
+                }, 2000);
+            } else {
+                return super.dispatchKeyEvent(event);
+            }
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
+    }
 }

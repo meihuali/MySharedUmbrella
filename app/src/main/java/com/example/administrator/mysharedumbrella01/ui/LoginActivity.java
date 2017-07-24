@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //忘记密码
     private TextView tv_forget;
     private LinearLayout btn_weixinLogin;
-    public static PromptDialog promptDialog;
+    public  PromptDialog promptDialog;
     private SHARE_MEDIA share_media;
     private boolean isauth;
     private LinearLayout btn_login_QQ;

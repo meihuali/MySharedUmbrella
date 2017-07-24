@@ -145,7 +145,7 @@ public class KeHuFuWuActivity extends AppCompatActivity implements View.OnClickL
                 if (data != null) {
                     stringExtra = data.getStringExtra(Intents.Scan.RESULT);
                     Log.e("扫描结果 " ,""+stringExtra);
-                    Toast.makeText(getApplicationContext(),"扫描结果"+stringExtra,Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getApplicationContext(),"扫描结果"+stringExtra,Toast.LENGTH_SHORT).show();
                 }
             }
         }

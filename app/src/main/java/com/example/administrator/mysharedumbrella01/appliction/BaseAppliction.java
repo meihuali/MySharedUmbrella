@@ -24,8 +24,10 @@ import me.leefeng.promptlibrary.PromptDialog;
 public class BaseAppliction extends Application {
     //声明一个全局的变量
     public static BaseAppliction intstens;
-    public static PromptDialog promptDialog;
-    //声明一个 map集合用来管理activit
+    /*
+    * 首先在application 里面 声明一个静态 map集合用来管理activit
+    * */
+
     public static Map<String, Activity> destoryMap = new HashMap<String, Activity>();
     @Override
     public void onCreate() {
@@ -56,7 +58,7 @@ public class BaseAppliction extends Application {
 
 
     /**
-     * 添加到销毁队列
+     * 添加到销毁队列 （就是要销毁哪个activity 就在哪个activity的oncrteae 里面调用这个方法）
      *
      * @param activity 要销毁的activity
      */
@@ -65,7 +67,7 @@ public class BaseAppliction extends Application {
     }
 
     /**
-     * 销毁指定Activity
+     * 销毁指定Activity   你要在 A finish 的时候 同时销毁B 这个类·的时候·那就掉这个方法
      */
     public static void destoryActivity(String activityName) {
         Set<String> keySet = destoryMap.keySet();

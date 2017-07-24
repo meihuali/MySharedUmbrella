@@ -193,4 +193,5 @@
     <uses-permission android:name="android.permission.READ_LOGS" />
 
 
+
 </manifest>

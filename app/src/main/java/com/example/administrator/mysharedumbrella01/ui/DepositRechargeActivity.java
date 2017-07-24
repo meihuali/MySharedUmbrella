@@ -18,9 +18,11 @@ import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.entivity.ZhiFuBaoYaJinBean;
 import com.example.administrator.mysharedumbrella01.entivity.ZhifubaoBean;
 import com.example.administrator.mysharedumbrella01.peresenet.AliPayYaJinPersernet;
+import com.example.administrator.mysharedumbrella01.peresenet.WeChatYaJinPersernet;
 import com.example.administrator.mysharedumbrella01.utils.L;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
 import com.example.administrator.mysharedumbrella01.view.IsAliPayYaJinView;
+import com.example.administrator.mysharedumbrella01.view.IsWeChatYajinView;
 import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.Map;
@@ -32,7 +34,7 @@ import static com.example.administrator.mysharedumbrella01.ui.RechargeActivity.S
  * //充值押金的界面
  */
 
-public class DepositRechargeActivity extends AppCompatActivity implements View.OnClickListener, IsAliPayYaJinView {
+public class DepositRechargeActivity extends AppCompatActivity implements View.OnClickListener, IsAliPayYaJinView, IsWeChatYajinView {
     //返回箭头
     private ImageView img_back;
     private LinearLayout ll_llay_weixin;
@@ -45,6 +47,8 @@ public class DepositRechargeActivity extends AppCompatActivity implements View.O
     private double moneys = 20.00;
     private Button btn_chongzhiYaJin;
     private String dingdan;
+    private int type = 1; //默认为1 代表微信
+    private String zh;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,21 +92,30 @@ public class DepositRechargeActivity extends AppCompatActivity implements View.O
                 break;
             //点击支付宝勾选按钮
             case R.id.image_zhifubao_weigouxuan:
+                type = 2;
                 image_zhifubao_weigouxuan.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.dagou));
                 image_weixin_gouxuan.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.budagou));
                 moneys = 20.00; //暂时未了测试 写成 0.01
                 break;
             //点击微信勾选按钮
             case R.id.image_weixin_gouxuan:
+                type = 1;
                 image_weixin_gouxuan.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.dagou));
                 image_zhifubao_weigouxuan.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.budagou));
                 moneys = 20.00;
                 break;
             //充值押金 按钮
             case R.id.btn_chongzhiYaJin:
-                String zh = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
-                AliPayYaJinPersernet apyhp = new AliPayYaJinPersernet(this);
-                apyhp.fach("2",moneys+"",zh,"1");
+                //type 2 表示支付宝 1 表示微信支付
+                if (type == 2) {
+                    zh = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
+                    AliPayYaJinPersernet apyhp = new AliPayYaJinPersernet(this);
+                    apyhp.fach("2", moneys + "", zh, "1");
+                } else {
+                    WeChatYaJinPersernet weixinyajin = new WeChatYaJinPersernet(this);
+                    weixinyajin.wechatyajin("2",moneys,"1",zh);
+                }
+
                 break;
         }
     }
@@ -159,7 +172,7 @@ public class DepositRechargeActivity extends AppCompatActivity implements View.O
     };
 
 
-        /*充值押金 结果回调*/
+    /*充值押金 结果回调*/
     @Override
     public void showRestuelYaJin(ZhifubaoBean zhiFuBaoYaJinBean) {
         int status = zhiFuBaoYaJinBean.getStatus();
@@ -171,5 +184,12 @@ public class DepositRechargeActivity extends AppCompatActivity implements View.O
         } else {
             Toast.makeText(getApplicationContext(), "请求顶号服务器接口挂了···", Toast.LENGTH_SHORT).show();
         }
+    }
+    /*
+    *   这个回调是用户 用微信充值结果返回
+    * */
+    @Override
+    public void showWechatYajin(Object object) {
+
     }
 }

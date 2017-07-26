@@ -24,14 +24,20 @@ import com.example.administrator.mysharedumbrella01.Adapter.FanKuiAdapter;
 import com.example.administrator.mysharedumbrella01.Adapter.HistoricalAdapter;
 import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.entivity.FanKuiBean;
+import com.example.administrator.mysharedumbrella01.entivity.KeFuFanKuiBean;
+import com.example.administrator.mysharedumbrella01.peresenet.KefufankuiPerserent;
 import com.example.administrator.mysharedumbrella01.peresenet.ShangChuanTouXiangPersernet;
 import com.example.administrator.mysharedumbrella01.utils.L;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
+import com.example.administrator.mysharedumbrella01.view.IsKefufankuiView;
 import com.gyf.barlibrary.ImmersionBar;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
 import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RationaleListener;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -51,11 +57,11 @@ import me.leefeng.promptlibrary.PromptDialog;
  * 客户返回 的界面
  */
 
-public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClickListener {
+public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClickListener, IsKefufankuiView {
     private ImageView image_back;
     private RecyclerView mRecyclerView;
     private FanKuiAdapter fanKuiAdapter;
-    private List<FanKuiBean> mlist = new ArrayList<>();
+    private List<KeFuFanKuiBean.DataBean> mlist = new ArrayList<>();
     private ImageView img_cemacr;
     private PromptDialog promptDialog;
 
@@ -87,12 +93,9 @@ public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void initData() {
-        for (int i = 0; i < 6; i++) {
-            FanKuiBean fanKuiBean = new FanKuiBean();
-            fanKuiBean.setTypes("雨伞炸了");
-            mlist.add(fanKuiBean);
-        }
-        fanKuiAdapter.notifyDataSetChanged();
+        //这里请求客户反馈问题列表 的接口
+        KefufankuiPerserent wentiliebiao = new KefufankuiPerserent(this);
+        wentiliebiao.kehufankui();
     }
 
     private void initView() {
@@ -140,6 +143,7 @@ public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClic
                 break;
         }
     }
+
     private void openDialog() {
         //可创建android效果的底部Sheet选择，默认IOS效果，sheetCellPad=0为Android效果的Sheet
 //                promptDialog.getAlertDefaultBuilder().sheetCellPad(0).round(0);
@@ -166,6 +170,7 @@ public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClic
                 }),
                 new PromptButton("请选择上传头像的方式", null));
     }
+
     private void dongtaishouquan() {
         // 申请单个权限。
         AndPermission.with(this)
@@ -193,18 +198,17 @@ public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClic
         @Override
         public void onSucceed(int requestCode, @NonNull List<String> grantPermissions) {
             switch (requestCode) {
-                case REQUEST_CODE_PERMISSION_SD: {
-                    Toast.makeText(KeHuFanKuiActivity.this, R.string.message_calendar_succeed, Toast.LENGTH_SHORT).show();
-                    break;
-                }
-                case REQUEST_CODE_PERMISSION_OTHER: {
-                    Toast.makeText(KeHuFanKuiActivity.this, R.string.message_post_succeed, Toast.LENGTH_SHORT).show();
-                    break;
-                }
+//                case REQUEST_CODE_PERMISSION_SD: {
+//                    Toast.makeText(KeHuFanKuiActivity.this, R.string.message_calendar_succeed, Toast.LENGTH_SHORT).show();
+//                    break;
+//                }
+//                case REQUEST_CODE_PERMISSION_OTHER: {
+//                    Toast.makeText(KeHuFanKuiActivity.this, R.string.message_post_succeed, Toast.LENGTH_SHORT).show();
+//                    break;
+//                }
                 case REQUEST_CODE_PERMISSION_CAMER: {
                     Toast.makeText(KeHuFanKuiActivity.this, R.string.xiangjiqyuanxian, Toast.LENGTH_SHORT).show();
                     toCamera(); //打开相机
-
                     break;
                 }
             }
@@ -228,19 +232,7 @@ public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClic
                 // 第一种：用默认的提示语。
                 AndPermission.defaultSettingDialog(KeHuFanKuiActivity.this, REQUEST_CODE_SETTING).show();
 
-                // 第二种：用自定义的提示语。
-//             AndPermission.defaultSettingDialog(this, REQUEST_CODE_SETTING)
-//                     .setTitle("权限申请失败")
-//                     .setMessage("我们需要的一些权限被您拒绝或者系统发生错误申请失败，请您到设置页面手动授权，否则功能无法正常使用！")
-//                     .setPositiveButton("好，去设置")
-//                     .show();
 
-//            第三种：自定义dialog样式。
-//            SettingService settingService = AndPermission.defineSettingDialog(this, REQUEST_CODE_SETTING);
-//            你的dialog点击了确定调用：
-//            settingService.execute();
-//            你的dialog点击了取消调用：
-//            settingService.cancel();
             }
         }
     };
@@ -317,8 +309,8 @@ public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClic
         Bundle bundle = data.getExtras();
         if (bundle != null) {
             Bitmap bitmap = bundle.getParcelable("data");
-            File file =  saveBitmapFile(bitmap);
-            L.e("xiangce "+file);
+            File file = saveBitmapFile(bitmap);
+            L.e("xiangce " + file);
             //这里是请求网络上传到服务器了
 //            ShangChuanTouXiangPersernet sctxp = new ShangChuanTouXiangPersernet(KeHuFanKuiActivity.this);
 //            sctxp.fach(file,this);
@@ -327,12 +319,12 @@ public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClic
     }
 
     //Bitmap对象保存图片文件
-    public File saveBitmapFile(Bitmap bitmap){
-        String zh = ShareUtils.getString(getApplicationContext(),"zhanghao","");
+    public File saveBitmapFile(Bitmap bitmap) {
+        String zh = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
         try {
-            String path = getSDPath() +"/revoeye/";
+            String path = getSDPath() + "/revoeye/";
             File dirFile = new File(path);
-            if(!dirFile.exists()){
+            if (!dirFile.exists()) {
                 dirFile.mkdir();
             }
             myCaptureFile = new File(path + UUID.randomUUID());
@@ -349,13 +341,29 @@ public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClic
     /*
  * 获取sd卡的 路径
  * */
-    public static String getSDPath(){
+    public static String getSDPath() {
         File sdDir = null;
         boolean sdCardExist = Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED); //判断sd卡是否存在
-        if (sdCardExist)
-        {
+        if (sdCardExist) {
             sdDir = Environment.getExternalStorageDirectory();//获取跟目录
         }
         return sdDir.toString();
+    }
+
+
+    /*
+    * 这个就是客服 问题 列表的 那个接口回调
+    * */
+    @Override
+    public void showRelout(Object object) {
+        KeFuFanKuiBean keFuFanKuiBean = (KeFuFanKuiBean) object;
+        int status = keFuFanKuiBean.getStatus();
+        if (status == 1) {
+           List<KeFuFanKuiBean.DataBean> list =  keFuFanKuiBean.getData();
+            mlist.addAll(list);
+            fanKuiAdapter.notifyDataSetChanged();
+        } else {
+            Toast.makeText(getApplicationContext(),"服务器故障",Toast.LENGTH_SHORT).show();
+        }
     }
 }

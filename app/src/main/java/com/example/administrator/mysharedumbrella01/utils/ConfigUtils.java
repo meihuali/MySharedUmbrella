@@ -11,7 +11,7 @@ public class ConfigUtils {
     // =============获取雨伞分布图=================================
     public static final String FENBUTU_HOUZHUI = "Share/umbrellaindex.php";
     /*===================扫描二维码 获取雨伞借伞=======================================================*/
-    public static final String SAOMIAOERWEIMA_HOUZHUI = "Share/openumbrella.php";
+    public static final String SAOMIAOERWEIMA_HOUZHUI = "Unlock/openumbrella.php";
     /*===================历史记录=================================================================*/
     public static final String HUOQULISHILI = "Share/umbrellahistory.php";
     /*===================登录接口 后缀==========================================================*/
@@ -63,5 +63,10 @@ public class ConfigUtils {
     *  微信支付
     * */
     public static final String WECHATPAYZHIFU = "Weixin/pay.php";
+
+    /*
+    * 客服反馈问题 接口
+    * */
+    public static final String KEFUFANKUI = "Feedback/getproblem.php";
 
 }

@@ -164,6 +164,7 @@ public class PopupWindowGuanGao extends BasePopupWindow implements View.OnClickL
 
 
     public void stopUpdata(int status) {
+        L.e("status状态 "+status);
         round_flikerbar.finishLoad(status);
     }
 }

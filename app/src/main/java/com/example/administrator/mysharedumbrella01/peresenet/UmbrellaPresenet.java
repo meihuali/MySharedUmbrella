@@ -40,9 +40,11 @@ public class UmbrellaPresenet {
         if (isUmbrellaStand != null) {
             isUmbrellaStand.SaoYiSao(new IsUmbrellaStandMode.OnSaoYiSaoListeners() {
                 @Override
-                public void onComplete(SaoYiSaoBean syb,String mincdeID) {
+                public void onComplete(Object syb, String mincdeID) {
                     isUmbrellaViewl.showSaoYiSao(syb,mincdeID,phone);
                 }
+
+
             },mincdeID,phone,activity);
         }
     }

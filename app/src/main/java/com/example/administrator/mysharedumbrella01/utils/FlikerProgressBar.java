@@ -293,9 +293,9 @@ public class FlikerProgressBar extends View implements Runnable{
     }
 
     public void finishLoad(int status) {
-        isFinish = true;
-        setStop(true);
+        isFinish = true;setStop(true);
         st = status;
+        L.e("测试开锁进度状态 "+st);
     }
 
     public void toggle(){
@@ -319,7 +319,7 @@ public class FlikerProgressBar extends View implements Runnable{
                     flickerLeft = -width;
                 }
                 postInvalidate();
-                Thread.sleep(1000);
+                Thread.sleep(500);
             }
         }catch (InterruptedException e) {
             e.printStackTrace();

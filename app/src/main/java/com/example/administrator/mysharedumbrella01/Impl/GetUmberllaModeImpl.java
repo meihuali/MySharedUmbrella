@@ -89,22 +89,9 @@ public class GetUmberllaModeImpl implements IsUmbrellaStandMode {
                     public void onSuccess(String s, Call call, Response response) {
                         L.e("saoyisao1  扫一扫"+s);
                         try {
-                            JSONObject object = new JSONObject(s);
-                            int status = object.optInt("status");
-                            if (status == 1) {
-                                Gson gson = new Gson();
-                                SaoYiSaoBean syb = gson.fromJson(s, SaoYiSaoBean.class);
-                                listeners.onComplete(syb, ph);
-                            } else if (status == 4) {
-                                /*
-                                *  这里暂时不做处理·
-                                *    老板说要改接口 所以 activity  暂时·没有接受回调·
-                                * */
-//                                promptDialog.showError("金额或者押金不足");
-//                                Gson gson = new Gson();
-//                                SaoYiSaoErrorBean syb = gson.fromJson(s, SaoYiSaoErrorBean.class);
-//                                listeners.onCompleteErrer(syb);
-                            }
+                            Gson gson = new Gson();
+                            SaoYiSaoBean saoyisao =  gson.fromJson(s, SaoYiSaoBean.class);
+                            listeners.onComplete(saoyisao,shebeihao);
                         } catch (Exception e) {
                         }
 

@@ -6,9 +6,10 @@ package com.example.administrator.mysharedumbrella01.entivity;
 
 public class SaoYiSaoBean {
 
+
     /**
      * status : 1
-     * data : The unlock succeeded !!
+     * data : 220205014112222102
      */
 
     private int status;

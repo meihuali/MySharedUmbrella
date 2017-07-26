@@ -23,7 +23,10 @@ import com.example.administrator.mysharedumbrella01.utils.L;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
 import com.example.administrator.mysharedumbrella01.view.IsAliPayYaJinView;
 import com.example.administrator.mysharedumbrella01.view.IsWeChatYajinView;
+import com.example.administrator.mysharedumbrella01.wxapi.WxPayUtils;
 import com.gyf.barlibrary.ImmersionBar;
+
+import org.json.JSONObject;
 
 import java.util.Map;
 
@@ -110,8 +113,9 @@ public class DepositRechargeActivity extends AppCompatActivity implements View.O
                 if (type == 2) {
                     zh = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
                     AliPayYaJinPersernet apyhp = new AliPayYaJinPersernet(this);
-                    apyhp.fach("2", moneys + "", zh, "1");
+                   apyhp.fach("2", moneys + "", zh, "1");
                 } else {
+                    zh = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
                     WeChatYaJinPersernet weixinyajin = new WeChatYaJinPersernet(this);
                     weixinyajin.wechatyajin("2",moneys,"1",zh);
                 }
@@ -186,10 +190,31 @@ public class DepositRechargeActivity extends AppCompatActivity implements View.O
         }
     }
     /*
-    *   这个回调是用户 用微信充值结果返回
+    *   微信充值押金 结果返回
     * */
     @Override
     public void showWechatYajin(Object object) {
-
+        JSONObject obj = (JSONObject) object;
+        //获取appid
+        String appid = obj.optString("appid");
+        //获取mch_id
+        String mch_id = obj.optString("mch_id");
+        String nonce_str = obj.optString("nonce_str");
+        String prepay_id = obj.optString("prepay_id");
+        //这个参数没卵用
+        String result_code = obj.optString("result_code");
+        //这个参数没卵用
+        String return_code = obj.optString("return_code");
+        //这个参数没卵用
+        String return_msg = obj.optString("return_msg");
+        String sign = obj.optString("sign");
+        //这个参数没卵用
+        String trade_type = obj.optString("trade_type");
+        String time = obj.optString("time");
+        //将int 型时间 转成字符串
+        String times =  String.valueOf(time);
+        //在这里掉起微信支付界面
+        WxPayUtils wxPayUtils = new WxPayUtils(this);
+        wxPayUtils.pay_wechat(appid,mch_id,prepay_id,nonce_str,times,"Sign=WXPay",sign);
     }
 }

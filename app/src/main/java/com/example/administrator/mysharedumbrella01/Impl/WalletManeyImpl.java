@@ -46,6 +46,12 @@ public class WalletManeyImpl implements IsWalletManeyModel {
                         }
 
                     }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        L.e("钱包请求接口挂了· "+e.getMessage());
+                    }
                 });
     }
 }

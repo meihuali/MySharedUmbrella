@@ -153,6 +153,8 @@
         <activity android:name=".ui.KeHuFanKuiActivity"/>
         <!--第三方登录 绑定 手机-->
         <activity android:name=".ui.BangDingZhangHaoActivity"/>
+        <!--充值押金协议-->
+        <activity android:name=".ui.User_chongzhiyajinxieyiActivity"/>
 
     </application>
 
@@ -191,6 +193,7 @@
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <!--腾讯bugliy-->
     <uses-permission android:name="android.permission.READ_LOGS" />
+
 
 
 

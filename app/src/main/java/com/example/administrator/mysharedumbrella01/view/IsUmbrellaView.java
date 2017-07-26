@@ -15,6 +15,6 @@ public interface IsUmbrellaView {
     void showUmbrella(List<GetumbrellaBean.DataBean> list, int types);
 
     //扫一扫
-    void showSaoYiSao(SaoYiSaoBean syb,String mincdeID,String phone);
+    void showSaoYiSao(Object syb,String mincdeID,String phone);
 }
 

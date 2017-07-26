@@ -223,6 +223,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
              userImg = wchatbean.getPhoto();
             //用户微信登录后 的金额
             String money = wchatbean.getMoney();
+            //获取用户登录的openid
+            String phones = wchatbean.getPhone();
             //授权成功保存openID 这里跟真实手机号码一样保存同一个key
          //   ShareUtils.putString(getApplicationContext(), "zhanghao", openid);
             //保存用户名字
@@ -236,7 +238,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             //获取r_id
             String r_id = wchatbean.getR_id();
             if (mobileID.length() == 11) {
-                ShareUtils.putString(getApplicationContext(),"zhanghao",mobileID);
+                ShareUtils.putString(getApplicationContext(),"zhanghao",phones);
                 finish();
             } else {
                 //然后跳转到手机验证界面

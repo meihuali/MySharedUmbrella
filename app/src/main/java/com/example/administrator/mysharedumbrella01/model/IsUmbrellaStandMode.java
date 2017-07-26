@@ -33,7 +33,7 @@ public interface IsUmbrellaStandMode {
       * */
      interface OnSaoYiSaoListeners{
         //这个是 扫描成功 的回调
-        void onComplete(SaoYiSaoBean syb ,String mincdeID);
+        void onComplete(Object syb ,String mincdeID);
 
           //这个是扫描失败的回调
 //          void onCompleteErrer(SaoYiSaoErrorBean syberror);

@@ -32,6 +32,8 @@ public class settingsssssActivity extends AppCompatActivity implements View.OnCl
     private RelativeLayout rl_guanyuwomen;
     private RelativeLayout rll_user_xieyi;
     private RelativeLayout rll_user_chongzhixieyi;
+    private RelativeLayout rl_layout_settings;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +59,8 @@ public class settingsssssActivity extends AppCompatActivity implements View.OnCl
         rll_user_xieyi.setOnClickListener(this);
         rll_user_chongzhixieyi = (RelativeLayout) findViewById(R.id.rll_user_chongzhixieyi);
         rll_user_chongzhixieyi.setOnClickListener(this);
+        rl_layout_settings = (RelativeLayout) findViewById(R.id.rl_layout_settings);
+        rl_layout_settings.setOnClickListener(this);
     }
 
     @Override
@@ -86,6 +90,9 @@ public class settingsssssActivity extends AppCompatActivity implements View.OnCl
                 break;
             case R.id.rll_user_chongzhixieyi:
                 startActivity(new Intent(getApplicationContext(),User_chongzhixieyiActivity.class));
+                break;
+            case R.id.rl_layout_settings:
+                startActivity(new Intent(getApplicationContext(),User_chongzhiyajinxieyiActivity.class));
                 break;
         }
 

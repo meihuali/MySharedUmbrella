@@ -6,6 +6,9 @@ import com.example.administrator.mysharedumbrella01.utils.L;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -16,7 +19,7 @@ import okhttp3.Response;
 
 public class WeChatYajinModelImpl implements IsWeChatYaJinModel {
     @Override
-    public void wechatYajin(OnWechatYajinLinerest linerest, String goods, double total_fee, String apptype, String member_id) {
+    public void wechatYajin(final OnWechatYajinLinerest linerest, String goods, double total_fee, String apptype, String member_id) {
         String url = ConfigUtils.ZHU_YU_MING+ConfigUtils.WECHATPAYZHIFU;
         OkGo.post(url)
                 .params("goods",goods)
@@ -27,7 +30,13 @@ public class WeChatYajinModelImpl implements IsWeChatYaJinModel {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         L.e("微信充值押金结果 "+s);
+                        try {
+                            JSONObject obj = new JSONObject(s);
+                            linerest.onComplet(obj);
 
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
     }

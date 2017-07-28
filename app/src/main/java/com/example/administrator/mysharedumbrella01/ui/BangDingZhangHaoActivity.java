@@ -20,6 +20,7 @@ import com.example.administrator.mysharedumbrella01.peresenet.BangDingZhangHaoPe
 import com.example.administrator.mysharedumbrella01.peresenet.WechatPerenest;
 import com.example.administrator.mysharedumbrella01.utils.EditTextWithDelete;
 import com.example.administrator.mysharedumbrella01.utils.GlideUtils;
+import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
 import com.example.administrator.mysharedumbrella01.view.IsBangdingZhangHaoView;
 import com.example.administrator.mysharedumbrella01.view.IsWechatLoginView;
 import com.gyf.barlibrary.ImmersionBar;
@@ -44,12 +45,13 @@ public class BangDingZhangHaoActivity extends AppCompatActivity implements View.
     private Button btn_register;
     private String r_id;
     private PromptDialog pd;
+    private String zhanghao;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bangdingzhanghao);
-         pd = new PromptDialog(this);
+        pd = new PromptDialog(this);
         //沉浸式
         ImmersionBar.with(this)
                 .statusBarColor(R.color.zhutiyanse) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
@@ -65,8 +67,9 @@ public class BangDingZhangHaoActivity extends AppCompatActivity implements View.
         Intent intent =  getIntent();
         String str = intent.getStringExtra("str");
         String profile_image_url = intent.getStringExtra("userImg");
+        zhanghao = intent.getStringExtra("zhanghao");
 //        String openID = intent.getStringExtra("openID");
-         r_id = intent.getStringExtra("r_id");
+        r_id = intent.getStringExtra("r_id");
         //设置 头像
         GlideUtils.loadImageView(getApplicationContext(),profile_image_url,image_yuanxing);
         //设置用户名字
@@ -134,11 +137,13 @@ public class BangDingZhangHaoActivity extends AppCompatActivity implements View.
     * */
     @Override
     public void showReuslt(Object object) {
-       BangDingStatusBean bangdingzhuangtai = (BangDingStatusBean) object;
-       int status =  bangdingzhuangtai.getStatus();
+        BangDingStatusBean bangdingzhuangtai = (BangDingStatusBean) object;
+        int status =  bangdingzhuangtai.getStatus();
         if (status == 1) {
             pd.showSuccess("绑定成功");
             BaseAppliction.destoryActivity("SettingsYusanActivity");
+            BaseAppliction.destoryActivity("LoginActivity");
+            ShareUtils.putString(getApplicationContext(),"zhanghao",zhanghao);
             finish();
         } else {
             pd.showError("绑定失败");

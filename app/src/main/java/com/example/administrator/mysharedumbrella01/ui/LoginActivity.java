@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.dyhdyh.widget.loading.dialog.LoadingDialog;
 import com.example.administrator.mysharedumbrella01.R;
+import com.example.administrator.mysharedumbrella01.appliction.BaseAppliction;
 import com.example.administrator.mysharedumbrella01.dialog.CustomDialogFactory;
 import com.example.administrator.mysharedumbrella01.entivity.LoginBean;
 import com.example.administrator.mysharedumbrella01.entivity.WechatLoginBean;
@@ -71,6 +72,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_login);
+        BaseAppliction.addDestoryActivity(this,"LoginActivity");
         //初始化下dialog
         promptDialog = new PromptDialog(this);
         //沉浸式
@@ -245,6 +247,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Intent intent = new Intent(LoginActivity.this, BangDingZhangHaoActivity.class);
                 intent.putExtra("r_id", r_id);
                 intent.putExtra("userImg",userImg);
+                //特殊处理
+                intent.putExtra("zhanghao",phones);
                 startActivity(intent);
             }
 //            finish();

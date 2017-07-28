@@ -69,4 +69,9 @@ public class ConfigUtils {
     * */
     public static final String KEFUFANKUI = "Feedback/getproblem.php";
 
+    /*
+    * 退款 接口
+    * */
+    public static final String TUIKUANJIEKOU = "Alipaynew/refound.php";
+
 }

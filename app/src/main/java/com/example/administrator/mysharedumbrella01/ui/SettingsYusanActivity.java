@@ -201,8 +201,6 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
     /*启动扫描二维码*/
     private void initViewes() {
         //打开扫描界面扫描条形码或二维码
-
-
         if (ContextCompat.checkSelfPermission(SettingsYusanActivity.this,
                 Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {

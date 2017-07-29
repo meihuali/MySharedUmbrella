@@ -22,7 +22,7 @@ public class HaiYuSanTuIconModelImpl implements IsHaiYuSanTuIconModle {
     public void getYushanIcon(final IsYuSanTuIconModel.OnYuShanIconLinsetern linsetern, String numberss) {
         String url = ConfigUtils.ZHU_YU_MING+ConfigUtils.HUOQUYUSHANTUBIAO;
         OkGo.post(url)
-                .params("imgid",numberss)
+                .params("img_cid",numberss)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
@@ -38,4 +38,7 @@ public class HaiYuSanTuIconModelImpl implements IsHaiYuSanTuIconModle {
                     }
                 });
     }
+
+
+
 }

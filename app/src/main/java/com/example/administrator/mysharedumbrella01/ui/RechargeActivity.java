@@ -29,7 +29,7 @@ import java.util.Map;
 
 /**
  * Created by Administrator on 2017/6/9 0009.
- *   充值界面
+ *   充值余额界面
  */
 
 public class RechargeActivity extends AppCompatActivity implements View.OnClickListener, IsAliPayView, IsWeChatPayJinErView {
@@ -136,7 +136,7 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
                 btn_yibaiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
                 btn_wushiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
                 btn_ershiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
-                moneys = 0.01;
+                moneys = 10;
                 //充值内容主题
                 bodyZhuTi = "充值10元";
                 break;

@@ -55,6 +55,8 @@ import com.example.administrator.mysharedumbrella01.peresenet.UmbrellaPresenet;
 import com.example.administrator.mysharedumbrella01.peresenet.UpdataAppPerserent;
 import com.example.administrator.mysharedumbrella01.peresenet.YuSanTuIconPerserent;
 import com.example.administrator.mysharedumbrella01.utils.BitmapToRound_Util;
+import com.example.administrator.mysharedumbrella01.utils.ConfigUtils;
+import com.example.administrator.mysharedumbrella01.utils.GlideUtils;
 import com.example.administrator.mysharedumbrella01.utils.L;
 import com.example.administrator.mysharedumbrella01.dialog.MyPopuopWindowsRigth;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
@@ -501,18 +503,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     aMap.clear();
                     //点击还伞再次设置一下·用户当前位子的覆盖物
                     myMarker = aMap.addMarker(new MarkerOptions().position(myLatLng).anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.fromResource(R.drawable.location_mark)));
+                   //然后再次启动定位一下
+                    startLocation();
                     //借伞再次请求网络查询 分布的雨伞架子还有多少雨伞
                     //给types 赋值为 1 表示· 雨伞的图标
                     types = 1;
                     up.fech(MainActivity.this, laitudes, longitudes, types);
                     //点击借伞后请求网络 图标
 //                   tyip.fach("10");
+
                 } else {
                     a = 1;
                     aMap.clear();
                     //点击还伞再次设置一下·用户当前位子的覆盖物
                     myMarker = aMap.addMarker(new MarkerOptions().position(myLatLng).anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.fromResource(R.drawable.location_mark)));
-
+                    //然后再次启动定位一下
+                    startLocation();
                     //借伞再次请求网络查询 分布的雨伞架子还有多少雨伞
                     //然后把types赋值为2  表示·还伞的字段·用来区分mark 图标
                     types = 2;
@@ -609,15 +615,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                         //在这加个图片处理的方法
-                        Bitmap bit = ShareUtils.compressScale(resource,80f,80f);
+//                        Bitmap bit = ShareUtils.compressScale(resource,80f,80f);
                         // 这里将bitmap对象图片绘制成圆形
-                        BitmapToRound_Util round_Util = new BitmapToRound_Util();
-                        bitmaps = round_Util.toRoundBitmap(bit);
+//                        BitmapToRound_Util round_Util = new BitmapToRound_Util();
+//                        bitmaps = round_Util.toRoundBitmap(bit);
 
                         //绘制覆盖物
                         aMap.addMarker(new MarkerOptions().position(latLng).title("雨伞个数：").snippet(umbrellanubers)
                                 .anchor(0.5f, 0.5f)
-                                .icon(BitmapDescriptorFactory.fromBitmap(bitmaps)));
+                                .icon(BitmapDescriptorFactory.fromBitmap(resource)));
                     }
                 });
 
@@ -627,7 +633,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void addMarkerss(final LatLng latLng, final String vacancynumber) {
         //之类是还伞 获取到的 图标 路径
         String haisanURLS = ShareUtils.getString(getApplicationContext(), "haisantubiao", "");
-
         Glide.with(MainActivity.this)
                 .load(haisanURLS)
                 // 加载网络中的静态图片
@@ -636,14 +641,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                         //在这加个图片处理的方法
-                        Bitmap bit = ShareUtils.compressScale(resource,80f,80f);
+//                        Bitmap bit = ShareUtils.compressScale(resource,80f,80f);
                         // 这里将bitmap对象图片绘制成圆形
-                        BitmapToRound_Util round_Util = new BitmapToRound_Util();
-                        bitmaps = round_Util.toRoundBitmap(bit);
+//                        BitmapToRound_Util round_Util = new BitmapToRound_Util();
+//                        bitmaps = round_Util.toRoundBitmap(bit);
                         //绘制覆盖物
                         aMap.addMarker(new MarkerOptions().position(latLng).title("空位个数：").snippet(umbrellanubers)
                                 .anchor(0.5f, 0.5f)
-                                .icon(BitmapDescriptorFactory.fromBitmap(bit)));
+                                .icon(BitmapDescriptorFactory.fromBitmap(resource)));
                     }
                 });
     }
@@ -803,7 +808,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int status = ysib.getStatus();
         if (status == 1) {
             yusanIconUrl = ysib.getData();
-            ShareUtils.putString(getApplicationContext(), "jiesantubiao", yusanIconUrl);
+            String jiesanurl  = ConfigUtils.YUSANTUBIAO+yusanIconUrl;
+            ShareUtils.putString(getApplicationContext(), "jiesantubiao", jiesanurl);
             L.e("借伞图标ICON " + yusanIconUrl);
         } else {
             promptDialog.showError("获取雨伞图标失败");
@@ -819,7 +825,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int status = haisanIcon.getStatus();
         if (status == 1) {
             haisanURL = haisanIcon.getData();
-            ShareUtils.putString(getApplicationContext(), "haisantubiao", haisanURL);
+            String haisanurl = ConfigUtils.YUSANTUBIAO+haisanURL;
+            ShareUtils.putString(getApplicationContext(), "haisantubiao",  haisanurl);
             L.e("还伞图标ICON " + haisanURL);
         }
     }
@@ -828,10 +835,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void HttpQuestIcon() {
         //这里定位成功后首先获取·借伞 界面的雨伞图标
         tyip = new YuSanTuIconPerserent(MainActivity.this);
-        tyip.fach("10");
+        tyip.fach("2");
         //这里定位成功后 获取 还伞 界面的图标
         haisanIcon = new HaiYuSanTuIconPerserent(MainActivity.this);
-        haisanIcon.haisanIcon("11");
+        haisanIcon.haisanIcon("1");
     }
 
 
@@ -861,7 +868,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
     }
-
+    
     @Override
     protected void onDestroy() {
         super.onDestroy();

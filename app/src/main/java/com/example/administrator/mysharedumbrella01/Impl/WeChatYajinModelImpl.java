@@ -38,6 +38,12 @@ public class WeChatYajinModelImpl implements IsWeChatYaJinModel {
                             e.printStackTrace();
                         }
                     }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        L.e("微信充值押金结果失败 "+e.getMessage());
+                    }
                 });
     }
 }

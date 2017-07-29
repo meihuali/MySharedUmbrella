@@ -3,6 +3,8 @@ package com.example.administrator.mysharedumbrella01.appliction;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.os.Build;
+import android.os.StrictMode;
 
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.socialize.Config;
@@ -32,6 +34,12 @@ public class BaseAppliction extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        //安卓 7.0 以上 拍照启动相机需要
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
+        }
+
         intstens = this;
         // 下面这一句 是 腾讯bugliy
         CrashReport.initCrashReport(getApplicationContext(), "4bac73bec2", false);

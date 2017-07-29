@@ -54,7 +54,8 @@ public class ConfigUtils {
     /*
     * 获取雨伞图标的 接口
     * */
-    public static final String HUOQUYUSHANTUBIAO = "Feedback/check_adimg.php";
+   // public static final String HUOQUYUSHANTUBIAO = "Feedback/check_adimg.php";
+    public static final String HUOQUYUSHANTUBIAO = "Update/geticon.php";
     /*
     * 第三方登录绑定手机号码
     * */
@@ -73,5 +74,9 @@ public class ConfigUtils {
     * 退款 接口
     * */
     public static final String TUIKUANJIEKOU = "Alipaynew/refound.php";
+    /*
+    * 雨伞图标 还伞图标
+    * */
+    public static final String YUSANTUBIAO = "http://u.sunyie.com/public/uploads/";
 
 }

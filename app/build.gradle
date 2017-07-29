@@ -1,18 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
-
     signingConfigs {
+        config {
+        }
         myconfig {
             keyAlias 'key0'
             keyPassword 'xiaoxin520'
             storeFile file('C:/gongxiangyushanJSK/Keys.jks')
             storePassword 'xiaoxin520'
         }
-        config {
-        }
     }
-
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
     aaptOptions {
@@ -35,7 +33,7 @@ android {
     buildTypes {
         debug {
             //混肴
-            minifyEnabled true
+            minifyEnabled false
             //混淆规则配置文件
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.myconfig
@@ -50,19 +48,8 @@ android {
             zipAlignEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        mybuildType {
-            debuggable false
-            jniDebuggable false
-            signingConfig signingConfigs.myconfig
-            renderscriptDebuggable false
-            minifyEnabled false
-            zipAlignEnabled true
-        }
+
     }
-
-
-
-
     //添加本地仓库
     repositories {
         flatDir {

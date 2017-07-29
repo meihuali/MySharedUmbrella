@@ -117,7 +117,7 @@ public class DepositRechargeActivity extends AppCompatActivity implements View.O
                 } else {
                     zh = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
                     WeChatYaJinPersernet weixinyajin = new WeChatYaJinPersernet(this);
-                    weixinyajin.wechatyajin("2",moneys,"1",zh);
+                    weixinyajin.wechatyajin("2",0.01,"2",zh);
                 }
 
                 break;

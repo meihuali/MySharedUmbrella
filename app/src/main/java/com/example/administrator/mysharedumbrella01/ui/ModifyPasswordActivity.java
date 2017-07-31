@@ -14,10 +14,10 @@ import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.entivity.ModifyPasswordBean;
 import com.example.administrator.mysharedumbrella01.peresenet.ModifyPasswordPerserent;
 import com.example.administrator.mysharedumbrella01.utils.EditTextWithDelete;
+import com.example.administrator.mysharedumbrella01.utils.MyToast;
+import com.example.administrator.mysharedumbrella01.utils.RegularUtil;
 import com.example.administrator.mysharedumbrella01.view.IsModifyPasswordView;
 import com.gyf.barlibrary.ImmersionBar;
-
-import java.util.List;
 
 import cn.smssdk.SMSSDK;
 
@@ -73,12 +73,21 @@ public class ModifyPasswordActivity extends AppCompatActivity implements View.On
                 String smsYZM = zym_sznew.getText().toString().trim();
                 String newPassWord = new_serpass.getText().toString().trim();
 
-                if (!TextUtils.isEmpty(phones) && !TextUtils.isEmpty(smsYZM) && !TextUtils.isEmpty(newPassWord)) {
-                    //这里掉中间者的类
-                    ModifyPasswordPerserent mpp = new ModifyPasswordPerserent(this);
-                    mpp.fach(phones,newPassWord,smsYZM);
+                if (RegularUtil.isMobile(phones)) {
+                    //判断验证码
+                    if (RegularUtil.isPhoneValidateCode(smsYZM)) {
+                        if (RegularUtil.isPassword(newPassWord)) {
+                            //修改密码的中间者
+                            ModifyPasswordPerserent mpp = new ModifyPasswordPerserent(this);
+                            mpp.fach(phones,newPassWord,smsYZM);
+                        } else {
+                            MyToast.toast(getApplicationContext(),"密码必须6到20位");
+                        }
+                    } else {
+                        MyToast.toast(getApplicationContext(),"请输入4位数验证码");
+                    }
                 } else {
-                    Toast.makeText(getApplicationContext(),"资料填写不对···",Toast.LENGTH_SHORT).show();
+                    MyToast.toast(getApplicationContext(),"请输入11位手机号码");
                 }
                 break;
             case R.id.hqmm:

@@ -30,6 +30,8 @@ import com.example.administrator.mysharedumbrella01.utils.ConfigUtils;
 import com.example.administrator.mysharedumbrella01.utils.EditTextWithDelete;
 import com.example.administrator.mysharedumbrella01.utils.L;
 import com.example.administrator.mysharedumbrella01.utils.MD5Util;
+import com.example.administrator.mysharedumbrella01.utils.MyToast;
+import com.example.administrator.mysharedumbrella01.utils.RegularUtil;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
 import com.example.administrator.mysharedumbrella01.view.IsLoginView;
 import com.example.administrator.mysharedumbrella01.view.IsWechatLoginView;
@@ -129,7 +131,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.btn_login:
                 final String phone = edit_phone.getText().toString().trim();
                 final String pwd = edit_pwd.getText().toString().trim();
-                if (!TextUtils.isEmpty(phone) && !TextUtils.isEmpty(pwd)) {
+                if (RegularUtil.isMobile(phone)) {
+                    if (RegularUtil.isPassword(pwd)) {
+                        promptDialog.showLoading("正在登录中···");
+//                    promptDialog.showLoading("正在登录中");
+                        //用MD5 加密工具 加密
+                        String pwdone = MD5Util.getStringMD5(pwd);
+                        String pwdtwo = MD5Util.getStringMD5(pwdone);
+                        lp.fach(phone, pwdtwo,this);
+                    } else {
+                        MyToast.toast(getApplicationContext(),"请输入6到20位密码");
+                    }
+                } else {
+                    MyToast.toast(getApplicationContext(),"请输入正确的手机号码");
+                }
+        /*        if (!TextUtils.isEmpty(phone) && !TextUtils.isEmpty(pwd)) {
                     promptDialog.showLoading("正在登录中···");
 //                    promptDialog.showLoading("正在登录中");
                     //用MD5 加密工具 加密
@@ -139,7 +155,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 } else {
                     promptDialog.showError("账号密码不能为空");
                     //Toast.makeText(getApplicationContext(),"账号或者密码不能为空",Toast.LENGTH_SHORT).show();
-                }
+                }*/
                 break;
             //点击注册
             case R.id.txt_register:

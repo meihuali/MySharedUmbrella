@@ -16,6 +16,9 @@ import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.entivity.RegisterBean;
 import com.example.administrator.mysharedumbrella01.peresenet.RegisterPrestenet;
 import com.example.administrator.mysharedumbrella01.utils.EditTextWithDelete;
+import com.example.administrator.mysharedumbrella01.utils.MyToast;
+import com.example.administrator.mysharedumbrella01.utils.NetWorkUtils;
+import com.example.administrator.mysharedumbrella01.utils.RegularUtil;
 import com.example.administrator.mysharedumbrella01.view.IsRegisterView;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -110,18 +113,57 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 String ed_pwd = edit_pwd.getText().toString().trim();
                 String ed_verifycode = edit_verifycode.getText().toString().trim();
                 String ed_name = ed_names.getText().toString().trim();
+                if (RegularUtil.isMobile(ed_phone)) {
+                    if (RegularUtil.isPassword(ed_pwd)) {
+                        if (RegularUtil.isPhoneValidateCode(ed_verifycode)) {
+                            if (RegularUtil.isUserNick(ed_name)) {
 
-
-
-                if (!TextUtils.isEmpty(ed_phone) & !TextUtils.isEmpty(ed_pwd) &
-                        !TextUtils.isEmpty(ed_verifycode) & !TextUtils.isEmpty(ed_name)) {
-                    init(); //跟sharSDK 服务器校验 短信验证码
-                    RegisterPrestenet rp = new RegisterPrestenet(this);
-                    rp.fact(ed_phone,ed_pwd,ed_name,ed_verifycode);
+                            } else {
+                                MyToast.toast(getApplicationContext(),"昵称请用中文或者ABC字母");
+                            }
+                        } else {
+                            MyToast.toast(getApplicationContext(),"请输入4位数验证码！");
+                        }
+                    } else {
+                        MyToast.toast(getApplicationContext(),"请输入6到20位密码！");
+                    }
+                } else {
+                    MyToast.toast(getApplicationContext(),"请输入11位手机号码！");
                 }
 
-//                RegisterPrestenet rp = new RegisterPrestenet(this);
-//                rp.fact(ed_phone,ed_pwd,ed_name);
+/*                if (!TextUtils.isEmpty(ed_phone)) {
+                    if (ed_phone.length() == 11) {
+                        if (!TextUtils.isEmpty(ed_pwd)) {
+                            if (ed_pwd.length()>6 && ed_pwd.length()<20 ) {
+                                if (!TextUtils.isEmpty(ed_verifycode)) {
+                                    if (ed_verifycode.length() == 4) {
+                                        if (!TextUtils.isEmpty(ed_name) && ed_name.length()>2) {
+                                            //跟sharSDK 服务器校验 短信验证码
+                                            init();
+                                            if (NetWorkUtils.isNetworkConnected(this)) {
+                                                RegisterPrestenet rp = new RegisterPrestenet(this);
+                                                rp.fact(ed_phone, ed_pwd, ed_name, ed_verifycode);
+                                            } else {
+                                                Toast.makeText(getApplicationContext(),"没有检测到有网络",Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    } else {
+                                        Toast.makeText(getApplicationContext(),"验证码位数不对",Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    Toast.makeText(getApplicationContext(),"验证码不能为空",Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(getApplicationContext(),"密码不能低于6位并且不可以超过20位",Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(),"密码不能空",Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(getApplicationContext(),"手机号码长度不对！",Toast.LENGTH_SHORT).show();
+                    }
+                }*/
+
                 break;
             //登录下面的 关于阅读说明的 选择框
             case R.id.ck:
@@ -192,10 +234,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         int status = rb.getStatus();
         if (status == 1) {
             Toast.makeText(this, "恭喜您注册成功", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this,LoginActivity.class));
             finish();
-        } else {
-            Toast.makeText(this,"注册失败请仔细检查资料",Toast.LENGTH_SHORT).show();
+        } else{
+            Toast.makeText(this,rb.getData(),Toast.LENGTH_SHORT).show();
         }
     }
 }

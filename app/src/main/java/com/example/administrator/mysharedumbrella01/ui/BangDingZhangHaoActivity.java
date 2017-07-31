@@ -130,7 +130,10 @@ public class BangDingZhangHaoActivity extends AppCompatActivity implements View.
     * */
     @Override
     public void showLogin(WechatLoginBean wlb) {
-
+        int status = wlb.getStatus();
+        if (status == 1) {
+            finish();
+        }
     }
     /*
     * 这个是第三放登录 的时候 让用户 输入手机号码后 请求网络后的 回调

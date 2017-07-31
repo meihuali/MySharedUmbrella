@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,7 +16,9 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -40,6 +44,7 @@ import com.amap.api.maps.model.Polyline;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
 import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.SaoYiSao.ScannerActivity;
 import com.example.administrator.mysharedumbrella01.dialog.KaiSuohoudeGuanggao;
@@ -59,6 +64,8 @@ import com.example.administrator.mysharedumbrella01.utils.ConfigUtils;
 import com.example.administrator.mysharedumbrella01.utils.GlideUtils;
 import com.example.administrator.mysharedumbrella01.utils.L;
 import com.example.administrator.mysharedumbrella01.dialog.MyPopuopWindowsRigth;
+import com.example.administrator.mysharedumbrella01.utils.MyToast;
+import com.example.administrator.mysharedumbrella01.utils.NetWorkUtils;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
 import com.example.administrator.mysharedumbrella01.utils.ZhuoBiaoZhuanHuan;
 import com.example.administrator.mysharedumbrella01.view.IsHaiYuSanJiemianIconView;
@@ -89,7 +96,10 @@ import me.leefeng.promptlibrary.PromptDialog;
  * 创建时间： 2017/4/26 0026 下午 3:25
  * 描述：TODO
  */
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, AMap.OnMarkerClickListener, IsUmbrellaView, IsUpdataAPPView, Runnable, IsYuSanTuIconView, IsHaiYuSanJiemianIconView, AMapLocationListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,
+        AMap.OnMarkerClickListener, IsUmbrellaView, IsUpdataAPPView,
+        Runnable, IsYuSanTuIconView, IsHaiYuSanJiemianIconView,
+        AMapLocationListener,AMap.InfoWindowAdapter {
     private AMap aMap;
     private MapView mapView;
     private Polyline polyline;
@@ -182,6 +192,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LatLng myLatLng;
     private Marker myMarker;
     private Bitmap bitmaps;
+    private String citys;
+    private String address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -293,6 +305,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         aMap.getUiSettings().setCompassEnabled(true);
         // 设置右下角的按钮缩放
         aMap.getUiSettings().setZoomControlsEnabled(false);
+        // 设置自定义InfoWindow样式
+        aMap.setInfoWindowAdapter(this);
     }
 
     /**
@@ -300,35 +314,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     @Override
     public void onLocationChanged(AMapLocation amapLocation) {
-        if (amapLocation != null) {
-            if (amapLocation.getErrorCode() == 0) {
-                Toast.makeText(getApplicationContext(), "定位成功！", Toast.LENGTH_SHORT).show();
-                myLatLng = new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude());
-                //点击定位按钮 能够将地图的中心移动到定位点
-                //aMap.moveCamera(CameraUpdateFactory.changeLatLng(myLatLng));
-                aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatLng, 16));
-                //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
-                //aMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(myLatLng, 18, 30, 0)));
-                // 自定义定位成功后的小圆点
-                if (myMarker != null) {
-                    myMarker.remove();
-                    myMarker.destroy();
-                }
-                myMarker = aMap.addMarker(new MarkerOptions().position(myLatLng).anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.fromResource(R.drawable.location_mark)));
-                //停止定位
-                stopLocation();
-                //定位成功弹出 主页广告（商业广告）
-                initShowZhuYeGuangGao();
-                // 这里请求网络获取雨伞分布
-                up = new UmbrellaPresenet(MainActivity.this);
-                up.fech(MainActivity.this, amapLocation.getLatitude(), amapLocation.getLongitude(), types);
+        if (NetWorkUtils.isNetworkConnected(getApplicationContext())) {
+            if (amapLocation != null) {
+                if (amapLocation.getErrorCode() == 0) {
+                    Toast.makeText(getApplicationContext(), "定位成功！", Toast.LENGTH_SHORT).show();
+                    //获取市区信息
+                    citys =  amapLocation.getCity();
+                    //获取地址信息
+                    address = amapLocation.getAddress();
 
+                    myLatLng = new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude());
+                    //点击定位按钮 能够将地图的中心移动到定位点
+                    //aMap.moveCamera(CameraUpdateFactory.changeLatLng(myLatLng));
+                    aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatLng, 16));
+                    //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
+                    //aMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(myLatLng, 18, 30, 0)));
+                    // 自定义定位成功后的小圆点
+                    if (myMarker != null) {
+                        myMarker.remove();
+                        myMarker.destroy();
+                    }
+                    myMarker = aMap.addMarker(new MarkerOptions().position(myLatLng).anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.fromResource(R.drawable.location_mark)));
+                    //停止定位
+                    stopLocation();
+                    //定位成功弹出 主页广告（商业广告）
+                    initShowZhuYeGuangGao();
+                    // 这里请求网络获取雨伞分布
+                    up = new UmbrellaPresenet(MainActivity.this);
+                    up.fech(MainActivity.this, amapLocation.getLatitude(), amapLocation.getLongitude(), types);
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "定位失败！ErrorCode()不等于0", Toast.LENGTH_SHORT).show();
+                }
             } else {
-                Toast.makeText(getApplicationContext(), "定位失败！", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "定位失败！amapLocation对象为空！", Toast.LENGTH_SHORT).show();
             }
         } else {
-            Toast.makeText(getApplicationContext(), "定位失败！", Toast.LENGTH_SHORT).show();
+            MyToast.toast(getApplicationContext(),"您当前没有网络，定位失败！");
         }
+
     }
 
 
@@ -503,7 +527,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     aMap.clear();
                     //点击还伞再次设置一下·用户当前位子的覆盖物
                     myMarker = aMap.addMarker(new MarkerOptions().position(myLatLng).anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.fromResource(R.drawable.location_mark)));
-                   //然后再次启动定位一下
+                    //然后再次启动定位一下
                     startLocation();
                     //借伞再次请求网络查询 分布的雨伞架子还有多少雨伞
                     //给types 赋值为 1 表示· 雨伞的图标
@@ -602,6 +626,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+
     /*点击线条中间覆盖物显示气泡*/
     private void addMarkers(final LatLng latLng, final String umbrellanubers) {
         //取出借伞图标 的路径地址
@@ -621,7 +646,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                        bitmaps = round_Util.toRoundBitmap(bit);
 
                         //绘制覆盖物
-                        aMap.addMarker(new MarkerOptions().position(latLng).title("雨伞个数：").snippet(umbrellanubers)
+                        aMap.addMarker(new MarkerOptions()
+                                .position(latLng)
+                                .title("雨伞个数："+umbrellanubers)
+                                // .snippet(umbrellanubers)
                                 .anchor(0.5f, 0.5f)
                                 .icon(BitmapDescriptorFactory.fromBitmap(resource)));
                     }
@@ -646,7 +674,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                        BitmapToRound_Util round_Util = new BitmapToRound_Util();
 //                        bitmaps = round_Util.toRoundBitmap(bit);
                         //绘制覆盖物
-                        aMap.addMarker(new MarkerOptions().position(latLng).title("空位个数：").snippet(umbrellanubers)
+                        aMap.addMarker(new MarkerOptions()
+                                .position(latLng)
+                                .title("空位个数："+vacancynumber)
+                               // .snippet(vacancynumber)
                                 .anchor(0.5f, 0.5f)
                                 .icon(BitmapDescriptorFactory.fromBitmap(resource)));
                     }
@@ -656,6 +687,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /*===================扫描二维码============================================*/
  /*启动扫描二维码*/
     private void initViewes() {
+
         if (ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -868,7 +900,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onSaveInstanceState(outState);
         mapView.onSaveInstanceState(outState);
     }
-    
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -974,5 +1006,51 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return true;
         }
         return super.dispatchKeyEvent(event);
+    }
+
+
+    /*
+    * 这个方法以及下面的这个方法是自定义infoWindow
+    * */
+    @Override
+    public View getInfoWindow(Marker marker) {
+        return null;
+    }
+
+    @Override
+    public View getInfoContents(Marker marker) {
+        View infoContent = getLayoutInflater().inflate(R.layout.custom_info_contents, null);
+        render(marker, infoContent);
+        return infoContent;
+    }
+
+    private void render(Marker marker, View view) {
+        //这句话是加载气泡上的图片·可加可不加
+        //  ((ImageView) view.findViewById(R.id.badge)).setImageResource(R.drawable.badge_sa);
+
+        String title = marker.getTitle();
+        TextView titleUi = ((TextView) view.findViewById(R.id.title));
+        if (title != null) {
+            SpannableString titleText = new SpannableString(title);
+            titleText.setSpan(new ForegroundColorSpan(Color.RED), 0,
+                    titleText.length(), 0);
+            titleUi.setTextSize(15);
+            titleUi.setText(titleText);
+
+        } else {
+          //  titleUi.setText("");
+            titleUi.setText(address);
+        }
+        String snippet = marker.getSnippet();
+        TextView snippetUi = ((TextView) view.findViewById(R.id.snippet));
+        if (snippet != null) {
+            SpannableString snippetText = new SpannableString(snippet);
+            snippetText.setSpan(new ForegroundColorSpan(Color.GREEN), 0,
+                    snippetText.length(), 0);
+            snippetUi.setTextSize(20);
+            snippetUi.setText(snippetText);
+        } else {
+            snippetUi.setText("");
+        }
     }
 }

@@ -19,7 +19,7 @@ public class ConfigUtils {
     /*====================管理员上传 当前 位子=========================================================*/
     public static final String DANGQAINWEIZI = "Share/UpdateStandposition.php";
     /*========================注册接口============================================================*/
-    public static final String ZHUCEJIEKOUHOUZHUO = "Share/MemberRegistration.php";
+    public static final String ZHUCEJIEKOUHOUZHUO = "Member/MemberRegistration.php";
     /*========================金额明细接口=======================================================*/
     public static final String JINERMINGXI = "Share/userdetail.php";
     /*========================获取钱包金额=================================================*/

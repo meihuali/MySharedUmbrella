@@ -631,7 +631,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void addMarkers(final LatLng latLng, final String umbrellanubers) {
         //取出借伞图标 的路径地址
         String jiesanUrl =  ShareUtils.getString(getApplicationContext(),"jiesantubiao","");
-
         Glide.with(MainActivity.this)
                 .load(jiesanUrl)
                 // 加载网络中的静态图片
@@ -644,7 +643,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         // 这里将bitmap对象图片绘制成圆形
 //                        BitmapToRound_Util round_Util = new BitmapToRound_Util();
 //                        bitmaps = round_Util.toRoundBitmap(bit);
-
                         //绘制覆盖物
                         aMap.addMarker(new MarkerOptions()
                                 .position(latLng)

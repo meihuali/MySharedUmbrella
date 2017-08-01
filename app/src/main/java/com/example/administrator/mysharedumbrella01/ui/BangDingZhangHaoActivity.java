@@ -20,6 +20,8 @@ import com.example.administrator.mysharedumbrella01.peresenet.BangDingZhangHaoPe
 import com.example.administrator.mysharedumbrella01.peresenet.WechatPerenest;
 import com.example.administrator.mysharedumbrella01.utils.EditTextWithDelete;
 import com.example.administrator.mysharedumbrella01.utils.GlideUtils;
+import com.example.administrator.mysharedumbrella01.utils.MyToast;
+import com.example.administrator.mysharedumbrella01.utils.RegularUtil;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
 import com.example.administrator.mysharedumbrella01.view.IsBangdingZhangHaoView;
 import com.example.administrator.mysharedumbrella01.view.IsWechatLoginView;
@@ -102,9 +104,18 @@ public class BangDingZhangHaoActivity extends AppCompatActivity implements View.
                 //获取手机号码
                 String phone =  edit_phone.getText().toString().trim();
                 String yzm = edit_verifycode.getText().toString().trim();
-                //这里请求网络
-                BangDingZhangHaoPeresent bangding = new BangDingZhangHaoPeresent(this);
-                bangding.bangzhanghao(phone,yzm,r_id);
+                if (RegularUtil.isMobile(phone)) {
+                    if (RegularUtil.isPhoneValidateCode(yzm)) {
+                        //这里请求网络
+                        BangDingZhangHaoPeresent bangding = new BangDingZhangHaoPeresent(this);
+                        bangding.bangzhanghao(phone,yzm,r_id);
+                    } else {
+                        MyToast.toast(getApplicationContext(),"请输入4位数验证码");
+                    }
+                } else {
+                    MyToast.toast(getApplicationContext(),"请输入正在的11位手机号码！");
+                }
+
                 break;
         }
     }

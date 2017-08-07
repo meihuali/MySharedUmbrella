@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private double litude;
     private double latitude;
     private String umbrellanubers;
-    private UmbrellaPresenet up;
+   // private UmbrellaPresenet up;
     private String scanResult;
     private Button btn_haisan, btn_jiesan;
     private Button btn_scatcs;
@@ -339,7 +339,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     //定位成功弹出 主页广告（商业广告）
                     initShowZhuYeGuangGao();
                     // 这里请求网络获取雨伞分布
-                    up = new UmbrellaPresenet(MainActivity.this);
+                    UmbrellaPresenet up = new UmbrellaPresenet(this);
                     up.fech(MainActivity.this, amapLocation.getLatitude(), amapLocation.getLongitude(), types);
 
                 } else {
@@ -479,6 +479,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //借伞再次请求网络查询 分布的雨伞架子还有多少雨伞
                 //然后把types赋值为2  表示·还伞的字段·用来区分mark 图标
                 types = 2;
+                UmbrellaPresenet up = new UmbrellaPresenet(this);
                 up.fech(MainActivity.this, laitudes, longitudes, types);
                 btn_haisan.setBackground(ContextCompat.getDrawable(this, R.drawable.image_conent));
                 btn_jiesan.setBackgroundColor(getResources().getColor(R.color.zhutiyanse));
@@ -497,7 +498,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //借伞再次请求网络查询 分布的雨伞架子还有多少雨伞
                 //给types 赋值为 1 表示· 雨伞的图标
                 types = 1;
-                up.fech(MainActivity.this, laitudes, longitudes, types);
+                UmbrellaPresenet upIcons = new UmbrellaPresenet(this);
+                upIcons.fech(MainActivity.this, laitudes, longitudes, types);
                 //设置背景
                 btn_jiesan.setBackground(ContextCompat.getDrawable(this, R.drawable.image_conent));
                 btn_haisan.setBackgroundColor(getResources().getColor(R.color.zhutiyanse));
@@ -531,7 +533,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     //借伞再次请求网络查询 分布的雨伞架子还有多少雨伞
                     //给types 赋值为 1 表示· 雨伞的图标
                     types = 1;
-                    up.fech(MainActivity.this, laitudes, longitudes, types);
+                    UmbrellaPresenet upIcon = new UmbrellaPresenet(this);
+                    upIcon.fech(MainActivity.this, laitudes, longitudes, types);
                     //点击借伞后请求网络 图标
 //                   tyip.fach("10");
 
@@ -545,7 +548,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     //借伞再次请求网络查询 分布的雨伞架子还有多少雨伞
                     //然后把types赋值为2  表示·还伞的字段·用来区分mark 图标
                     types = 2;
-                    up.fech(MainActivity.this, laitudes, longitudes, types);
+                    UmbrellaPresenet upsanjiazi = new UmbrellaPresenet(this);
+                    upsanjiazi.fech(MainActivity.this, laitudes, longitudes, types);
                     //点还伞后 请求 伞架子的 图标
 //                    tyip.fach("11");
                 }
@@ -709,6 +713,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                    String mima = ShareUtils.getString(getApplicationContext(), "mima", "");
                     if (!TextUtils.isEmpty(zhanghao)) {
                         //扫描请求借伞
+                        UmbrellaPresenet up = new UmbrellaPresenet(this);
                         up.binds(stringExtra, zhanghao, this);
                         //扫描成功后再次请求下网络获取雨伞个数
                         up.fech(MainActivity.this, laitudes, longitudes, types);
@@ -742,6 +747,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (statusSaoYiSao == 1) {
             //雨伞分布的 坐标 有多少个雨伞
             aMap.clear();
+            UmbrellaPresenet up = new UmbrellaPresenet(this);
             up.fech(MainActivity.this, laitudes, longitudes, types);
             Toast.makeText(getApplicationContext(), "借伞成功", Toast.LENGTH_SHORT).show();
             int statsus = statusSaoYiSao;

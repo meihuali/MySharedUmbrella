@@ -36,7 +36,7 @@ public class BaseAppliction extends Application {
         super.onCreate();
         //安卓 7.0 以上 拍照启动相机需要
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
             StrictMode.setVmPolicy(builder.build());
         }
 

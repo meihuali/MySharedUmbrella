@@ -322,7 +322,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     citys =  amapLocation.getCity();
                     //获取地址信息
                     address = amapLocation.getAddress();
-
                     myLatLng = new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude());
                     //点击定位按钮 能够将地图的中心移动到定位点
                     //aMap.moveCamera(CameraUpdateFactory.changeLatLng(myLatLng));
@@ -620,8 +619,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                growInto(marker);
             }
         }
-
-
         return false;
     }
 
@@ -910,7 +907,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * 开始定位
      */
-    private void startLocation() {
+    private void
+    startLocation() {
         //启动定位
         if (mLocationClient != null) {
             mLocationClient.startLocation();

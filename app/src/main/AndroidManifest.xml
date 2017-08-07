@@ -24,6 +24,7 @@
         </activity>
         <!--扫一扫-->
         <activity android:name=".ui.SaoYiSaoActivity"/>
+
         <!--发布版本的   63:79:2D:AC:08:6F:6C:84:5D:F6:81:3E:A7:B2:47:CA:23:BA:85:CB  -->
         <!--调试版本的 6D:D0:C4:31:73:81:EF:4E:DD:24:E9:69:89:2A:9A:65:2E:94:7F:5E   -->
         <meta-data android:name="com.amap.api.v2.apikey"

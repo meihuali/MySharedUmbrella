@@ -25,7 +25,8 @@ public class ConfigUtils {
     /*========================获取钱包金额=================================================*/
     public static final String QIANBAOJINE = "Afterlogin/getMoney.php";
     /*=======================修改密码的 接口==================================================*/
-    public static final String XIUGAIMIMA = "Afterlogin/changepassword.php";
+   // public static final String XIUGAIMIMA = "Afterlogin/changepassword.php";
+    public static final String XIUGAIMIMA = "Member/changepassword.php";
     /*==============================支付宝充值金额 ==============================*/
     public static final String ZHIFUBAO_CHONGZHI_JINER = "Alipay/pay.php";
     /*============================上传头像 接口============================================*/

@@ -101,7 +101,6 @@ public class ModifyPasswordActivity extends AppCompatActivity implements View.On
         int status = list.getStatus();
         if (status == 1) {
             Toast.makeText(getApplicationContext(), "恭喜您，修改成功！", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this,LoginActivity.class));
             finish();
         } else {
             Toast.makeText(getApplicationContext(),"密码修改失败···",Toast.LENGTH_SHORT).show();

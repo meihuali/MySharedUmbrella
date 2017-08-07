@@ -17,6 +17,7 @@ import com.gyf.barlibrary.ImmersionBar;
 
 public class AboutusActivity extends AppCompatActivity implements View.OnClickListener {
     private ImageView image_back;
+    //ded
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

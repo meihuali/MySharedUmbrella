@@ -3,9 +3,19 @@ package com.example.administrator.mysharedumbrella01.appliction;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.StrictMode;
+import android.widget.Toast;
 
+
+import com.example.administrator.mysharedumbrella01.service.GetuiIntentService;
+import com.example.administrator.mysharedumbrella01.service.GetuiPushService;
+import com.igexin.sdk.PushManager;
+import com.taobao.sophix.PatchStatus;
+import com.taobao.sophix.SophixManager;
+import com.taobao.sophix.listener.PatchLoadStatusListener;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
@@ -19,6 +29,8 @@ import java.util.Set;
 import cn.smssdk.SMSSDK;
 import me.leefeng.promptlibrary.PromptDialog;
 
+import static com.tencent.bugly.Bugly.applicationContext;
+
 /**
  * Created by Administrator on 2017/6/6 0006.
  */
@@ -31,12 +43,25 @@ public class BaseAppliction extends Application {
     * */
 
     public static Map<String, Activity> destoryMap = new HashMap<String, Activity>();
+    private int bendiVersionCode;
+    private String bendiVersionName;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        //啊里热更新
+        aliyunUpdataApp();
+        //极光推送
+//        JPushInterface.setDebugMode(true);
+//        JPushInterface.init(this);
+        //个推
+        // com.getui.demo.DemoPushService 为第三方自定义推送服务
+        PushManager.getInstance().initialize(this.getApplicationContext(), GetuiPushService.class);
+        PushManager.getInstance().registerPushIntentService(this.getApplicationContext(), GetuiIntentService.class);
+
         //安卓 7.0 以上 拍照启动相机需要
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
             StrictMode.setVmPolicy(builder.build());
         }
 
@@ -57,6 +82,51 @@ public class BaseAppliction extends Application {
             PlatformConfig.setQQZone("1106175515", "r5B1fp4IP2a98VcS");
             Config.DEBUG = true;
         }
+    }
+
+
+
+    /*
+    * 啊里热更新配置
+    * */
+    private void aliyunUpdataApp() {
+        try {
+            PackageManager pm = getPackageManager();
+            PackageInfo info = pm.getPackageInfo(getPackageName(), 0);
+            //获取本地版本号
+            bendiVersionCode = info.versionCode;
+            //获取本地版本的名字
+            bendiVersionName = info.versionName;
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(),"获取当前版本信息失败",Toast.LENGTH_SHORT).show();
+        }
+
+        // initialize最好放在attachBaseContext最前面
+        SophixManager.getInstance().setContext(this)
+                .setAppVersion(bendiVersionName)
+                .setAesKey(null)
+                .setEnableDebug(true)
+                .setPatchLoadStatusStub(new PatchLoadStatusListener() {
+                    @Override
+                    public void onLoad(final int mode, final int code, final String info, final int handlePatchVersion) {
+                        // 补丁加载回调通知
+                        if (code == PatchStatus.CODE_LOAD_SUCCESS) {
+                            // 表明补丁加载成功
+                        } else if (code == PatchStatus.CODE_LOAD_RELAUNCH) {
+                            // 表明新补丁生效需要重启. 开发者可提示用户或者强制重启;
+                            // 建议: 用户可以监听进入后台事件, 然后应用自杀，以此加快应用补丁
+                            // 建议调用killProcessSafely，详见1.3.2.3
+                            // SophixManager.getInstance().killProcessSafely();
+                        } else if (code == PatchStatus.CODE_LOAD_FAIL) {
+                            // 内部引擎异常, 推荐此时清空本地补丁, 防止失败补丁重复加载
+                            // SophixManager.getInstance().cleanPatches();
+                        } else {
+                            // 其它错误信息, 查看PatchStatus类说明
+                        }
+                    }
+                }).initialize();
+// queryAndLoadNewPatch不可放在attachBaseContext 中，否则无网络权限，建议放在后面任意时刻，如onCreate中
+        SophixManager.getInstance().queryAndLoadNewPatch();
     }
 
     public static BaseAppliction getIntstens() {

@@ -291,6 +291,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * 设置一些amap的属性
      */
+
     private void setUpMap() {
         //初始化 UiSettings
         UiSettings uiSettings = aMap.getUiSettings();
@@ -615,7 +616,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onMarkerClick(final Marker marker) {
         String id = marker.getId();
-        L.e("marker     " + id);
+        L.e("marker " + id);
 
         if (aMap != null) {
             if (marker.equals(marker2)) {

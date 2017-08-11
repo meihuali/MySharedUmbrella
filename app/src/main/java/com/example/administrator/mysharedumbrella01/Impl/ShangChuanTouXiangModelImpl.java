@@ -17,6 +17,7 @@ import okhttp3.Response;
 
 /**
  * Created by Administrator on 2017/6/19 0019.
+ *  上传头像的 实现类·
  */
 
 public class ShangChuanTouXiangModelImpl implements IsShangchuanPhotoModel {

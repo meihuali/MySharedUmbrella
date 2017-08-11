@@ -14,6 +14,7 @@ import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.appliction.BaseAppliction;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
 import com.gyf.barlibrary.ImmersionBar;
+import com.igexin.sdk.PushManager;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -70,6 +71,11 @@ public class settingsssssActivity extends AppCompatActivity implements View.OnCl
                 finish();
                 break;
             case R.id.btn_exits:
+                //这里取出账号
+                String zh =  ShareUtils.getString(getApplicationContext(),"zhanghao","");
+                //解除绑定个推别名
+                PushManager.getInstance().unBindAlias(settingsssssActivity.this, zh, false);
+
                 //清空账号
                 ShareUtils.deleShare(getApplicationContext(),"zhanghao");
                 //清空微信的昵称
@@ -80,6 +86,8 @@ public class settingsssssActivity extends AppCompatActivity implements View.OnCl
                 ShareUtils.deleShare(getApplicationContext(),"touxiangURL");
                 // 销毁上一个界面的activit
                 BaseAppliction.destoryActivity("SettingsYusanActivity");
+
+
                 finish();
                 break;
             case R.id.rl_guanyuwomen:

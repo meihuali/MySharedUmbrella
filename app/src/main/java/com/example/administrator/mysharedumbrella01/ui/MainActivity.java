@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
@@ -41,6 +42,11 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.Polyline;
+import com.baidu.tts.auth.AuthInfo;
+import com.baidu.tts.client.SpeechError;
+import com.baidu.tts.client.SpeechSynthesizer;
+import com.baidu.tts.client.SpeechSynthesizerListener;
+import com.baidu.tts.client.TtsMode;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -58,6 +64,7 @@ import com.example.administrator.mysharedumbrella01.entivity.YuSanIconBean;
 import com.example.administrator.mysharedumbrella01.peresenet.HaiYuSanTuIconPerserent;
 import com.example.administrator.mysharedumbrella01.peresenet.UmbrellaPresenet;
 import com.example.administrator.mysharedumbrella01.peresenet.UpdataAppPerserent;
+import com.example.administrator.mysharedumbrella01.peresenet.UserGetYuSanStatusPeresent;
 import com.example.administrator.mysharedumbrella01.peresenet.YuSanTuIconPerserent;
 import com.example.administrator.mysharedumbrella01.utils.BitmapToRound_Util;
 import com.example.administrator.mysharedumbrella01.utils.ConfigUtils;
@@ -71,6 +78,7 @@ import com.example.administrator.mysharedumbrella01.utils.ZhuoBiaoZhuanHuan;
 import com.example.administrator.mysharedumbrella01.view.IsHaiYuSanJiemianIconView;
 import com.example.administrator.mysharedumbrella01.view.IsUmbrellaView;
 import com.example.administrator.mysharedumbrella01.view.IsUpdataAPPView;
+import com.example.administrator.mysharedumbrella01.view.IsUserGetYuSanStatusView;
 import com.example.administrator.mysharedumbrella01.view.IsYuSanTuIconView;
 import com.gyf.barlibrary.ImmersionBar;
 import com.mylhyl.zxing.scanner.common.Intents;
@@ -80,6 +88,13 @@ import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RationaleListener;
 
 
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -99,7 +114,7 @@ import me.leefeng.promptlibrary.PromptDialog;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
         AMap.OnMarkerClickListener, IsUmbrellaView, IsUpdataAPPView,
         Runnable, IsYuSanTuIconView, IsHaiYuSanJiemianIconView,
-        AMapLocationListener,AMap.InfoWindowAdapter {
+        AMapLocationListener,AMap.InfoWindowAdapter, IsUserGetYuSanStatusView,SpeechSynthesizerListener {
     private AMap aMap;
     private MapView mapView;
     private Polyline polyline;
@@ -146,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private double litude;
     private double latitude;
     private String umbrellanubers;
-   // private UmbrellaPresenet up;
+    // private UmbrellaPresenet up;
     private String scanResult;
     private Button btn_haisan, btn_jiesan;
     private Button btn_scatcs;
@@ -194,6 +209,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Bitmap bitmaps;
     private String citys;
     private String address;
+    /**************************百度语音合成客户端******************************/
+
+    private SpeechSynthesizer mSpeechSynthesizer;
+    private String mSampleDirPath;
+    private static final String SAMPLE_DIR_NAME = "baiduTTS";
+    private static final String SPEECH_FEMALE_MODEL_NAME = "bd_etts_speech_female.dat";
+    private static final String SPEECH_MALE_MODEL_NAME = "bd_etts_speech_male.dat";
+    private static final String TEXT_MODEL_NAME = "bd_etts_text.dat";
+    private static final String LICENSE_FILE_NAME = "temp_license";
+    private static final String ENGLISH_SPEECH_FEMALE_MODEL_NAME = "bd_etts_speech_female_en.dat";
+    private static final String ENGLISH_SPEECH_MALE_MODEL_NAME = "bd_etts_speech_male_en.dat";
+    private static final String ENGLISH_TEXT_MODEL_NAME = "bd_etts_text_en.dat";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -217,6 +244,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initMap();
         // 此方法必须重写
         mapView.onCreate(savedInstanceState);
+        //下面两个方法是百度语音合成
+        initialEnv();
+        startTTS();
     }
 
 
@@ -678,7 +708,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         aMap.addMarker(new MarkerOptions()
                                 .position(latLng)
                                 .title("空位个数："+vacancynumber)
-                               // .snippet(vacancynumber)
+                                // .snippet(vacancynumber)
                                 .anchor(0.5f, 0.5f)
                                 .icon(BitmapDescriptorFactory.fromBitmap(resource)));
                     }
@@ -736,13 +766,107 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    //  扫一扫的接口回调
+
+    /*
+    * 借伞的接口回调
+    *
+    *       当stauts为1时，app显示开锁成功
+           当status为2时，app显示押金不足
+           当status为3时，app显示余额不足
+           当status为4时，app显示请求超时，开锁失败
+           当status为5时，app显示无伞可借
+           当status为6或者7时，app重新发起开锁请求
+           当status为11时，app显示借伞成功
+           当status为0时，app显示通信错误
+    *
+    * */
     @Override
     public void showSaoYiSao(Object syb, String mincdeID, String phone) {
         SaoYiSaoBean object = (SaoYiSaoBean) syb;
         statusSaoYiSao = object.getStatus();
         String data = object.getData();
+        if (statusSaoYiSao == 11) {
+            //promptDialog.showSuccess("借伞成功");
+            mSpeechSynthesizer.speak("您已借伞成功");
+            //停止广告上的进度条
+            pwgg.stopUpdata(statusSaoYiSao);
+            //隐藏开锁广告popup
+            pwgg.dismiss();
+        } else if (statusSaoYiSao == 1) {
+            mSpeechSynthesizer.speak("您已开锁成功，请取走雨伞");
+            pwgg.stopUpdata(statusSaoYiSao);
+            //隐藏开锁广告popup
+            pwgg.dismiss();
 
+            //当statusSaoYiSao等于1 的时候 去请求另外一个接口判断用户是否有取消雨伞
+            UserGetYuSanStatusPeresent qusan = new UserGetYuSanStatusPeresent(this);
+            //这里截取 前面这段字符串 222222222222222202,555555555555555555
+            String stely =  data.substring(0,data.lastIndexOf(","));
+            qusan.userGetYuSan(stely);
+
+            //这里截取 后面的这段字符串 222222222222222202,555555555555555555
+            String enddata =  data.substring(data.lastIndexOf(",",data.length()));
+
+            //雨伞分布的 坐标 有多少个雨伞
+            aMap.clear();
+            UmbrellaPresenet up = new UmbrellaPresenet(this);
+            up.fech(MainActivity.this, laitudes, longitudes, types);
+            //开锁成功 又开启一个popupwindow
+            KaiSuohoudeGuanggao zy = new KaiSuohoudeGuanggao(this, enddata);
+            zy.showPopupWindow();
+
+        } else if (statusSaoYiSao == 2) {
+           // promptDialog.showSuccess("押金不足");
+            mSpeechSynthesizer.speak("您的押金不足");
+            pwgg.stopUpdata(statusSaoYiSao);
+            //隐藏开锁广告popup
+            pwgg.dismiss();
+
+        } else if (statusSaoYiSao == 3) {
+           // promptDialog.showSuccess("余额不足");
+            mSpeechSynthesizer.speak("您的余额不足");
+            pwgg.stopUpdata(statusSaoYiSao);
+            //隐藏开锁广告popup
+            pwgg.dismiss();
+
+        } else if (statusSaoYiSao == 4) {
+           // promptDialog.showSuccess("请求超时，开锁失败");
+            mSpeechSynthesizer.speak("请求超时，开锁失败");
+            pwgg.stopUpdata(statusSaoYiSao);
+            //隐藏开锁广告popup
+            pwgg.dismiss();
+
+        } else if (statusSaoYiSao == 5) {
+          //  promptDialog.showSuccess("无伞可借");
+            mSpeechSynthesizer.speak("您已无伞可借了");
+            pwgg.stopUpdata(statusSaoYiSao);
+            //隐藏开锁广告popup
+            pwgg.dismiss();
+
+        } else if (statusSaoYiSao == 6) {
+          //  promptDialog.showSuccess("重新发起开锁请求");
+            mSpeechSynthesizer.speak("重新发起开锁请求");
+            pwgg.stopUpdata(statusSaoYiSao);
+            //隐藏开锁广告popup
+            pwgg.dismiss();
+
+        } else if (statusSaoYiSao == 7) {
+          //  promptDialog.showSuccess("重新发起开锁请求");
+            mSpeechSynthesizer.speak("重新发起开锁请求");
+            pwgg.stopUpdata(statusSaoYiSao);
+            //隐藏开锁广告popup
+            pwgg.dismiss();
+
+        } else if (statusSaoYiSao == 0) {
+          //  promptDialog.showSuccess("通信错误");
+            mSpeechSynthesizer.speak("通信错误");
+            pwgg.stopUpdata(statusSaoYiSao);
+            //隐藏开锁广告popup
+            pwgg.dismiss();
+
+        }
+
+/*
         L.e("开锁状态 " + statusSaoYiSao);
         L.e("错误信息 " + data);
         //这里就是 回调 的结果 扫描开锁后的 结果
@@ -767,13 +891,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             pwgg.stopUpdata(statsus);
             //隐藏开锁广告popup
             pwgg.dismiss();
-//            //开锁失败 又开启一个popupwindow
-//            KaiSuohoudeGuanggao zy = new KaiSuohoudeGuanggao(this,datas);
-//            zy.showPopupWindow();
+
         } else if (statusSaoYiSao == 5) {
             Toast.makeText(getApplicationContext(), "您还没有还伞，充值押金可以继续借伞", Toast.LENGTH_SHORT).show();
 
         }
+*/
 
     }
 
@@ -909,6 +1032,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onDestroy();
         destroyLocation();
         mapView.onDestroy();
+        //取消语音合成
+        this.mSpeechSynthesizer.release();
+        super.onDestroy();
+        //取消手机震动
+     //   vibrator.cancel();
 
     }
 
@@ -1042,7 +1170,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             titleUi.setText(titleText);
 
         } else {
-          //  titleUi.setText("");
+            //  titleUi.setText("");
             titleUi.setText(address);
         }
         String snippet = marker.getSnippet();
@@ -1057,4 +1185,197 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             snippetUi.setText("");
         }
     }
+
+    /*
+    * 用户是否取走雨伞的 接口回调
+    * */
+    @Override
+    public void showGetyunsanStatus(Object object) {
+        JSONObject obj = (JSONObject) object;
+        int status = obj.optInt("status");
+        String data =  obj.optString("data");
+        Toast.makeText(getApplicationContext(),data.toString(),Toast.LENGTH_SHORT).show();
+    }
+
+
+    /*
+    *  百度语音合成 需要的 sdk路径获取
+    * */
+    private void initialEnv() {
+        if (mSampleDirPath == null) {
+            String sdcardPath = Environment.getExternalStorageDirectory()
+                    .toString();
+            mSampleDirPath = sdcardPath + "/" + SAMPLE_DIR_NAME;
+        }
+        makeDir(mSampleDirPath);
+        copyFromAssetsToSdcard(false, SPEECH_FEMALE_MODEL_NAME, mSampleDirPath
+                + "/" + SPEECH_FEMALE_MODEL_NAME);
+        copyFromAssetsToSdcard(false, SPEECH_MALE_MODEL_NAME, mSampleDirPath
+                + "/" + SPEECH_MALE_MODEL_NAME);
+        copyFromAssetsToSdcard(false, TEXT_MODEL_NAME, mSampleDirPath + "/"
+                + TEXT_MODEL_NAME);
+        copyFromAssetsToSdcard(false, LICENSE_FILE_NAME, mSampleDirPath + "/"
+                + LICENSE_FILE_NAME);
+        copyFromAssetsToSdcard(false, "english/"
+                + ENGLISH_SPEECH_FEMALE_MODEL_NAME, mSampleDirPath + "/"
+                + ENGLISH_SPEECH_FEMALE_MODEL_NAME);
+        copyFromAssetsToSdcard(false, "english/"
+                + ENGLISH_SPEECH_MALE_MODEL_NAME, mSampleDirPath + "/"
+                + ENGLISH_SPEECH_MALE_MODEL_NAME);
+        copyFromAssetsToSdcard(false, "english/" + ENGLISH_TEXT_MODEL_NAME,
+                mSampleDirPath + "/" + ENGLISH_TEXT_MODEL_NAME);
+    }
+
+    /*
+* 创建文件夹路径
+* */
+    private void makeDir(String dirPath) {
+        File file = new File(dirPath);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+    }
+
+
+    /**
+     * 将sample工程需要的资源文件拷贝到SD卡中使用（授权文件为临时授权文件，请注册正式授权）
+     *
+     * @param isCover
+     *            是否覆盖已存在的目标文件
+     * @param source
+     * @param dest
+     */
+    private void copyFromAssetsToSdcard(boolean isCover, String source,
+                                        String dest) {
+        File file = new File(dest);
+        if (isCover || (!isCover && !file.exists())) {
+            InputStream is = null;
+            FileOutputStream fos = null;
+            try {
+                is = getResources().getAssets().open(source);
+                String path = dest;
+                fos = new FileOutputStream(path);
+                byte[] buffer = new byte[1024];
+                int size = 0;
+                while ((size = is.read(buffer, 0, 1024)) >= 0) {
+                    fos.write(buffer, 0, size);
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (fos != null) {
+                    try {
+                        fos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                try {
+                    if (is != null) {
+                        is.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+
+
+    // 初始化语音合成客户端并启动
+    private void startTTS() {
+        this.mSpeechSynthesizer = SpeechSynthesizer.getInstance();
+        this.mSpeechSynthesizer.setContext(this);
+        this.mSpeechSynthesizer.setSpeechSynthesizerListener(this);
+        // 文本模型文件路径 (离线引擎使用)
+        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_TEXT_MODEL_FILE, mSampleDirPath+ "/" + TEXT_MODEL_NAME);
+        // 声学模型文件路径 (离线引擎使用)
+        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_SPEECH_MODEL_FILE, mSampleDirPath+ "/" + SPEECH_FEMALE_MODEL_NAME);
+        // 本地授权文件路径,如未设置将使用默认路径.设置临时授权文件路径，LICENCE_FILE_NAME请替换成临时授权文件的实际路径，仅在使用临时license文件时需要进行设置，如果在[应用管理]中开通了正式离线授权，不需要设置该参数，建议将该行代码删除（离线引擎）
+        // 如果合成结果出现临时授权文件将要到期的提示，说明使用了临时授权文件，请删除临时授权即可。
+        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_LICENCE_FILE, mSampleDirPath + "/"+ LICENSE_FILE_NAME);
+        // 请替换为语音开发者平台上注册应用得到的App ID (离线授权)
+        this.mSpeechSynthesizer.setAppId("9959735");
+        // 请替换为语音开发者平台注册应用得到的apikey和secretkey (在线授权)
+        this.mSpeechSynthesizer.setApiKey("EfZlabSvnGbdvoQnE4s7blGH","71cd434667f8fa9a15f090a3e4a3f5d2");
+        // 发音人（在线引擎），可用参数为0,1,2,3。。。（服务器端会动态增加，各值含义参考文档，以文档说明为准。0--普通女声，1--普通男声，2--特别男声，3--情感男声。。。）
+        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEAKER, "0");
+        // 设置Mix模式的合成策略
+        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_MIX_MODE,SpeechSynthesizer.MIX_MODE_DEFAULT);
+        // 授权检测接口(只是通过AuthInfo进行检验授权是否成功。)
+        // AuthInfo接口用于测试开发者是否成功申请了在线或者离线授权，如果测试授权成功了，可以删除AuthInfo部分的代码（该接口首次验证时比较耗时），不会影响正常使用（合成使用时SDK内部会自动验证授权）
+        AuthInfo authInfo = this.mSpeechSynthesizer.auth(TtsMode.MIX);
+        if (authInfo.isSuccess()) {
+            Toast.makeText(getApplicationContext(),"授权成功",Toast.LENGTH_SHORT).show();
+        } else {
+            String errorMsg = authInfo.getTtsError().getDetailMessage();
+            Toast.makeText(getApplicationContext(),"授权失败 " +errorMsg ,Toast.LENGTH_SHORT).show();
+        }
+
+        // 初始化tts
+        mSpeechSynthesizer.initTts(TtsMode.MIX);
+        // 加载离线英文资源（提供离线英文合成功能）
+        int result = mSpeechSynthesizer.loadEnglishModel(mSampleDirPath + "/"
+                + ENGLISH_TEXT_MODEL_NAME, mSampleDirPath + "/"
+                + ENGLISH_SPEECH_FEMALE_MODEL_NAME);
+        //  toPrint("loadEnglishModel result=" + result);
+
+    }
+
+
+
+
+    /*
+    *  下面6个方法都是 百度语音合成从写的
+     *  SpeechSynthesizerListener接口的方法
+    * */
+
+    @Override
+    public void onSynthesizeStart(String s) {
+        // 监听到合成开始，在此添加相关操作
+        L.e("测试 "+"onSynthesizeStart");
+    }
+
+    @Override
+    public void onSynthesizeDataArrived(String s, byte[] bytes, int i) {
+        // 监听到有合成数据到达，在此添加相关操作
+        L.e("测试"+"onSynthesizeDataArrived");
+    }
+
+    @Override
+    public void onSynthesizeFinish(String s) {
+        // 监听到合成结束，在此添加相关操作
+        L.e("测试"+"onSynthesizeFinish");
+    }
+
+    @Override
+    public void onSpeechStart(String s) {
+        // 监听到合成并播放开始，在此添加相关操作
+        L.e("测试"+"onSpeechStart");
+    }
+
+    @Override
+    public void onSpeechProgressChanged(String s, int i) {
+        // 监听到播放进度有变化，在此添加相关操作
+        L.e("测试"+"onSpeechProgressChanged");
+    }
+
+    @Override
+    public void onSpeechFinish(String s) {
+        // 监听到播放结束，在此添加相关操作
+        L.e("测试"+"onSpeechFinish");
+    }
+
+    @Override
+    public void onError(String s, SpeechError speechError) {
+        // 监听到出错，在此添加相关操作
+        L.e("测试"+"onError");
+        L.e("测试error "+s+" 测试 SpeechError "+speechError.description);
+    }
+
+
 }

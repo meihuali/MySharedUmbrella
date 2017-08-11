@@ -100,6 +100,7 @@ public class GetUmberllaModeImpl implements IsUmbrellaStandMode {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        L.e("接受是");
                     }
                 });
     }

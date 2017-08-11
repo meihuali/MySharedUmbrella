@@ -37,6 +37,7 @@ import com.example.administrator.mysharedumbrella01.view.IsLoginView;
 import com.example.administrator.mysharedumbrella01.view.IsWechatLoginView;
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
+import com.igexin.sdk.PushManager;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -235,14 +236,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             WechatLoginBean.DataBean wchatbean = wlb.getData();
             //用户名
             String username = wchatbean.getUsername();
-            //用户标识符
+            //获取用户登录的openid
             String openid = wchatbean.getPhone();
+            //登录成功后绑定个推推送别名
+            PushManager.getInstance().bindAlias(LoginActivity.this, openid);
+
             //用户头像
              userImg = wchatbean.getPhoto();
             //用户微信登录后 的金额
             String money = wchatbean.getMoney();
-            //获取用户登录的openid
-            String phones = wchatbean.getPhone();
+
+           // String phones = wchatbean.getPhone();
             //授权成功保存openID 这里跟真实手机号码一样保存同一个key
          //   ShareUtils.putString(getApplicationContext(), "zhanghao", openid);
             //保存用户名字
@@ -256,7 +260,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             //获取r_id
             String r_id = wchatbean.getR_id();
             if (mobileID.length() == 11) {
-                ShareUtils.putString(getApplicationContext(),"zhanghao",phones);
+                ShareUtils.putString(getApplicationContext(),"zhanghao",openid);
                 finish();
             } else {
                 //然后跳转到手机验证界面
@@ -264,7 +268,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 intent.putExtra("r_id", r_id);
                 intent.putExtra("userImg",userImg);
                 //特殊处理
-                intent.putExtra("zhanghao",phones);
+                intent.putExtra("zhanghao",openid);
                 startActivity(intent);
             }
 //            finish();
@@ -290,6 +294,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 //登录成功后保存账号密码
                 ShareUtils.putString(getApplicationContext(),"zhanghao",phone);
                 ShareUtils.putString(getApplicationContext(),"mima",password);
+                //登录成功后绑定个推推送 别名
+                PushManager.getInstance().bindAlias(LoginActivity.this, phone);
+
                 //获取 是否是管理员账号
                 LoginBean.DataBean list = logindata.getData();
                 //获取登录返回的用户名

@@ -137,7 +137,6 @@ dependencies {
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.1'
 
     //下面三句是腾讯bugliy
-
     //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.2.0
     compile 'com.tencent.bugly:crashreport:latest.release'
 
@@ -154,16 +153,11 @@ dependencies {
     //啊里云热更新
     compile 'com.aliyun.ams:alicloud-android-hotfix:3.0.9'
 
-/*    //极光推送
-    compile 'cn.jiguang.sdk:jpush:3.0.3'
-
-    // 此处以JPush 3.0.3 版本为例。
-    compile 'cn.jiguang.sdk:jcore:1.1.1'*/
     //个推
     compile files('libs/GetuiSDK2.10.2.0.jar')
     compile files('libs/json_simple-1.1.jar')
-
-
+    //百度语言合成sdk
+    compile files('libs/com.baidu.tts_2.3.0.jar')
 }
 
 

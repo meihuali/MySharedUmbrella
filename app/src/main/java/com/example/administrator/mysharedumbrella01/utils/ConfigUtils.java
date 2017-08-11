@@ -11,7 +11,7 @@ public class ConfigUtils {
     // =============获取雨伞分布图=================================
     public static final String FENBUTU_HOUZHUI = "Share/umbrellaindex.php";
     /*===================扫描二维码 获取雨伞借伞=======================================================*/
-    public static final String SAOMIAOERWEIMA_HOUZHUI = "Unlock/openumbrella.php";
+    public static final String SAOMIAOERWEIMA_HOUZHUI = "Unlock/openumbrellanew.php ";
     /*===================历史记录=================================================================*/
     public static final String HUOQULISHILI = "Share/umbrellahistory.php";
     /*===================登录接口 后缀==========================================================*/
@@ -79,5 +79,10 @@ public class ConfigUtils {
     * 雨伞图标 还伞图标
     * */
     public static final String YUSANTUBIAO = "http://u.sunyie.com/public/uploads/";
+
+    /*
+    * 用户是否取走雨伞
+    * */
+    public static final String USERGETYUSANSTATUS = "Unlock/getumbrella.php";
 
 }

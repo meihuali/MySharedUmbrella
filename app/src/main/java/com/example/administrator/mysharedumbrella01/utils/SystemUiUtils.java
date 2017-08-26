@@ -12,7 +12,7 @@ import java.lang.reflect.Field;
 
 /*
  *  项目名：  MojiWeather
- *  包名：    com.liuguilin.mojiweather.utils
+ *  包名：    com.liuguilin.mojiweather.JinupUtils
  *  文件名:   SystemUiUtils
  *  创建者:   LiuGuiLinAndroid
  *  创建时间:  2017/3/18 11:29

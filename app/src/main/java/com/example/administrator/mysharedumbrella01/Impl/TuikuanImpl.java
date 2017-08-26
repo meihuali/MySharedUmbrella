@@ -32,6 +32,12 @@ public class TuikuanImpl implements IsTuiKuanModel {
                         TuikuanBean tukuan =  gson.fromJson(s, TuikuanBean.class);
                         linereset.complte(tukuan);
                     }
+
+                    @Override
+                    public void onError(Call call, Response response, Exception e) {
+                        super.onError(call, response, e);
+                        L.e("退款结果 "+ response.message());
+                    }
                 });
     }
 }

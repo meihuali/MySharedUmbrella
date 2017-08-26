@@ -4,12 +4,12 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -21,24 +21,20 @@ import android.widget.Toast;
 import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.SaoYiSao.ScannerActivity;
 import com.example.administrator.mysharedumbrella01.appliction.BaseAppliction;
-import com.example.administrator.mysharedumbrella01.dialog.PopupWindowGuanGao;
 import com.example.administrator.mysharedumbrella01.entivity.ManeyBean;
 import com.example.administrator.mysharedumbrella01.peresenet.WalletManeyPerserent;
+import com.example.administrator.mysharedumbrella01.transition.Utilss;
 import com.example.administrator.mysharedumbrella01.utils.ConfigUtils;
 import com.example.administrator.mysharedumbrella01.utils.GlideUtils;
 import com.example.administrator.mysharedumbrella01.view.IsWalletManeyView;
-import com.example.administrator.mysharedumbrella01.wxapi.WXPayEntryActivity;
 import com.example.administrator.mysharedumbrella01.entivity.LoginBean;
 import com.example.administrator.mysharedumbrella01.peresenet.LocatinPeresenet;
 import com.example.administrator.mysharedumbrella01.utils.L;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
 import com.example.administrator.mysharedumbrella01.view.IsLoginView;
 import com.example.administrator.mysharedumbrella01.view.IsShangChuanLocationView;
-import com.example.administrator.mysharedumbrella01.wxapi.WxPayUtils;
 import com.gyf.barlibrary.ImmersionBar;
 import com.mylhyl.zxing.scanner.common.Intents;
-
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -65,11 +61,17 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
     private int laserMode;
     private String money;
     private TextView tv_name;
+    //过场动画声明
+   private View ll_layout_a;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settingsyusana);
+        //过渡动画
+        initTranstiosn();
+
         //这句话的意思 将activity添加到Activity管理的方法中以便在别的activity销毁
         BaseAppliction.addDestoryActivity(this,"SettingsYusanActivity");
         //沉浸式
@@ -80,8 +82,23 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
 
         initView();
     }
+    /*
+    * 过渡动画
+    * */
+    private void initTranstiosn() {
+        ll_layout_a = findViewById(R.id.ll_layoutss);
+        //进入动画
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                getWindow().setSharedElementEnterTransition(Utilss.buildShareElemEnterSet(ll_layout_a,R.id.ll_layoutss));
+        }
+        //返回动画
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setSharedElementReturnTransition(Utilss.buildShareElemReturnSet(ll_layout_a,R.id.ll_layoutss));
+        }
+    }
 
     private void initView() {
+
         tv_name = (TextView) findViewById(R.id.tv_name);
         //程序进来取出用户名来显示 不管是微信还是 QQ 还是普通用户都要取
         String username = ShareUtils.getString(getApplicationContext(),"username","");
@@ -138,7 +155,11 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:
-                finish();
+             //   finish();
+                //这里finish 是有过渡动画的
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    finishAfterTransition();
+                }
                 break;
             //历史记录
             case R.id.rl_layout_jilu:

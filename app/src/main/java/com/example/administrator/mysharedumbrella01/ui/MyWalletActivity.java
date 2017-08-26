@@ -123,7 +123,7 @@ public class MyWalletActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onClick(PromptButton button) {
                double yuers = Double.parseDouble(yuer);
-                if (yuers <= 0) {
+                if (yuers < 0) {
                     Toast.makeText(getApplicationContext(),"您的余额小于零不可以退款",Toast.LENGTH_SHORT).show();
                 } else {
                     String zh = ShareUtils.getString(getApplicationContext(),"zhanghao","");

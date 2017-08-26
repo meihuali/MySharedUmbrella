@@ -14,12 +14,12 @@
         android:background="@color/zhutiyanse">
 
         <ImageView
-            android:layout_centerVertical="true"
             android:id="@+id/image_backs"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginLeft="12dp"
-            android:src="@drawable/santiao" />
+            android:src="@drawable/santiao"
+            android:layout_alignBottom="@+id/textView3"
+            android:layout_toEndOf="@+id/tv_adds" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -29,7 +29,8 @@
             android:gravity="center"
             android:text="@string/gongxiangyusan"
             android:textColor="@color/qianjuse"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:id="@+id/textView3" />
         <TextView
             android:visibility="gone"
             android:id="@+id/tv_adds"

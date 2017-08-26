@@ -177,6 +177,7 @@ public class ScannerActivity extends DeCodeActivity implements View.OnClickListe
     }
 
     public static void gotoActivity(Activity activity, boolean isBackResult, int laserMode) {
+
         activity.startActivityForResult(new Intent(Intents.Scan.ACTION)
                         .putExtra(ScannerActivity.EXTRA_RETURN_SCANNER_RESULT, isBackResult)
                         .putExtra(EXTRA_LASER_LINE_MODE, laserMode)

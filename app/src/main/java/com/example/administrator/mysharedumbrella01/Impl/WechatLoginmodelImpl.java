@@ -18,12 +18,13 @@ import okhttp3.Response;
 
 public class WechatLoginmodelImpl implements IsWechaLoginModel {
     @Override
-    public void login(final OnLonInLisenerst lisenerst, String username, String userphoto, String openid) {
+    public void login(final OnLonInLisenerst lisenerst, String username, String userphoto, String openid,String unionid) {
         String url = ConfigUtils.ZHU_YU_MING+ConfigUtils.WECHAT_LOGING;
         OkGo.post(url)
                 .params("appid",openid)
                 .params("name",username)
                 .params("photo",userphoto)
+                .params("unionid",unionid)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {

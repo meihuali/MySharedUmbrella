@@ -2,7 +2,7 @@ package com.example.administrator.mysharedumbrella01.utils;
 
 /*
  *  项目名：  SmartButler 
- *  包名：    com.imooc.smartbutler.utils
+ *  包名：    com.imooc.smartbutler.JinupUtils
  *  文件名:   L
  *  创建者:   LGL
  *  创建时间:  2016/10/26 23:10
@@ -16,7 +16,7 @@ public class L {
     //开关
     public static final  boolean DEBUG = true;
     //TAG
-    public static final String TAG = "Smartbutler";
+    public static final String TAG = "meihuali";
 
     //五个等级  DIWE
 

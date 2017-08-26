@@ -19,14 +19,14 @@ public class WechatPerenest {
         wechaLoginModel = new WechatLoginmodelImpl();
     }
 
-    public void fach(String username, String userphoto, String openid) {
+    public void fach(String username, String userphoto, String openid,String unionid) {
         if (wechaLoginModel != null) {
             wechaLoginModel.login(new IsWechaLoginModel.OnLonInLisenerst() {
                 @Override
                 public void onComplete(WechatLoginBean wlb) {
                     wechatLoginView.showLogin(wlb);
                 }
-            },username,userphoto,openid);
+            },username,userphoto,openid,unionid);
         }
     }
 }

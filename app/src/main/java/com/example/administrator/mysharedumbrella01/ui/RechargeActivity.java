@@ -164,7 +164,7 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
                     //获取用户登录成功后的手机号码
                     String phone =   ShareUtils.getString(getApplicationContext(),"zhanghao","");
                     WeChatZhiFuJinErPerserent weixinzhifujiner = new WeChatZhiFuJinErPerserent(this);
-                    weixinzhifujiner.weixinjiner("2",moneys,"2",phone);
+                    weixinzhifujiner.weixinjiner("2",0.01,"2",phone);
 
                 } else if (types == 2) { //等于2 代表选择选择的是 支付宝支付 这里掉微信的支付接口 然后在把moneys 金额带过去
                     String zh = ShareUtils.getString(getApplicationContext(), "zhanghao", "");

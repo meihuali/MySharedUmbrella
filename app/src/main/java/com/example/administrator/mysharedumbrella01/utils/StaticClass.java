@@ -2,7 +2,7 @@ package com.example.administrator.mysharedumbrella01.utils;
 
 /*
  *  项目名：  SmartButler 
- *  包名：    com.imooc.smartbutler.utils
+ *  包名：    com.imooc.smartbutler.JinupUtils
  *  文件名:   StaticClass
  *  创建者:   LGL
  *  创建时间:  2016/10/21 23:25

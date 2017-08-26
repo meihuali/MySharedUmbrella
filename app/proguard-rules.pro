@@ -369,7 +369,8 @@
 -keep class com.igexin.** { *; }
 -keep class org.json.** { *; }
 
-
+#百度语音
+-libraryjars libs/com.baidu.tts_2.3.0.jar
 
 
 

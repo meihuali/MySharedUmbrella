@@ -1,22 +1,16 @@
 package com.example.administrator.mysharedumbrella01.Impl;
 
 import android.app.Activity;
-import android.widget.Toast;
 
 import com.example.administrator.mysharedumbrella01.entivity.LoginBean;
 import com.example.administrator.mysharedumbrella01.model.IsLognModel;
-import com.example.administrator.mysharedumbrella01.ui.LoginActivity;
 import com.example.administrator.mysharedumbrella01.utils.ConfigUtils;
 import com.example.administrator.mysharedumbrella01.utils.L;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
 import org.json.JSONObject;
-
-import java.lang.annotation.ElementType;
-import java.util.List;
 
 import me.leefeng.promptlibrary.PromptDialog;
 import okhttp3.Call;
@@ -39,6 +33,7 @@ public class LoginModelImpl implements IsLognModel {
                 .execute(new StringCallback() {
                              @Override
                              public void onSuccess(String s, Call call, Response response) {
+
                                  L.e("普通账号登录登录中··· "+s);
                                  //解析
                                  Gson gson = new Gson();

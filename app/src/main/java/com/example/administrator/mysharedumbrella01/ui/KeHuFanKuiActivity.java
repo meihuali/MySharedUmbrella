@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -27,6 +28,7 @@ import com.example.administrator.mysharedumbrella01.entivity.FanKuiBean;
 import com.example.administrator.mysharedumbrella01.entivity.KeFuFanKuiBean;
 import com.example.administrator.mysharedumbrella01.peresenet.KefufankuiPerserent;
 import com.example.administrator.mysharedumbrella01.peresenet.ShangChuanTouXiangPersernet;
+import com.example.administrator.mysharedumbrella01.transition.Utilss;
 import com.example.administrator.mysharedumbrella01.utils.L;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
 import com.example.administrator.mysharedumbrella01.view.IsKefufankuiView;
@@ -75,7 +77,7 @@ public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClic
     public static final int RESULT_REQUEST_CODE = 103;
     private File tempFile = null;
     private File myCaptureFile;
-
+    private  View ll_layout_a;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +89,8 @@ public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClic
                 .statusBarColor(R.color.zhutiyanse) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
                 .fitsSystemWindows(true) //解决状态栏和布局重叠问题，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色
                 .init();
-
+        //过渡动画
+        initTranstiosn();
         initView();
         initData();
     }
@@ -99,6 +102,7 @@ public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void initView() {
+        ll_layout_a = findViewById(R.id.ll_layoutss);
         img_cemacr = (ImageView) findViewById(R.id.img_cemacr);
         img_cemacr.setOnClickListener(this);
         image_back = (ImageView) findViewById(R.id.image_back);
@@ -136,7 +140,10 @@ public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:
-                finish();
+               // finish();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    finishAfterTransition();
+                }
                 break;
             case R.id.img_cemacr:
                 openDialog();
@@ -364,6 +371,21 @@ public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClic
             fanKuiAdapter.notifyDataSetChanged();
         } else {
             Toast.makeText(getApplicationContext(),"服务器故障",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /*
+* 过渡动画
+* */
+    private void initTranstiosn() {
+        ll_layout_a = findViewById(R.id.ll_layoutss);
+        //进入动画
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setSharedElementEnterTransition(Utilss.buildShareElemEnterSet(ll_layout_a,R.id.ll_layoutss));
+        }
+        //返回动画
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setSharedElementReturnTransition(Utilss.buildShareElemReturnSet(ll_layout_a,R.id.ll_layoutss));
         }
     }
 }

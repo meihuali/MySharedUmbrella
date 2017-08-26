@@ -4,7 +4,7 @@ import com.amap.api.maps.model.LatLng;
 
 /**
  * 项目名：MyAppDemoBaidu
- * 包名：com.example.xiao.myappdemobaidu.utils
+ * 包名：com.example.xiao.myappdemobaidu.JinupUtils
  * 文件名：ZhuoBiaoZhuanHuan
  * 创建者 ：${梅华黎}
  * 创建时间： 2017/5/6 0006 上午 9:19

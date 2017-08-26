@@ -6,7 +6,7 @@ import android.widget.Toast;
 
 /**
  * 项目名：MySharedUmbrella
- * 包名：com.example.administrator.mysharedumbrella01.utils
+ * 包名：com.example.administrator.mysharedumbrella01.JinupUtils
  * 文件名：Toast
  * 作者 ：梅华黎
  * 创建时间： 2017/7/31 0031  下午 6:09

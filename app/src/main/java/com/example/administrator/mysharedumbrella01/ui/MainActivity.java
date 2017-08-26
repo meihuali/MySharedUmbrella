@@ -2,11 +2,11 @@ package com.example.administrator.mysharedumbrella01.ui;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -50,7 +50,6 @@ import com.baidu.tts.client.TtsMode;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.Target;
 import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.SaoYiSao.ScannerActivity;
 import com.example.administrator.mysharedumbrella01.dialog.KaiSuohoudeGuanggao;
@@ -66,9 +65,8 @@ import com.example.administrator.mysharedumbrella01.peresenet.UmbrellaPresenet;
 import com.example.administrator.mysharedumbrella01.peresenet.UpdataAppPerserent;
 import com.example.administrator.mysharedumbrella01.peresenet.UserGetYuSanStatusPeresent;
 import com.example.administrator.mysharedumbrella01.peresenet.YuSanTuIconPerserent;
-import com.example.administrator.mysharedumbrella01.utils.BitmapToRound_Util;
+import com.example.administrator.mysharedumbrella01.transition.Utilss;
 import com.example.administrator.mysharedumbrella01.utils.ConfigUtils;
-import com.example.administrator.mysharedumbrella01.utils.GlideUtils;
 import com.example.administrator.mysharedumbrella01.utils.L;
 import com.example.administrator.mysharedumbrella01.dialog.MyPopuopWindowsRigth;
 import com.example.administrator.mysharedumbrella01.utils.MyToast;
@@ -314,6 +312,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (aMap == null) {
             aMap = mapView.getMap();
             aMap.setMapType(AMap.MAP_TYPE_NORMAL);
+            //自定义地图
+            setMapCustomStyleFile(this);
+            aMap.setMapCustomEnable(true);
             setUpMap();
         }
     }
@@ -339,6 +340,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         aMap.getUiSettings().setZoomControlsEnabled(false);
         // 设置自定义InfoWindow样式
         aMap.setInfoWindowAdapter(this);
+    }
+
+    private void setMapCustomStyleFile(Context context) {
+        String styleName = "mystyle_sdk_1502163648_0100.data";
+        FileOutputStream outputStream = null;
+        InputStream inputStream = null;
+        String filePath = null;
+        try {
+            inputStream = context.getAssets().open(styleName);
+            byte[] b = new byte[inputStream.available()];
+            inputStream.read(b);
+
+            filePath = context.getFilesDir().getAbsolutePath();
+            File file = new File(filePath + "/" + styleName);
+            if (file.exists()) {
+                file.delete();
+            }
+            file.createNewFile();
+            outputStream = new FileOutputStream(file);
+            outputStream.write(b);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (inputStream != null)
+                    inputStream.close();
+
+                if (outputStream != null)
+                    outputStream.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        aMap.setCustomMapStylePath(filePath + "/" + styleName);
+
+        aMap.showMapText(true);
+
     }
 
     /**
@@ -370,6 +411,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     stopLocation();
                     //定位成功弹出 主页广告（商业广告）
                     initShowZhuYeGuangGao();
+
                     // 这里请求网络获取雨伞分布
                     UmbrellaPresenet up = new UmbrellaPresenet(this);
                     up.fech(MainActivity.this, amapLocation.getLatitude(), amapLocation.getLongitude(), types);
@@ -481,18 +523,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.image_backs:
                 marker = null;
                 String zh = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
-//                String mi = ShareUtils.getString(getApplicationContext(), "mima", "");
                 if (!TextUtils.isEmpty(zh)) {
                     //laitudes,longitudes 当前经纬度
                     Intent intent = new Intent(this, SettingsYusanActivity.class);
                     intent.putExtra("laitudes", laitudes);
                     intent.putExtra("longitudes", longitudes);
-                    startActivity(intent);
-                    //  finish();
+                  //  startActivity(intent);
+                    //启动过场动画
+                    Utilss.transitionTo(intent,MainActivity.this,image_backs);
                 } else {
                     startActivity(new Intent(this, LoginActivity.class));
-//                    PopupWindowUtils pwu = new PopupWindowUtils(this);
-//                    pwu.showPopupWindow();
                 }
                 break;
             case R.id.tv_adds:
@@ -542,8 +582,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.image_kehu:
 //                PopupWindowBotoom pwb = new PopupWindowBotoom(this);
 //                pwb.showPopupWindow();
-                startActivity(new Intent(getApplicationContext(), KeHuFanKuiActivity.class));
-
+                Intent intentkehu = new Intent(getApplicationContext(), KeHuFanKuiActivity.class);
+                //启动过场动画
+                Utilss.transitionTo(intentkehu,MainActivity.this,image_kehu);
                 break;
             //更新APP 弹出的dialog 取消按钮
             case R.id.btn_cancel:
@@ -809,6 +850,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             //雨伞分布的 坐标 有多少个雨伞
             aMap.clear();
+            //这里再次设置覆盖物
+            myMarker = aMap.addMarker(new MarkerOptions().position(myLatLng).anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.fromResource(R.drawable.location_mark)));
             UmbrellaPresenet up = new UmbrellaPresenet(this);
             up.fech(MainActivity.this, laitudes, longitudes, types);
             //开锁成功 又开启一个popupwindow
@@ -866,37 +909,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
 
-/*
-        L.e("开锁状态 " + statusSaoYiSao);
-        L.e("错误信息 " + data);
-        //这里就是 回调 的结果 扫描开锁后的 结果
-        if (statusSaoYiSao == 1) {
-            //雨伞分布的 坐标 有多少个雨伞
-            aMap.clear();
-            UmbrellaPresenet up = new UmbrellaPresenet(this);
-            up.fech(MainActivity.this, laitudes, longitudes, types);
-            Toast.makeText(getApplicationContext(), "借伞成功", Toast.LENGTH_SHORT).show();
-            int statsus = statusSaoYiSao;
-            String datas = object.getData();
-            L.e("开锁成功拿到伞的id  " + datas);
-            pwgg.stopUpdata(statsus);
-            //隐藏开锁广告popup
-            pwgg.dismiss();
-            //开锁成功 又开启一个popupwindow
-            KaiSuohoudeGuanggao zy = new KaiSuohoudeGuanggao(this, datas);
-            zy.showPopupWindow();
-        } else if (statusSaoYiSao == 0) {
-            Toast.makeText(getApplicationContext(), data.toString(), Toast.LENGTH_SHORT).show();
-            int statsus = statusSaoYiSao;
-            pwgg.stopUpdata(statsus);
-            //隐藏开锁广告popup
-            pwgg.dismiss();
 
-        } else if (statusSaoYiSao == 5) {
-            Toast.makeText(getApplicationContext(), "您还没有还伞，充值押金可以继续借伞", Toast.LENGTH_SHORT).show();
-
-        }
-*/
 
     }
 
@@ -1034,7 +1047,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mapView.onDestroy();
         //取消语音合成
         this.mSpeechSynthesizer.release();
-        super.onDestroy();
         //取消手机震动
      //   vibrator.cancel();
 
@@ -1194,7 +1206,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         JSONObject obj = (JSONObject) object;
         int status = obj.optInt("status");
         String data =  obj.optString("data");
-        Toast.makeText(getApplicationContext(),data.toString(),Toast.LENGTH_SHORT).show();
+        mSpeechSynthesizer.speak(data);
+       // Toast.makeText(getApplicationContext(),data.toString(),Toast.LENGTH_SHORT).show();
+
     }
 
 

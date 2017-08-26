@@ -109,15 +109,24 @@ public class DepositRechargeActivity extends AppCompatActivity implements View.O
                 break;
             //充值押金 按钮
             case R.id.btn_chongzhiYaJin:
+                /*
+                * 这里点击按钮 去 区分 用户是微信支付还是 支付宝支付
+                * 看的明白吗？
+                *  1表示 微信 2 表示 支付宝
+                * */
                 //type 2 表示支付宝 1 表示微信支付
+
                 if (type == 2) {
                     zh = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
                     AliPayYaJinPersernet apyhp = new AliPayYaJinPersernet(this);
-                   apyhp.fach("2", moneys + "", zh, "1");
+                   apyhp.fach("2", 0.01 + "", zh, "1");
+
                 } else {
+
                     zh = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
+                    //这里表示 微信支付的 网络请求 获取到服务器返回的 订单号 这里看的明白吗？
                     WeChatYaJinPersernet weixinyajin = new WeChatYaJinPersernet(this);
-                    weixinyajin.wechatyajin("2",0.01,"2",zh);
+                    weixinyajin.wechatyajin("1",0.01,"2",zh);
                 }
 
                 break;
@@ -191,9 +200,12 @@ public class DepositRechargeActivity extends AppCompatActivity implements View.O
     }
     /*
     *   微信充值押金 结果返回
+    *    这里就是 上面的 网络请求 成功后的 接口回调
+    *     showwechatyajin 回调 方法 里面就是 ·服务器返回的字段
     * */
     @Override
     public void showWechatYajin(Object object) {
+
         JSONObject obj = (JSONObject) object;
         //获取appid
         String appid = obj.optString("appid");
@@ -213,6 +225,8 @@ public class DepositRechargeActivity extends AppCompatActivity implements View.O
         String time = obj.optString("time");
         //将int 型时间 转成字符串
         String times =  String.valueOf(time);
+        //当你拿到上面的 这些字段后·然后就 来new 我给你的微信支付工具类 ·把上面的这些字段
+        // 通过 构造方法 传到工具类·这样就可以掉起支付了·
         //在这里掉起微信支付界面
         WxPayUtils wxPayUtils = new WxPayUtils(this);
         wxPayUtils.pay_wechat(appid,mch_id,prepay_id,nonce_str,times,"Sign=WXPay",sign);

@@ -139,6 +139,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         //用MD5 加密工具 加密
                         String pwdone = MD5Util.getStringMD5(pwd);
                         String pwdtwo = MD5Util.getStringMD5(pwdone);
+                        L.e("普通账号登录 :"+pwdtwo);
                         lp.fach(phone, pwdtwo,this);
                     } else {
                         MyToast.toast(getApplicationContext(),"请输入6到20位密码");
@@ -206,9 +207,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 //微信用户头像
                 String profile_image_url = data.get("profile_image_url");
                 Log.e("微信登录",str);
+               String unionid =  data.get("unionid");
+
                 //MVP 调用网络请求
                 WechatPerenest wp = new WechatPerenest(LoginActivity.this);
-                wp.fach(str,profile_image_url,openID);
+                wp.fach(str,profile_image_url,openID, unionid);
                 promptDialog.showLoading("正在登录···");
             }
         }

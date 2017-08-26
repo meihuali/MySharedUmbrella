@@ -61,6 +61,11 @@
         <!--左右 弹出效果-->
         <item name="android:windowEnterAnimation" >@anim/in_lefttoright</item>
         <item name="android:windowExitAnimation">@anim/out_righttoleft</item>
+
+        //过渡动画
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowAllowEnterTransitionOverlap">false</item>
+        <item name="android:windowAllowReturnTransitionOverlap">false</item>
         
     </style>
 

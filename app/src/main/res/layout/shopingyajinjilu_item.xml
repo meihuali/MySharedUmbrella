@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/txt_while"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_marginTop="5dp"
+                android:src="@drawable/jilutubiao_x"
+                android:layout_marginLeft="10dp"
+                android:layout_width="18dp"
+                android:layout_height="18dp" />
+            <View
+                android:layout_marginLeft="19dp"
+                android:background="@color/huise"
+                android:layout_width="0.4dp"
+                android:layout_height="100dp"
+                />
+            <ImageView
+                android:src="@drawable/lingxing"
+                android:layout_marginLeft="10dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/tv_year"
+                        android:text="2017-08-18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="26dp">
+                <TextView
+                    android:gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/danhao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+                <TextView
+
+                    android:gravity="center"
+                    android:id="@+id/tv_danhao"
+                    android:layout_marginLeft="10dp"
+                    android:text="13145201314520"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="26dp">
+                    <ImageView
+                        android:visibility="gone"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:src="@drawable/lishijiluicon"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp" />
+
+
+
+
+                    <TextView
+                        android:visibility="gone"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/jieshanhuafei"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:visibility="gone"
+                        android:id="@+id/tv_moneys"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="@color/top_red"
+                        android:text="@string/jiner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:textColor="@color/qianheise"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/yj"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:id="@+id/tv_yajin"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/jinbi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+                <TextView
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/tv_zhifuStyle"
+                    android:layout_marginRight="15dp"
+                    android:layout_alignParentRight="true"
+                    android:text="@string/zhifubao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+            <View
+                android:visibility="gone"
+                android:layout_marginTop="5dp"
+                android:background="@color/huise"
+                android:layout_width="match_parent"
+                android:layout_height="0.4dp"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

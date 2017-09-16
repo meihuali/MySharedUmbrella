@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="52dp"
+	android:background="@color/white"
+	android:orientation="vertical" >
+	<RelativeLayout
+		android:background="@color/lanse_x_x"
+		android:layout_width="match_parent"
+		android:layout_height="50dp">
+		<ImageView
+			android:id="@+id/btn_backs"
+			android:layout_marginLeft="8dp"
+			android:layout_centerVertical="true"
+			android:src="@drawable/btn_back"
+			android:layout_width="30dp"
+			android:layout_height="30dp" />
+		<TextView
+			android:textColor="@color/white"
+			android:textSize="19sp"
+			android:gravity="center"
+			android:text="@string/xuanzedizhi"
+			android:layout_centerHorizontal="true"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent" />
+		<TextView
+			android:id="@+id/tv_mingxi"
+			android:layout_marginRight="10dp"
+			android:textSize="16sp"
+			android:textColor="@color/white"
+			android:text="@string/queding"
+			android:gravity="center"
+			android:layout_alignParentRight="true"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent" />
+	</RelativeLayout>
+
+<!---->
+
+</LinearLayout>

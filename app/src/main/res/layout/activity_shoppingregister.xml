@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:background="@drawable/wodeqianbao_x"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <RelativeLayout
+        android:id="@+id/rl_layout"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <ImageView
+            android:id="@+id/image_back"
+            android:layout_marginLeft="8dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/btn_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+        <TextView
+            android:textColor="@color/white"
+            android:textSize="19sp"
+            android:gravity="center"
+            android:text="@string/tianxiexinxi"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+    <!-- 下面是 输入数据类-->
+    <LinearLayout
+        android:layout_marginTop="100dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_marginTop="13dp"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:layout_marginLeft="25dp"
+                android:text="@string/dianming"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <com.example.administrator.mysharedumbrella01.utils.EditTextWithDelete
+                android:id="@+id/edit_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="17dp"
+                android:layout_marginRight="17dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:backgroundTint="@color/white"
+                android:imeOptions="actionNext"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_marginTop="13dp"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:layout_marginLeft="25dp"
+                android:text="@string/shoujihaomaname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <com.example.administrator.mysharedumbrella01.utils.EditTextWithDelete
+               android:id="@+id/ed_shouhaoma"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="18dp"
+                android:layout_marginRight="17dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/white"
+                android:imeOptions="actionNext"
+                android:inputType="numberDecimal"
+                android:textSize="18sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_marginTop="13dp"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:layout_marginLeft="25dp"
+                android:text="@string/password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <com.example.administrator.mysharedumbrella01.utils.EditTextWithDelete
+                android:id="@+id/ed_passWord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="35dp"
+                android:layout_marginRight="17dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:backgroundTint="@color/white"
+                android:imeOptions="actionNext"
+                android:inputType="textPassword"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+                <com.jkb.vcedittext.VerificationCodeEditText
+                android:layout_width="190dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="28dp"
+                android:inputType="number"
+                android:id="@+id/am_et"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                app:bottomLineHeight="2dp"
+                app:bottomLineNormalColor="@color/lanse"
+                app:bottomLineSelectedColor="@color/lanse"
+                app:figures="4"
+                app:selectedBackgroundColor="@color/toumingses"
+                app:verCodeMargin="10dp" />
+            <Button
+                android:id="@+id/btn_getYzm"
+                android:textColor="@color/lanse"
+                android:text="@string/huquyanzm"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/jianbian_x"
+                android:layout_marginTop="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp" />
+
+        </LinearLayout>
+
+       <LinearLayout
+           android:gravity="center_horizontal"
+           android:layout_width="match_parent"
+           android:layout_height="80dp">
+           <Button
+               android:textColor="@color/white"
+               android:id="@+id/btn_next"
+               android:layout_gravity="bottom"
+               android:text="@string/tijiao"
+               android:background="@drawable/jianbian_x"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content" />
+       </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

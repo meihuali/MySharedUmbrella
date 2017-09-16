@@ -32,7 +32,7 @@ public class HistoricalAdapter extends BaseQuickAdapter<HistoryBean.DataBean,Bas
             //开始时间
             helper.setText(R.id.tv_startTime,startTimes);
             //雨伞编号
-            helper.setText(R.id.tv_bianhao, item.getId());
+            helper.setText(R.id.tv_bianhao, item.getLa_umbrella_id());
             //借伞总时间
            double duration =  item.getDuration();
             if (duration < 0) {
@@ -40,9 +40,9 @@ public class HistoricalAdapter extends BaseQuickAdapter<HistoryBean.DataBean,Bas
             } else {
                 helper.setText(R.id.tv_time,item.getDuration()+"分钟");
             }
-
             //借伞话费的金额
-            helper.setText(R.id.tv_money,item.getExpense()+"元");
+            helper.setText(R.id.tv_money,"￥"+item.getExpense());
+
         }
     }
 }

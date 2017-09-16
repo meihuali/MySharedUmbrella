@@ -72,9 +72,8 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                 str = "用户取消";
                 break;
         }
-        Toast.makeText(this, str+"  "+resp.errCode, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
 
-      //  Toast.makeText(this, str+"  "+resp.errStr, Toast.LENGTH_SHORT).show();
 
         this.finish();
 

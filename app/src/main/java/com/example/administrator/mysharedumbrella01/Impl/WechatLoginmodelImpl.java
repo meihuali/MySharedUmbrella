@@ -18,19 +18,20 @@ import okhttp3.Response;
 
 public class WechatLoginmodelImpl implements IsWechaLoginModel {
     @Override
-    public void login(final OnLonInLisenerst lisenerst, String username, String userphoto, String openid,String unionid) {
+    public void login(final OnLonInLisenerst lisenerst, String username, String userphoto, String openid,String unionid,String type) {
         String url = ConfigUtils.ZHU_YU_MING+ConfigUtils.WECHAT_LOGING;
         OkGo.post(url)
                 .params("appid",openid)
                 .params("name",username)
                 .params("photo",userphoto)
                 .params("unionid",unionid)
+                .params("type",type)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         L.e("三方微信登录 "+s);
                         //解析
-                        Gson gson = new Gson();
+                         Gson gson = new Gson();
                         WechatLoginBean wlb = gson.fromJson(s, WechatLoginBean.class);
                         lisenerst.onComplete(wlb);
                     }
@@ -38,6 +39,7 @@ public class WechatLoginmodelImpl implements IsWechaLoginModel {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
+                        L.e("三方微信登录 "+response.message());
                     }
                 });
     }

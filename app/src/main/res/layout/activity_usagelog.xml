@@ -1,37 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <RelativeLayout
-        android:background="@color/zhutiyanse"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="wrap_content">
         <ImageView
-            android:id="@+id/image_back"
-            android:layout_marginLeft="7dp"
-            android:layout_centerVertical="true"
-            android:src="@drawable/btn_back"
-            android:layout_width="35dp"
-            android:layout_height="30dp" />
-        <TextView
-            android:textSize="20sp"
-            android:textColor="@color/white"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:text="@string/lishijilu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:src="@drawable/dingbujianbian"
+            android:scaleType="fitXY"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <RelativeLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/relativeLayout2">
+            <ImageView
+                android:id="@+id/image_back"
+                android:layout_marginLeft="7dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/btn_back"
+                android:layout_width="35dp"
+                android:layout_height="30dp" />
+            <TextView
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:text="@string/lishijilu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </FrameLayout>
 
-    </RelativeLayout>
-
+    <RelativeLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:layout_marginTop="20dp"
         android:id="@+id/smartLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:srlEnableHeaderTranslationContent="true"
-        app:srlEnableLoadmore="true">
+        app:srlEnableLoadmore="true"
+        >
 
         <com.scwang.smartrefresh.layout.header.ClassicsHeader
             android:layout_width="match_parent"
@@ -51,5 +68,5 @@
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 
-
+    </RelativeLayout>
 </LinearLayout>

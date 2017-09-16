@@ -37,11 +37,57 @@ public class LoginBean {
          * phone : 13144743223
          */
 
-        private String id;
+        private String r_id;
         private String phone;
         private int isroot;
         private String photo;
         private String username;
+        private String r_img;
+        private String r_username;
+        private String is_Authentication;
+        private String QQ;
+        private String wechat;
+
+
+        public String getIs_Authentication() {
+            return is_Authentication;
+        }
+
+        public void setIs_Authentication(String is_Authentication) {
+            this.is_Authentication = is_Authentication;
+        }
+
+        public String getQQ() {
+            return QQ;
+        }
+
+        public void setQQ(String QQ) {
+            this.QQ = QQ;
+        }
+
+        public String getWechat() {
+            return wechat;
+        }
+
+        public void setWechat(String wechat) {
+            this.wechat = wechat;
+        }
+
+        public String getR_username() {
+            return r_username;
+        }
+
+        public void setR_username(String r_username) {
+            this.r_username = r_username;
+        }
+
+        public String getR_img() {
+            return r_img;
+        }
+
+        public void setR_img(String r_img) {
+            this.r_img = r_img;
+        }
 
         public String getUsername() {
             return username;
@@ -67,12 +113,12 @@ public class LoginBean {
             this.isroot = isroot;
         }
 
-        public String getId() {
-            return id;
+        public String getR_id() {
+            return r_id;
         }
 
-        public void setId(String id) {
-            this.id = id;
+        public void setR_id(String r_id) {
+            this.r_id = r_id;
         }
 
         public String getPhone() {

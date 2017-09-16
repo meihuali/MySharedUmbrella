@@ -20,14 +20,14 @@ public class BangDingZhangHaoPeresent {
     /*
     * 调用方法
     * */
-    public void bangzhanghao(String zh,String yzm,String r_id) {
+    public void bangzhanghao(String zh,String yzm,String r_id,String pwd) {
         if (bangDingZhangHaoModel != null) {
             bangDingZhangHaoModel.Bangding(new IsBangDingZhangHaoModel.OnBangdingLinerest() {
                 @Override
                 public void onComplet(Object object) {
                     bangdingZhangHaoView.showReuslt(object);
                 }
-            },zh,yzm,r_id);
+            },zh,yzm,r_id,pwd);
         }
     }
 }

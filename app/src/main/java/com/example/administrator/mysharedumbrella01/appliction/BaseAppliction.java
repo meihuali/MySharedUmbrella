@@ -6,12 +6,20 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.StrictMode;
 import android.widget.Toast;
 
 
+import com.bilibili.boxing.BoxingCrop;
+import com.bilibili.boxing.BoxingMediaLoader;
+import com.bilibili.boxing.loader.IBoxingCrop;
+import com.bilibili.boxing.loader.IBoxingMediaLoader;
 import com.example.administrator.mysharedumbrella01.service.GetuiIntentService;
 import com.example.administrator.mysharedumbrella01.service.GetuiPushService;
+import com.example.administrator.mysharedumbrella01.utils.BoxingGlideLoader;
+import com.hss01248.dialog.MyActyManager;
+import com.hss01248.dialog.StyledDialog;
 import com.igexin.sdk.PushManager;
 import com.taobao.sophix.PatchStatus;
 import com.taobao.sophix.SophixManager;
@@ -49,6 +57,12 @@ public class BaseAppliction extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        //dialogUtils
+        StyledDialog.init(getApplicationContext());
+        registCallback();
+
+        //图片裁减库 之类的
+        BoxingMediaLoader.getInstance().init(new BoxingGlideLoader()); // 需要实现IBoxingMediaLoader
         //啊里热更新
         aliyunUpdataApp();
         //极光推送
@@ -155,5 +169,51 @@ public class BaseAppliction extends Application {
             }
         }
     }
+
+    /*
+    * 配置dialogUtils 用的
+    * */
+    private void registCallback() {
+        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+                MyActyManager.getInstance().setCurrentActivity(activity);
+
+
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+
+            }
+        });
+    }
+
+
 
 }

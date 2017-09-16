@@ -9,7 +9,7 @@ public interface IsTuiKuanModel {
     /*
     退款接口
     * */
-    void tuikuan(onTuikuanjiekouLinereset linereset,String zhanghao);
+    void tuikuan(onTuikuanjiekouLinereset linereset,String zhanghao,String num);
     /*
     * 退款接口回调
     * */

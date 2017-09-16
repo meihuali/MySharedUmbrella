@@ -11,7 +11,7 @@ public interface IsWechaLoginModel {
     /*
     * 微信登录
     * */
-    void login(OnLonInLisenerst lisenerst,String username,String userphoto,String openid,String unionid);
+    void login(OnLonInLisenerst lisenerst,String username,String userphoto,String openid,String unionid,String type);
     /*
     * 微信登录接口回调
     * */

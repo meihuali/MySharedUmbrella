@@ -8,14 +8,14 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="80dp">
+        android:layout_height="100dp">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
             <ImageView
                 android:layout_marginTop="5dp"
-                android:src="@drawable/lingxing"
+                android:src="@drawable/jilutubiao_x"
                 android:layout_marginLeft="10dp"
                 android:layout_width="18dp"
                 android:layout_height="18dp" />
@@ -23,7 +23,7 @@
                 android:layout_marginLeft="19dp"
                 android:background="@color/huise"
                 android:layout_width="0.4dp"
-                android:layout_height="match_parent"
+                android:layout_height="100dp"
                 />
             <ImageView
                 android:src="@drawable/lingxing"
@@ -31,11 +31,12 @@
                 android:layout_width="15dp"
                 android:layout_height="15dp" />
         </LinearLayout>
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
             <LinearLayout
                 android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
@@ -52,6 +53,78 @@
             <LinearLayout
                 android:layout_marginTop="5dp"
                 android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="26dp">
+                <TextView
+                    android:gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/jieshanhuafei"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:id="@+id/tv_money"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/lanse"
+                    android:text="@string/jiner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="26dp">
+                    <ImageView
+                        android:visibility="gone"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="10dp"
+                        android:src="@drawable/lishijiluicon"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp" />
+                    <TextView
+                        android:gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:text="@string/jiesanshij"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+                    <TextView
+                        android:gravity="center"
+                        android:textColor="@color/juse"
+                        android:id="@+id/tv_time"
+                        android:layout_marginLeft="10dp"
+                        android:text="@string/shijian"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+
+                    <ImageView
+                        android:visibility="gone"
+                        android:layout_marginLeft="15dp"
+                        android:src="@drawable/jibi"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp" />
+                    <TextView
+                        android:visibility="gone"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/jieshanhuafei"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:visibility="gone"
+                        android:id="@+id/tv_moneys"
+                        android:layout_marginLeft="5dp"
+                        android:textColor="@color/top_red"
+                        android:text="@string/jiner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
@@ -59,7 +132,7 @@
                     android:layout_marginLeft="10dp"
                     android:text="@string/yushanbianhao"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent" />
                 <TextView
                     android:id="@+id/tv_bianhao"
                     android:layout_marginLeft="10dp"
@@ -67,50 +140,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
-            <LinearLayout
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="10dp"
-                    android:src="@drawable/lishijiluicon"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp" />
-                <TextView
-                    android:layout_marginLeft="5dp"
-                    android:text="@string/jiesanshij"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:textColor="@color/juse"
-                    android:id="@+id/tv_time"
-                    android:layout_marginLeft="10dp"
-                    android:text="@string/shijian"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
 
-                <ImageView
-                    android:layout_marginLeft="15dp"
-                    android:src="@drawable/jibi"
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp" />
-                <TextView
-                    android:layout_marginLeft="5dp"
-                    android:text="@string/jieshanhuafei"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:id="@+id/tv_money"
-                    android:layout_marginLeft="5dp"
-                    android:textColor="@color/top_red"
-                    android:text="@string/jiner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
             <View
+                android:visibility="gone"
                 android:layout_marginTop="5dp"
                 android:background="@color/huise"
                 android:layout_width="match_parent"

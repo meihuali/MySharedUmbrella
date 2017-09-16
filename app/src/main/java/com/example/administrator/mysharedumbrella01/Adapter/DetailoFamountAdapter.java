@@ -26,9 +26,10 @@ public class DetailoFamountAdapter extends BaseQuickAdapter<DetailoFamounBean.Da
 
     @Override
     protected void convert(BaseViewHolder helper, DetailoFamounBean.DataBean item) {
+
             //支付金额
             String money =  item.getMoney();
-            helper.setText(R.id.tv_money,money+"元");
+            helper.setText(R.id.tv_money,"￥"+money);
             //支付是否成功
             String status = item.getStatus();
             helper.setText(R.id.tv_status,status);

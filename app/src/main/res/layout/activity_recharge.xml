@@ -1,40 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<LinearLayout
+    android:background="@color/white"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <RelativeLayout
-        android:background="@color/zhutiyanse"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="wrap_content">
         <ImageView
-            android:id="@+id/image_back"
-            android:layout_marginLeft="8dp"
-            android:layout_centerVertical="true"
-            android:src="@drawable/btn_back"
-            android:layout_width="30dp"
-            android:layout_height="30dp" />
-        <TextView
-            android:textColor="@color/white"
-            android:textSize="19sp"
-            android:gravity="center"
-            android:text="@string/qianbaochongzhi"
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-    </RelativeLayout>
+            android:background="@drawable/dingbujianbian"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <RelativeLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <ImageView
+                android:id="@+id/image_back"
+                android:layout_marginLeft="8dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/btn_back"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+            <TextView
+                android:textColor="@color/white"
+                android:textSize="19sp"
+                android:gravity="center"
+                android:text="@string/qianbaochongzhi"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
             android:layout_marginTop="15dp"
             android:layout_marginLeft="15dp"
-            android:textColor="@color/juse"
+            android:textColor="@color/shenhuise_x"
             android:textSize="18sp"
             android:text="@string/chongzhijiner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_marginTop="15dp"
         android:orientation="vertical"
@@ -47,13 +67,14 @@
             <Button
                 android:textColor="@color/white"
                 android:id="@+id/btn_yibaiyuan"
-                android:background="@color/qianjuse"
+                android:background="@drawable/jianbian_x"
                 android:layout_marginLeft="15dp"
                 android:text="@string/yibaiyuan"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="50dp" />
             <Button
+                android:background="@drawable/button_yuanjiaokongxin_lanse"
                 android:id="@+id/btn_wushiyuan"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
@@ -62,12 +83,14 @@
                 android:layout_weight="1"
                 android:layout_height="50dp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <Button
+                android:background="@drawable/button_yuanjiaokongxin_lanse"
                 android:id="@+id/btn_ershiyuan"
                 android:layout_marginLeft="15dp"
                 android:text="@string/ershiyuan"
@@ -75,6 +98,7 @@
                 android:layout_weight="1"
                 android:layout_height="50dp" />
             <Button
+                android:background="@drawable/button_yuanjiaokongxin_lanse"
                 android:id="@+id/btn_shiyuan"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
@@ -85,6 +109,7 @@
         </LinearLayout>
     </LinearLayout>
 
+       <!--充值方式 微信 支付宝-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -101,7 +126,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="15dp"
-                android:src="@drawable/weixinzhifu" />
+                android:src="@drawable/weixinzhifu_x" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -126,29 +151,29 @@
 
                 <ImageView
                     android:id="@+id/image_weixin_gouxuan"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/dagou" />
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/dagou_x" />
             </LinearLayout>
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.4dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:background="@color/huise" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="15dp">
 
             <ImageView
                 android:id="@+id/zhifubao_icon"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="15dp"
-                android:src="@drawable/zhifubao" />
+                android:src="@drawable/zhifubaozhifu_x" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -173,27 +198,24 @@
 
                 <ImageView
                     android:id="@+id/image_zhifubao_weigouxuan"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_alignParentRight="true"
-                    android:src="@drawable/budagou" />
+                    android:src="@drawable/budagou_x" />
 
-                <ImageView
-                    android:id="@+id/image_zhifubao_gouxuan"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_alignParentRight="true"
-                    android:src="@drawable/gouxuan"
-                    android:visibility="gone" />
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
+        android:gravity="center"
+        android:layout_marginBottom="65dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
+            android:visibility="gone"
             android:textColor="@color/qianheise"
             android:textSize="12sp"
             android:gravity="center"
@@ -202,15 +224,13 @@
             android:layout_height="wrap_content" />
         <Button
             android:id="@+id/btn_Recharge"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="15dp"
             android:textSize="18sp"
             android:textColor="@color/white"
             android:text="@string/quchongzhis"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/button_yuanjiao_juse"
-            android:layout_width="match_parent"
-            android:layout_height="45dp" />
+            android:background="@drawable/jianbian_x"
+            android:layout_width="132dp"
+            android:layout_height="50dp" />
     </LinearLayout>
+    </LinearLayout>
+
 </LinearLayout>

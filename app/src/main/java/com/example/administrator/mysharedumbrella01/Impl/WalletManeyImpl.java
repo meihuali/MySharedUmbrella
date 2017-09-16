@@ -32,6 +32,8 @@ public class WalletManeyImpl implements IsWalletManeyModel {
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
+                        //money 为余额
+                        //deposit 为押金？
                         L.e("qianbao 钱包 "+s);
                         try {
                             Gson gson = new Gson();

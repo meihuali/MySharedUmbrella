@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
+    android:id="@+id/fl_layout"
     android:layout_height="match_parent">
+    <ImageView
+        android:background="@drawable/wodeqianbao_x"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
     <RelativeLayout
-        android:background="@color/zhutiyanse"
+        android:id="@+id/rl_layout"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="50dp">
         <ImageView
@@ -36,16 +41,14 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:background="@drawable/qianbao"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <LinearLayout
+            android:layout_centerInParent="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical">
-
             <TextView
                 android:layout_marginTop="6dp"
                 android:textColor="@color/white"
@@ -58,7 +61,7 @@
 
             <TextView
                 android:textColor="@color/white"
-                android:layout_marginTop="38dp"
+                android:layout_marginTop="32dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -66,33 +69,8 @@
                 android:textSize="30sp" />
         </LinearLayout>
         <LinearLayout
-            android:layout_marginBottom="80dp"
-            android:id="@+id/llayout"
-            android:gravity="center"
             android:orientation="horizontal"
-            android:layout_alignParentBottom="true"
-            android:layout_width="match_parent"
-            android:layout_height="50dp">
-            <TextView
-                android:id="@+id/tv_yajin"
-                android:textSize="16sp"
-                android:textColor="@color/white"
-                android:gravity="center"
-                android:text="@string/yanjin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/tv_tuikuan"
-                android:textSize="16sp"
-                android:textColor="@color/top_red"
-                android:layout_marginLeft="15dp"
-                android:text="@string/yajintuikuai"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_marginBottom="18dp"
+            android:layout_marginBottom="85dp"
             android:layout_above="@+id/ll_layout"
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
@@ -104,7 +82,7 @@
                 android:textSize="14sp"
                 android:textColor="@color/white"
                 android:text="@string/chongzhiYuEr"
-                android:background="@drawable/button_xiaoyuanjiao_juse"
+                android:background="@drawable/jianbian_x"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"/>
@@ -115,13 +93,40 @@
                 android:textSize="14sp"
                 android:textColor="@color/white"
                 android:text="@string/chongzhiyajin"
-                android:background="@drawable/button_xiaoyuanjiao_juse"
+                android:background="@drawable/jianbian_x"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"/>
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_marginBottom="35dp"
+            android:id="@+id/llayout"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:id="@+id/tv_yajin"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:text="@string/yanjin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tv_tuikuan"
+                android:textSize="20sp"
+                android:textColor="@color/lanse"
+                android:layout_marginLeft="15dp"
+                android:text="@string/yajintuikuai"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
     </RelativeLayout>
 
-</LinearLayout>
+</FrameLayout>

@@ -52,11 +52,15 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recharge);
         //沉浸式
-        ImmersionBar.with(this)
+/*        ImmersionBar.with(this)
                 .statusBarColor(R.color.zhutiyanse) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
                 // .statusBarDarkFont(true,0.2f)    如果是白色或者透明状态的时候就加上他
                 .fitsSystemWindows(true) //解决状态栏和布局重叠问题，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色
+                .init();*/
+        ImmersionBar.with(this)
+                .transparentBar()
                 .init();
+
         initView();
     }
 
@@ -91,10 +95,11 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
                 btn_wushiyuan.setTextColor(getResources().getColor(R.color.txt_balck));
                 btn_shiyuan.setTextColor(getResources().getColor(R.color.txt_balck));
                 btn_ershiyuan.setTextColor(getResources().getColor(R.color.txt_balck));
-                btn_yibaiyuan.setBackgroundColor(getResources().getColor(R.color.qianjuse));
-                btn_wushiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
-                btn_ershiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
-                btn_shiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
+
+                btn_yibaiyuan.setBackground(ContextCompat.getDrawable(this,R.drawable.jianbian_x));
+                btn_ershiyuan.setBackground(ContextCompat.getDrawable(this,R.drawable.button_yuanjiaokongxin_lanse));
+                btn_wushiyuan.setBackground(ContextCompat.getDrawable(this,R.drawable.button_yuanjiaokongxin_lanse));
+                btn_shiyuan.setBackground(ContextCompat.getDrawable(this,R.drawable.button_yuanjiaokongxin_lanse));
                 //点击一百元 赋值为100
                 moneys = 100;
                 //充值内容主题
@@ -105,10 +110,11 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
                 btn_yibaiyuan.setTextColor(getResources().getColor(R.color.txt_balck));
                 btn_ershiyuan.setTextColor(getResources().getColor(R.color.black));
                 btn_shiyuan.setTextColor(getResources().getColor(R.color.txt_balck));
-                btn_wushiyuan.setBackgroundColor(getResources().getColor(R.color.qianjuse));
-                btn_yibaiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
-                btn_ershiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
-                btn_shiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
+
+                btn_wushiyuan.setBackground(ContextCompat.getDrawable(this,R.drawable.jianbian_x));
+                btn_yibaiyuan.setBackground(ContextCompat.getDrawable(this,R.drawable.button_yuanjiaokongxin_lanse));
+                btn_ershiyuan.setBackground(ContextCompat.getDrawable(this,R.drawable.button_yuanjiaokongxin_lanse));
+                btn_shiyuan.setBackground(ContextCompat.getDrawable(this,R.drawable.button_yuanjiaokongxin_lanse));
                 // 点击五十元 赋值为50；
                 moneys = 50;
                 //充值内容主题
@@ -119,10 +125,11 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
                 btn_yibaiyuan.setTextColor(getResources().getColor(R.color.txt_balck));
                 btn_wushiyuan.setTextColor(getResources().getColor(R.color.txt_balck));
                 btn_shiyuan.setTextColor(getResources().getColor(R.color.txt_balck));
-                btn_ershiyuan.setBackgroundColor(getResources().getColor(R.color.qianjuse));
-                btn_yibaiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
-                btn_wushiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
-                btn_shiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
+
+                btn_ershiyuan.setBackground(ContextCompat.getDrawable(this,R.drawable.jianbian_x));
+                btn_yibaiyuan.setBackground(ContextCompat.getDrawable(this,R.drawable.button_yuanjiaokongxin_lanse));
+                btn_wushiyuan.setBackground(ContextCompat.getDrawable(this,R.drawable.button_yuanjiaokongxin_lanse));
+                btn_shiyuan.setBackground(ContextCompat.getDrawable(this,R.drawable.button_yuanjiaokongxin_lanse));
                 moneys = 20;
                 //充值内容主题
                 bodyZhuTi = "充值20元";
@@ -132,26 +139,26 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
                 btn_yibaiyuan.setTextColor(getResources().getColor(R.color.txt_balck));
                 btn_wushiyuan.setTextColor(getResources().getColor(R.color.txt_balck));
                 btn_ershiyuan.setTextColor(getResources().getColor(R.color.txt_balck));
-                btn_shiyuan.setBackgroundColor(getResources().getColor(R.color.qianjuse));
-                btn_yibaiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
-                btn_wushiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
-                btn_ershiyuan.setBackgroundColor(getResources().getColor(R.color.huise));
+
+                btn_shiyuan.setBackground(ContextCompat.getDrawable(this,R.drawable.jianbian_x));
+                btn_yibaiyuan.setBackground(ContextCompat.getDrawable(this,R.drawable.button_yuanjiaokongxin_lanse));
+                btn_wushiyuan.setBackground(ContextCompat.getDrawable(this,R.drawable.button_yuanjiaokongxin_lanse));
+                btn_ershiyuan.setBackground(ContextCompat.getDrawable(this,R.drawable.button_yuanjiaokongxin_lanse));
                 moneys = 10;
                 //充值内容主题
                 bodyZhuTi = "充值10元";
                 break;
             //点击支付宝勾选按钮
             case R.id.image_zhifubao_weigouxuan:
-                image_zhifubao_weigouxuan.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.dagou));
-                image_weixin_gouxuan.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.budagou));
+                image_zhifubao_weigouxuan.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.dagou_x));
+                image_weixin_gouxuan.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.budagou_x));
                 types = 2; //代表用户选择的是支付宝
                 break;
             //点击微信勾选按钮
             case R.id.image_weixin_gouxuan:
-//                image_weixin_gouxuan.setImageDrawable(getDrawable(R.drawable.gouxuan));
-//                image_zhifubao_weigouxuan.setImageDrawable(getDrawable(R.drawable.weigouxuan));
-                image_weixin_gouxuan.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.dagou));
-                image_zhifubao_weigouxuan.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.budagou));
+//
+                image_weixin_gouxuan.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.dagou_x));
+                image_zhifubao_weigouxuan.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.budagou_x));
                 types = 1; //代表用户选择的是微信
                 break;
             /*
@@ -164,12 +171,13 @@ public class RechargeActivity extends AppCompatActivity implements View.OnClickL
                     //获取用户登录成功后的手机号码
                     String phone =   ShareUtils.getString(getApplicationContext(),"zhanghao","");
                     WeChatZhiFuJinErPerserent weixinzhifujiner = new WeChatZhiFuJinErPerserent(this);
-                    weixinzhifujiner.weixinjiner("2",0.01,"2",phone);
+                    weixinzhifujiner.weixinjiner("2",moneys,"2",phone);
 
                 } else if (types == 2) { //等于2 代表选择选择的是 支付宝支付 这里掉微信的支付接口 然后在把moneys 金额带过去
                     String zh = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
                     AlipayPerserent ap = new AlipayPerserent(this);
-                    ap.fach("2", moneys + "", zh, "1");
+
+                    ap.fach("2", moneys + "", zh, "2");
                 }
                 break;
         }

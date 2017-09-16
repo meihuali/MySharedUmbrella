@@ -1,26 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
+        android:layout_height="wrap_content">
+        <ImageView
+            android:scaleType="fitXY"
+            android:src="@drawable/dingbujianbian"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
         <RelativeLayout
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:background="@color/top_red">
+            >
 
             <ImageView
                 android:id="@+id/imge_backes"
                 android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_height="26dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="10dp"
                 android:background="@drawable/btn_back" />
 
             <TextView
@@ -32,6 +37,14 @@
                 android:textColor="@color/txt_while"
                 android:textSize="18sp" />
         </RelativeLayout>
+
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -54,8 +67,8 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="30dp"
                 android:src="@drawable/liuyifei"
-                app:civ_border_color="@color/mediumorchid"
-                app:civ_border_width="2dp" />
+                app:civ_border_color="@color/lanse_x"
+                app:civ_border_width="5dp" />
         </RelativeLayout>
 
         <View
@@ -69,6 +82,7 @@
             android:layout_height="50dp">
 
             <TextView
+                android:textColor="@color/qianheise"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -77,6 +91,7 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:textColor="@color/qianhuise"
                 android:id="@+id/tv_UserNick"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -87,16 +102,19 @@
         </RelativeLayout>
 
         <View
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="0.4dp"
             android:layout_marginTop="5dp"
             android:background="@color/huise" />
 
         <RelativeLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="50dp">
 
             <TextView
+                android:textColor="@color/qianheise"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -105,6 +123,7 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:textColor="@color/qianhuise"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -114,16 +133,19 @@
         </RelativeLayout>
 
         <View
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="0.4dp"
             android:layout_marginTop="5dp"
             android:background="@color/huise" />
 
         <RelativeLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="50dp">
 
             <TextView
+                android:textColor="@color/qianheise"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -161,6 +183,7 @@
             android:layout_height="50dp">
 
             <TextView
+                android:textColor="@color/qianheise"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -169,6 +192,7 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:textColor="@color/qianhuise"
                 android:id="@+id/tv_userPhone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -79,7 +79,7 @@
         <com.example.administrator.mysharedumbrella01.utils.EditTextWithDelete
             android:id="@+id/edit_phone"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="30dp"
@@ -90,10 +90,40 @@
             android:inputType="numberDecimal"
             android:textSize="18sp" />
     </LinearLayout>
+
     <View style="@style/line"
         android:layout_marginRight="15dp"
         android:layout_marginLeft="15dp"
         />
+    <LinearLayout
+        android:layout_marginLeft="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/mima"
+            android:textColor="#ffc7c7cd"
+            android:textSize="18sp" />
+
+        <com.example.administrator.mysharedumbrella01.utils.EditTextWithDelete
+            android:id="@+id/edit_pawss"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="30dp"
+            android:background="@color/white"
+            android:ems="10"
+            android:hint="请输入收号码"
+            android:inputType="numberDecimal"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+
 
     <View
         android:layout_marginRight="15dp"

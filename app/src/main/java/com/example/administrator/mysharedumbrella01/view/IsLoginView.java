@@ -8,4 +8,8 @@ import com.example.administrator.mysharedumbrella01.entivity.LoginBean;
 
 public interface IsLoginView {
     void showLogin(String phone,String password , LoginBean logindata);
+    /*
+    *  登录失败
+    * */
+    void showLoginError();
 }

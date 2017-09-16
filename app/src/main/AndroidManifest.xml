@@ -6,12 +6,12 @@
     <application
         android:name=".appliction.BaseAppliction"
         android:allowBackup="true"
-        android:icon="@drawable/icons"
+        android:icon="@drawable/appicon"
         android:label="@string/app_name"
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:name"
+        tools:replace="android:name,android:label,android:theme"
 
         >
 
@@ -42,18 +42,28 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
         <!--历史记录-->
-        <activity android:name=".ui.UsagelogActivity"/>
+        <activity android:name=".ui.UsagelogActivity"
+            android:theme="@style/noAnimTheme"
+            />
         <!--登录界面-->
         <activity android:name=".ui.LoginActivity"/>
         <!--设置界面-->
-        <activity android:name=".ui.SettingsActivity"/>
-        <!--个人设置界面-->
-        <activity android:name=".ui.SettingsYusanActivity"/>
+        <activity android:name=".ui.SettingsActivity"
+            />
+
+        <!-- 个人设置界面-->
+        <activity android:name=".ui.SettingsYusanActivity"
+            android:theme="@style/noAnimTheme"
+            />
         <!--退出登录的那个设置界面-->
         <activity android:name=".ui.settingsssssActivity"/>
         <!--原型头像进入后的activity-->
-        <activity android:name=".ui.YuanXingTouxiangSettingsActivity"/>
-        <activity android:name=".ui.MainActivity"/>
+        <activity android:name=".ui.YuanXingTouxiangSettingsActivity"
+            android:theme="@style/AppTheme.Transparent"
+            />
+        <activity android:name=".ui.MainActivity"
+            android:theme="@style/AppTheme.Transparent"
+            />
         <!--注册的界面-->
         <activity android:name=".ui.RegisterActivity"/>
         <!--修改密码界面-->
@@ -64,15 +74,24 @@
             android:exported="true"
             android:launchMode="singleTop"/>
         <!--我的钱包 页面-->
-        <activity android:name=".ui.MyWalletActivity"/>
+        <activity android:name=".ui.MyWalletActivity"
+            android:theme="@style/AppTheme.Transparent"
+            />
         <!--押金充值界面-->
         <activity android:name=".ui.DepositRechargeActivity"/>
+        <!--修改过的充押金界面 -->
+        <activity android:name=".ui.DepositRechargeActivitys"/>
+
         <!--邀请好友界面-->
         <activity android:name=".ui.InvitingFriendsAcitivity"/>
         <!--钱包 明细-->
-        <activity android:name=".ui.DetailofamountActivity" />
+        <activity android:name=".ui.DetailofamountActivity"
+            android:theme="@style/AppTheme.Transparent"
+            />
         <!--充值界面-->
-        <activity android:name=".ui.RechargeActivity"/>
+        <activity android:name=".ui.RechargeActivity"
+            android:theme="@style/AppTheme.Transparent"
+            />
 
         <!--微信 分享-->
         <activity
@@ -153,12 +172,19 @@
         <!--这个是用户充值协议-->
         <activity android:name=".ui.User_chongzhixieyiActivity"/>
         <!-- 客户反馈-->
-        <activity android:name=".ui.KeHuFanKuiActivity"/>
+        <activity android:name=".ui.KeHuFanKuiActivity"
+            android:theme="@style/noAnimTheme"
+            />
         <!--第三方登录 绑定 手机-->
         <activity android:name=".ui.BangDingZhangHaoActivity"/>
         <!--充值押金协议-->
         <activity android:name=".ui.User_chongzhiyajinxieyiActivity"/>
-
+        <!--联系客户-->
+        <activity android:name=".ui.LianXiKeFuActivity"/>
+        <!--押金说明-->
+        <activity android:name=".ui.YajinshuomingActivity"/>
+        <!--用户协议-->
+        <activity android:name=".ui.UserXieYiActivitys"/>
         <!--啊里云热更新 -->
         <meta-data
             android:name="com.taobao.android.hotfix.IDSECRET"
@@ -226,6 +252,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
 
+
         <activity
             android:name="com.igexin.sdk.GActivity"
             android:excludeFromRecents="true"
@@ -249,8 +276,33 @@
             android:exported="true"
             android:authorities="downloads.${applicationId}"
             android:process=":pushservice" />
-
-
+        <!--商家注册界面activity-->
+        <activity android:name=".ui.ShoppingUserRegister"/>
+        <!--商家认证界面-->
+        <activity android:name=".ui.ShangJiaRenZhengActivity"/>
+        <!--商家信息类容界面-->
+        <activity android:name=".ui.ShoppingShangjiaxinxiActivity"/>
+        <!--商务中心 界面-->
+        <activity android:name=".ui.ShoppingShangWuZhongXinActivity"/>
+        <!--商家设置界面-->
+        <activity android:name=".ui.ShoppingSettingsActivity"/>
+        <!--伞座和伞界面-->
+        <activity android:name=".ui.ShanZuoSanActivity"/>
+        <!--图片更改界面-->
+        <activity android:name=".ui.UdataImageActivity"/>
+        <!--入驻商家提供资料-->
+        <activity android:name=".ui.ShoppingSettledDataActivity"/>
+        <!--商家记录-->
+        <activity android:name=".ui.ShoppingRecordActivity" />
+        <!--商家收获地址管理-->
+        <activity android:name=".ui.ShoppingHarvestAddress"/>
+        <!--商家新增地址选择界面-->
+        <activity android:name=".ui.AddressSelectorActivity"/>
+        <!--地址选择界面-->
+        <activity android:name=".ui.CitySelect1Activity"/>
+        <activity android:name=".ui.CitySelect2Activity"/>
+        <!--商家货物签收-->
+        <activity android:name=".ui.ShoppingGoodsReceiptActivity"/>
     </application>
 
     <!--高德地图权限-->

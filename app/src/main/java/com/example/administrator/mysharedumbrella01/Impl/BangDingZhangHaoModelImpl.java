@@ -18,11 +18,12 @@ import okhttp3.Response;
 
 public class BangDingZhangHaoModelImpl implements IsBangDingZhangHaoModel {
     @Override
-    public void Bangding(final OnBangdingLinerest linerest, String zh, String yzm, String r_id) {
+    public void Bangding(final OnBangdingLinerest linerest, String zh, String yzm, String r_id,String pwd) {
         String url = ConfigUtils.ZHU_YU_MING+ConfigUtils.BANGDINGSHOUJIHAOMA;
         OkGo.post(url)
                 .params("mobilephone",zh)
                 .params("r_id",r_id)
+                .params("pwd",pwd)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {

@@ -1,6 +1,7 @@
 package com.example.administrator.mysharedumbrella01.ui;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -15,8 +16,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.text.style.TypefaceSpan;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -26,13 +30,18 @@ import com.example.administrator.mysharedumbrella01.Adapter.HistoricalAdapter;
 import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.entivity.FanKuiBean;
 import com.example.administrator.mysharedumbrella01.entivity.KeFuFanKuiBean;
+import com.example.administrator.mysharedumbrella01.entivity.KefufankuisBean;
+import com.example.administrator.mysharedumbrella01.peresenet.IsKefufankuisPerserent;
 import com.example.administrator.mysharedumbrella01.peresenet.KefufankuiPerserent;
 import com.example.administrator.mysharedumbrella01.peresenet.ShangChuanTouXiangPersernet;
 import com.example.administrator.mysharedumbrella01.transition.Utilss;
 import com.example.administrator.mysharedumbrella01.utils.L;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
+import com.example.administrator.mysharedumbrella01.utils.ToastUtil;
 import com.example.administrator.mysharedumbrella01.view.IsKefufankuiView;
+import com.example.administrator.mysharedumbrella01.view.IsKefufankuisView;
 import com.gyf.barlibrary.ImmersionBar;
+import com.whyalwaysmea.circular.AnimUtils;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
 import com.yanzhenjie.permission.Rationale;
@@ -42,6 +51,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -59,7 +69,7 @@ import me.leefeng.promptlibrary.PromptDialog;
  * 客户返回 的界面
  */
 
-public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClickListener, IsKefufankuiView {
+public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClickListener, IsKefufankuiView, IsKefufankuisView {
     private ImageView image_back;
     private RecyclerView mRecyclerView;
     private FanKuiAdapter fanKuiAdapter;
@@ -78,6 +88,11 @@ public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClic
     private File tempFile = null;
     private File myCaptureFile;
     private  View ll_layout_a;
+    private Button btn_kefufankui;
+    private String typeID;
+    private String typeids;
+    private File file;
+    private EditText et_bodyss;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,12 +100,13 @@ public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClic
         //创建dialog对象
         promptDialog = new PromptDialog(this);
         //沉浸式
-        ImmersionBar.with(this)
+/*        ImmersionBar.with(this)
                 .statusBarColor(R.color.zhutiyanse) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
                 .fitsSystemWindows(true) //解决状态栏和布局重叠问题，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色
+                .init();*/
+        ImmersionBar.with(this)
                 .init();
-        //过渡动画
-        initTranstiosn();
+
         initView();
         initData();
     }
@@ -102,7 +118,12 @@ public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void initView() {
-        ll_layout_a = findViewById(R.id.ll_layoutss);
+        et_bodyss = (EditText) findViewById(R.id.et_bodyss);
+        btn_kefufankui = (Button) findViewById(R.id.btn_kefufankui);
+        btn_kefufankui.setOnClickListener(this);
+
+        //过渡动画
+        AnimUtils.animhpel(this,R.id.ll_layoutss);
         img_cemacr = (ImageView) findViewById(R.id.img_cemacr);
         img_cemacr.setOnClickListener(this);
         image_back = (ImageView) findViewById(R.id.image_back);
@@ -123,12 +144,16 @@ public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClic
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 for (int i = 0; i < mlist.size(); i++) {
                     if (i == position) {
-                        mlist.get(i).setSelect(!mlist.get(i).isSelect());
+                        //   mlist.get(i).setSelect(!mlist.get(i).isSelect());
+                        mlist.get(i).setSelect(true);
                     } else {
                         mlist.get(i).setSelect(false);
                     }
                 }
                 fanKuiAdapter.notifyDataSetChanged();
+                KeFuFanKuiBean.DataBean kffkbb = (KeFuFanKuiBean.DataBean) adapter.getItem(position);
+                typeids = kffkbb.getId();
+
             }
         });
 
@@ -140,15 +165,33 @@ public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:
-               // finish();
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    finishAfterTransition();
-                }
+                AnimUtils.finishAmins(KeHuFanKuiActivity.this,R.id.ll_xxx,view,R.id.ll_layoutss);
                 break;
             case R.id.img_cemacr:
                 openDialog();
                 break;
+            case R.id.btn_kefufankui:
+                promptDialog.showLoading("正在提交问题···");
+                String bodys = et_bodyss.getText().toString().trim();
+                String zh = ShareUtils.getString(getApplicationContext(),"zhanghao","");
+                if (!TextUtils.isEmpty(zh)) {
+                    if (!TextUtils.isEmpty(typeids)) {
+                        IsKefufankuisPerserent kefufankui = new IsKefufankuisPerserent(this);
+                        kefufankui.kefufankui(zh, typeids, file, bodys);
+                    } else {
+                        ToastUtil.showShortToast(getApplicationContext(), "请选择问题！");
+                    }
+                } else {
+                    ToastUtil.showShortToast(getApplicationContext(),"请先登录账号！");
+                }
+
+                break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        AnimUtils.finishonBackPressed(KeHuFanKuiActivity.this,R.id.ll_layoutss);
     }
 
     private void openDialog() {
@@ -316,14 +359,31 @@ public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClic
         Bundle bundle = data.getExtras();
         if (bundle != null) {
             Bitmap bitmap = bundle.getParcelable("data");
-            File file = saveBitmapFile(bitmap);
-            L.e("xiangce " + file);
+            file = saveBitmapFile(bitmap);
+
+            byte[] bitmapby = getBitmapByte(bitmap);
+
             //这里是请求网络上传到服务器了
-//            ShangChuanTouXiangPersernet sctxp = new ShangChuanTouXiangPersernet(KeHuFanKuiActivity.this);
-//            sctxp.fach(file,this);
+ /*           ShangChuanTouXiangPersernet sctxp = new ShangChuanTouXiangPersernet(KeHuFanKuiActivity.this);
+            sctxp.fach(file,this);*/
             img_cemacr.setImageBitmap(bitmap);
         }
     }
+    /*
+    * 将bitmap转成二进制数组
+    * */
+    public byte[] getBitmapByte(Bitmap bitmap){
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+        try {
+            out.flush();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return out.toByteArray();
+    }
+
 
     //Bitmap对象保存图片文件
     public File saveBitmapFile(Bitmap bitmap) {
@@ -334,7 +394,7 @@ public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClic
             if (!dirFile.exists()) {
                 dirFile.mkdir();
             }
-            myCaptureFile = new File(path + UUID.randomUUID());
+            myCaptureFile = new File(path + UUID.randomUUID()+".png");
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(myCaptureFile));
             bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bos);
             bos.flush();
@@ -363,10 +423,11 @@ public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClic
     * */
     @Override
     public void showRelout(Object object) {
+
         KeFuFanKuiBean keFuFanKuiBean = (KeFuFanKuiBean) object;
         int status = keFuFanKuiBean.getStatus();
         if (status == 1) {
-           List<KeFuFanKuiBean.DataBean> list =  keFuFanKuiBean.getData();
+            List<KeFuFanKuiBean.DataBean> list =  keFuFanKuiBean.getData();
             mlist.addAll(list);
             fanKuiAdapter.notifyDataSetChanged();
         } else {
@@ -375,17 +436,14 @@ public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClic
     }
 
     /*
-* 过渡动画
-* */
-    private void initTranstiosn() {
-        ll_layout_a = findViewById(R.id.ll_layoutss);
-        //进入动画
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setSharedElementEnterTransition(Utilss.buildShareElemEnterSet(ll_layout_a,R.id.ll_layoutss));
-        }
-        //返回动画
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setSharedElementReturnTransition(Utilss.buildShareElemReturnSet(ll_layout_a,R.id.ll_layoutss));
-        }
+    * 用户反馈的 问题·回调
+    * */
+    @Override
+    public void ShowBugFankui(Object object) {
+        promptDialog.dismiss();
+        KefufankuisBean kf = (KefufankuisBean) object;
+        kf.getData();
+        finish();
+        //   ToastUtil.showShortToast(getApplicationContext(),kf.getData());
     }
 }

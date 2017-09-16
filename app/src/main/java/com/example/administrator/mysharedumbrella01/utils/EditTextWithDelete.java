@@ -44,8 +44,8 @@ public class EditTextWithDelete extends EditText implements OnFocusChangeListene
 		init();
 	}
 	private void init() {
-		//获取图片资源
-		imgEnable = context.getResources().getDrawable(R.drawable.user_clear);
+		//获取图片资源 这里暂时注视
+		//imgEnable = context.getResources().getDrawable(R.drawable.user_clear);
 		addTextChangedListener(new TextWatcher() {		
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {

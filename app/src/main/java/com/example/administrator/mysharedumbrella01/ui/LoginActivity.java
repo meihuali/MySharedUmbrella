@@ -23,8 +23,10 @@ import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.appliction.BaseAppliction;
 import com.example.administrator.mysharedumbrella01.dialog.CustomDialogFactory;
 import com.example.administrator.mysharedumbrella01.entivity.LoginBean;
+import com.example.administrator.mysharedumbrella01.entivity.ShoppingLoginBean;
 import com.example.administrator.mysharedumbrella01.entivity.WechatLoginBean;
 import com.example.administrator.mysharedumbrella01.peresenet.LoginPeresenet;
+import com.example.administrator.mysharedumbrella01.peresenet.ShoppingLoginPerserent;
 import com.example.administrator.mysharedumbrella01.peresenet.WechatPerenest;
 import com.example.administrator.mysharedumbrella01.utils.ConfigUtils;
 import com.example.administrator.mysharedumbrella01.utils.EditTextWithDelete;
@@ -33,15 +35,22 @@ import com.example.administrator.mysharedumbrella01.utils.MD5Util;
 import com.example.administrator.mysharedumbrella01.utils.MyToast;
 import com.example.administrator.mysharedumbrella01.utils.RegularUtil;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
+import com.example.administrator.mysharedumbrella01.utils.StaticClass;
+import com.example.administrator.mysharedumbrella01.utils.ToastUtil;
 import com.example.administrator.mysharedumbrella01.view.IsLoginView;
+import com.example.administrator.mysharedumbrella01.view.IsShoppingLoginView;
 import com.example.administrator.mysharedumbrella01.view.IsWechatLoginView;
 import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
+import com.hss01248.dialog.StyledDialog;
+import com.hss01248.dialog.interfaces.MyDialogListener;
 import com.igexin.sdk.PushManager;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.utils.SocializeUtils;
+
+import org.w3c.dom.Text;
 
 import java.util.Iterator;
 import java.util.List;
@@ -55,7 +64,7 @@ import me.leefeng.promptlibrary.PromptDialog;
  * Created by Administrator on 2017/6/2 0002.
  */
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener, IsLoginView, IsWechatLoginView {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, IsLoginView, IsWechatLoginView, IsShoppingLoginView {
     private Button btn_login;
     private EditTextWithDelete edit_phone; //手机号码
     private EditText edit_pwd; //密码
@@ -70,7 +79,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private boolean isauth;
     private LinearLayout btn_login_QQ;
     private String userImg;
-
+    private String r_id;
+    //商家注册按钮
+    private TextView txt_shpngregister;
+    private String phone,pwd;
+    //商家登录
+    private Button btn_shpoinglogin;
+    private String type;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +114,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     // 初始化
     private void initView() {
+        btn_shpoinglogin = (Button) findViewById(R.id.btn_shpoinglogin);
+        btn_shpoinglogin.setOnClickListener(this);
+        txt_shpngregister = (TextView) findViewById(R.id.txt_shpngregister);
+        txt_shpngregister.setOnClickListener(this);
         btn_login_QQ = (LinearLayout) findViewById(R.id.btn_login_QQ);
         btn_login_QQ.setOnClickListener(this);
         btn_weixinLogin = (LinearLayout) findViewById(R.id.btn_weixinLogin);
@@ -123,6 +142,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } else {
             return;
         }
+
     }
 
     @Override
@@ -130,34 +150,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (view.getId()) {
             //点击普通账号登录
             case R.id.btn_login:
-                final String phone = edit_phone.getText().toString().trim();
-                final String pwd = edit_pwd.getText().toString().trim();
+                phone = edit_phone.getText().toString().trim();
+                pwd = edit_pwd.getText().toString().trim();
+
                 if (RegularUtil.isMobile(phone)) {
                     if (RegularUtil.isPassword(pwd)) {
                         promptDialog.showLoading("正在登录中···");
-//                    promptDialog.showLoading("正在登录中");
-                        //用MD5 加密工具 加密
-                        String pwdone = MD5Util.getStringMD5(pwd);
-                        String pwdtwo = MD5Util.getStringMD5(pwdone);
-                        L.e("普通账号登录 :"+pwdtwo);
-                        lp.fach(phone, pwdtwo,this);
+
+                        lp.fach(phone, pwd,this);
                     } else {
                         MyToast.toast(getApplicationContext(),"请输入6到20位密码");
                     }
                 } else {
                     MyToast.toast(getApplicationContext(),"请输入正确的手机号码");
                 }
-        /*        if (!TextUtils.isEmpty(phone) && !TextUtils.isEmpty(pwd)) {
-                    promptDialog.showLoading("正在登录中···");
-//                    promptDialog.showLoading("正在登录中");
-                    //用MD5 加密工具 加密
-                    String pwdone = MD5Util.getStringMD5(pwd);
-                    String pwdtwo = MD5Util.getStringMD5(pwdone);
-                    lp.fach(phone, pwdtwo,this);
-                } else {
-                    promptDialog.showError("账号密码不能为空");
-                    //Toast.makeText(getApplicationContext(),"账号或者密码不能为空",Toast.LENGTH_SHORT).show();
-                }*/
+
                 break;
             //点击注册
             case R.id.txt_register:
@@ -174,6 +181,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 promptDialog = new PromptDialog(this);
                 //微信授权以及登录
                 UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.WEIXIN, authListener);
+                // type = 1表示微信
+                type = "1";
                 break;
             /*
             * 第三方QQ 登录
@@ -181,6 +190,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.btn_login_QQ:
                 //QQ授权以及登录
                 UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.QQ, authListener);
+                // type = 2表示QQ
+                type = "2";
+                break;
+            //商家注册按钮
+            case R.id.txt_shpngregister:
+                startActivity(new Intent(getApplicationContext(), ShoppingUserRegister.class));
+                break;
+            //商家登录按钮
+            case R.id.btn_shpoinglogin:
+                phone = edit_phone.getText().toString().trim();
+                pwd = edit_pwd.getText().toString().trim();
+                ShoppingLoginPerserent shangjiaLogin = new ShoppingLoginPerserent(this);
+                shangjiaLogin.shoppinglogin(phone,pwd);
                 break;
         }
     }
@@ -207,11 +229,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 //微信用户头像
                 String profile_image_url = data.get("profile_image_url");
                 Log.e("微信登录",str);
-               String unionid =  data.get("unionid");
+                String unionid =  data.get("unionid");
 
                 //MVP 调用网络请求
                 WechatPerenest wp = new WechatPerenest(LoginActivity.this);
-                wp.fach(str,profile_image_url,openID, unionid);
+                wp.fach(str,profile_image_url,openID, unionid,type);
                 promptDialog.showLoading("正在登录···");
             }
         }
@@ -236,22 +258,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         int status = wlb.getStatus();
         if (status == 1) {
             promptDialog.showSuccess("登录成功");
+
             WechatLoginBean.DataBean wchatbean = wlb.getData();
+            r_id = wchatbean.getR_id();
+            ShareUtils.putString(getApplicationContext(),"r_id",r_id);
             //用户名
-            String username = wchatbean.getUsername();
+            String username = wchatbean.getR_username();
             //获取用户登录的openid
-            String openid = wchatbean.getPhone();
+            String openid = wchatbean.getMobilephone();
             //登录成功后绑定个推推送别名
             PushManager.getInstance().bindAlias(LoginActivity.this, openid);
 
             //用户头像
-             userImg = wchatbean.getPhoto();
+            userImg = wchatbean.getR_img();
             //用户微信登录后 的金额
-            String money = wchatbean.getMoney();
+            String money = wchatbean.getR_money();
 
-           // String phones = wchatbean.getPhone();
+            // String phones = wchatbean.getPhone();0
             //授权成功保存openID 这里跟真实手机号码一样保存同一个key
-         //   ShareUtils.putString(getApplicationContext(), "zhanghao", openid);
+            //   ShareUtils.putString(getApplicationContext(), "zhanghao", openid);
             //保存用户名字
             ShareUtils.putString(getApplicationContext(), "username", username);
             //保存用户头像
@@ -259,11 +284,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             //保存用户微信登录号上的金额
             ShareUtils.putString(getApplicationContext(),"wechatMoney",money);
             //获取mobileID
-            String mobileID = wchatbean.getMobilephone();
+            //  String mobileID = wchatbean.getMobilephone();
+            String pwd =  wchatbean.getR_password();
+            String r_appi = wchatbean.getR_appid();
+            //这里取出商家入驻的那个字段
+            String is_aut = wchatbean.getIs_Authentication();
+            ShareUtils.putString(getApplicationContext(),"is_aut",is_aut);
             //获取r_id
-            String r_id = wchatbean.getR_id();
-            if (mobileID.length() == 11) {
-                ShareUtils.putString(getApplicationContext(),"zhanghao",openid);
+            if (!pwd.equals("")) {
+                ShareUtils.putString(getApplicationContext(),"zhanghao",r_appi);
                 finish();
             } else {
                 //然后跳转到手机验证界面
@@ -291,9 +320,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (logindata != null) {
             int status = logindata.getStatus();
             L.e("普通账号返回接口 "+status);
-
             if (status == 1) {
                 promptDialog.dismiss();
+                // 这里获取 r_id 并且保存后到MainActivity 取出来然后请求 获取用户是否正在使用雨伞
+                String r_id =  logindata.getData().getR_id();
+                ShareUtils.putString(getApplicationContext(),"r_id",r_id);
                 //登录成功后保存账号密码
                 ShareUtils.putString(getApplicationContext(),"zhanghao",phone);
                 ShareUtils.putString(getApplicationContext(),"mima",password);
@@ -303,7 +334,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 //获取 是否是管理员账号
                 LoginBean.DataBean list = logindata.getData();
                 //获取登录返回的用户名
-                String username = list.getUsername();
+                //   String username = list.getUsername();
+                String username =  logindata.getData().getR_username();
                 if (!TextUtils.isEmpty(username)) {
                     //保存用户名
                     ShareUtils.putString(getApplicationContext(), "username", username);
@@ -311,8 +343,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     ShareUtils.putString(getApplicationContext(), "username", "");
                 }
                 //获取登录后返回的头像
-                String  url = list.getPhoto();
-                if (!url.equals("0")) {
+                //    String  url = list.getPhoto();
+                String url = logindata.getData().getR_img();
+                if (!TextUtils.isEmpty(url)) {
                     String urls =  ConfigUtils.ZHU_YU_MING+"public/avatar/"+url;
                     ShareUtils.putString(getApplicationContext(),"touxiangURL",urls);
                 }
@@ -321,12 +354,41 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 ShareUtils.putInt(getApplicationContext(),"isroots",isroot);
 //                Intent intent = new Intent(this,MainActivity.class);
 //                startActivity(intent);
+                //这里取出商家入驻的那个字段
+                String is_aut = logindata.getData().getIs_Authentication();
+                ShareUtils.putString(getApplicationContext(),"is_aut",is_aut);
+                //取出微信绑定状态
+                String wechat = logindata.getData().getWechat();
+                ShareUtils.putString(getApplicationContext(),"wechat",wechat);
+                //取出QQ绑定状态
+                String qq = logindata.getData().getQQ();
+                ShareUtils.putString(getApplicationContext(),"qq",qq);
+
                 finish();
             } else if (status == 2) {
                 promptDialog.dismiss();
                 promptDialog.showError("密码错误");
             }
         }
+    }
+    /*
+    * 普通账号登录失败的接口回调 这里就是网络请求失败返回status = 0 然后走这个接口
+    * */
+
+    @Override
+    public void showLoginError() {
+        promptDialog.dismiss();
+        StyledDialog.buildIosAlert("登录", "您的账号或者密码错误，请输入正常的密码或者去修改！", new MyDialogListener() {
+            @Override
+            public void onFirst() {
+
+            }
+
+            @Override
+            public void onSecond() {
+
+            }
+        }).setBtnText("确定","").show();
     }
 
     @Override
@@ -341,5 +403,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         UMShareAPI.get(this).release();
     }
 
-
+    /*
+    * 商家普通登录结果回调
+    * */
+    @Override
+    public void ShowLoginRelust(Object object) {
+        ShoppingLoginBean slb = (ShoppingLoginBean) object;
+        int status =  slb.getStatus();
+        if (status == 1) {
+            //取出QQ 跟微信 绑定的状态
+            ShoppingLoginBean.DataBean slbdb = slb.getData();
+            String qqsatua = slbdb.getQq();
+            String WeChatStatus = slbdb.getWechat();
+            //保存商家登录账号e
+            String phone = slbdb.getPhone();
+            ShareUtils.putString(getApplicationContext(),"phone",phone);
+            //保存id然后在认证界面要用到
+            String id = slbdb.getId();
+            ShareUtils.putString(getApplicationContext(),"id",id);
+            //这里保存状态为true  下次登录直接 跳转到主界面
+            // ShareUtils.putBoolean(LoginActivity.this, StaticClass.SHARE_IS_FIRSTS, true);
+            startActivity(new Intent(getApplicationContext(),ShoppingShangjiaxinxiActivity.class));
+            BaseAppliction.destoryActivity("MainActivity");
+            finish();
+        } else {
+            ToastUtil.showShortToast(getApplicationContext(),"登录失败");
+        }
+    }
 }

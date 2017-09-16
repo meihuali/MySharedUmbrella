@@ -2,6 +2,7 @@ package com.example.administrator.mysharedumbrella01.ui;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -14,18 +15,24 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.SaoYiSao.ScannerActivity;
 import com.example.administrator.mysharedumbrella01.appliction.BaseAppliction;
 import com.example.administrator.mysharedumbrella01.entivity.ManeyBean;
+import com.example.administrator.mysharedumbrella01.entivity.ShoppingQueryAutBean;
+import com.example.administrator.mysharedumbrella01.peresenet.ShoppingQueryAuthentionPerserent;
 import com.example.administrator.mysharedumbrella01.peresenet.WalletManeyPerserent;
 import com.example.administrator.mysharedumbrella01.transition.Utilss;
 import com.example.administrator.mysharedumbrella01.utils.ConfigUtils;
 import com.example.administrator.mysharedumbrella01.utils.GlideUtils;
+import com.example.administrator.mysharedumbrella01.utils.ToastUtil;
+import com.example.administrator.mysharedumbrella01.view.IsShopingQueryAuthentionView;
 import com.example.administrator.mysharedumbrella01.view.IsWalletManeyView;
 import com.example.administrator.mysharedumbrella01.entivity.LoginBean;
 import com.example.administrator.mysharedumbrella01.peresenet.LocatinPeresenet;
@@ -34,7 +41,10 @@ import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
 import com.example.administrator.mysharedumbrella01.view.IsLoginView;
 import com.example.administrator.mysharedumbrella01.view.IsShangChuanLocationView;
 import com.gyf.barlibrary.ImmersionBar;
+import com.hss01248.dialog.StyledDialog;
+import com.hss01248.dialog.interfaces.MyDialogListener;
 import com.mylhyl.zxing.scanner.common.Intents;
+import com.whyalwaysmea.circular.AnimUtils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -43,17 +53,17 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * 个人设置界面
  */
 
-public class SettingsYusanActivity extends AppCompatActivity implements View.OnClickListener, IsLoginView,IsShangChuanLocationView, IsWalletManeyView {
+public class SettingsYusanActivity extends AppCompatActivity implements View.OnClickListener, IsLoginView,IsShangChuanLocationView, IsWalletManeyView, IsShopingQueryAuthentionView {
     private ImageView image_back;
-    private RelativeLayout rl_layout_jilu, rl_layout_settings;
+    private LinearLayout rl_layout_jilu, rl_layout_settings;
     private CircleImageView image_yuanxing;
-    private RelativeLayout rll_shangchaunweizi;
+    private LinearLayout rll_shangchaunweizi;
     private String scanResult;
     private double laitudes;
     private double longitudes;
     private String zhanghao;
-    private RelativeLayout ll_layout;
-    private RelativeLayout rll_Invitingfriends;
+    private LinearLayout ll_layout;
+    private LinearLayout rll_Invitingfriends;
     //账户金额
     private TextView tv_jiner;
     //账户押金
@@ -62,42 +72,36 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
     private String money;
     private TextView tv_name;
     //过场动画声明
-   private View ll_layout_a;
-
+    private View ll_layoutss;
+    private RelativeLayout rl_layoutssss;
+    private View  sv_layout;
+    private LinearLayout ll_lyout;
+    private String imageurl;
+    private LinearLayout rl_layout_shopping;
+    private String is_aut;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settingsyusana);
-        //过渡动画
-        initTranstiosn();
 
         //这句话的意思 将activity添加到Activity管理的方法中以便在别的activity销毁
         BaseAppliction.addDestoryActivity(this,"SettingsYusanActivity");
         //沉浸式
         ImmersionBar.with(this)
-                .statusBarColor(R.color.zhutiyanse) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
-                .fitsSystemWindows(true) //解决状态栏和布局重叠问题，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色
                 .init();
-
         initView();
     }
-    /*
-    * 过渡动画
-    * */
-    private void initTranstiosn() {
-        ll_layout_a = findViewById(R.id.ll_layoutss);
-        //进入动画
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                getWindow().setSharedElementEnterTransition(Utilss.buildShareElemEnterSet(ll_layout_a,R.id.ll_layoutss));
-        }
-        //返回动画
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setSharedElementReturnTransition(Utilss.buildShareElemReturnSet(ll_layout_a,R.id.ll_layoutss));
-        }
-    }
+
 
     private void initView() {
+        rl_layout_shopping = (LinearLayout) findViewById(R.id.rl_layout_shopping);
+        rl_layout_shopping.setOnClickListener(this);
+        ll_lyout = (LinearLayout) findViewById(R.id.ll_lyout);
+        ll_lyout.setOnClickListener(this);
+
+        //这里是过渡动画 ll_layoutss
+        AnimUtils.animhpel((Activity) this,R.id.ll_layoutss);
 
         tv_name = (TextView) findViewById(R.id.tv_name);
         //程序进来取出用户名来显示 不管是微信还是 QQ 还是普通用户都要取
@@ -105,33 +109,44 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
         tv_name.setText(username);
 
         tv_jiner = (TextView) findViewById(R.id.tv_jiner);
-        rll_Invitingfriends = (RelativeLayout) findViewById(R.id.rll_Invitingfriends);
+        rll_Invitingfriends = (LinearLayout) findViewById(R.id.rll_Invitingfriends);
         rll_Invitingfriends.setOnClickListener(this);
-        ll_layout = (RelativeLayout) findViewById(R.id.ll_layout);
+        ll_layout = (LinearLayout) findViewById(R.id.ll_layout);
         ll_layout.setOnClickListener(this);
 
         image_back = (ImageView) findViewById(R.id.image_back);
         image_back.setOnClickListener(this);
-        rl_layout_jilu = (RelativeLayout) findViewById(R.id.rl_layout_jilu);
+        rl_layout_jilu = (LinearLayout) findViewById(R.id.rl_layout_jilu);
         rl_layout_jilu.setOnClickListener(this);
-        rl_layout_settings = (RelativeLayout) findViewById(R.id.rl_layout_settings);
+        rl_layout_settings = (LinearLayout) findViewById(R.id.rl_layout_settings);
         rl_layout_settings.setOnClickListener(this);
         image_yuanxing = (CircleImageView) findViewById(R.id.image_yuanxing);
         image_yuanxing.setOnClickListener(this);
+        //设置图片到控件上 这里是上传头像的那个
         //进来该界面的时候去取图片路径设置在控件上
-        String  imageurl = ShareUtils.getString(getApplicationContext(),"touxiangURL","");
-        if (!TextUtils.isEmpty(imageurl)) {
-            if (imageurl.contains("http")) {
-                GlideUtils.loadImageViewCache(getApplicationContext(), imageurl, image_yuanxing);
-            } else {
-                String url = ConfigUtils.ZHU_YU_MING+"public/avatar/"+imageurl;
-                GlideUtils.loadImageViewCache(getApplicationContext(), url, image_yuanxing);
-            }
-        }
-        rll_shangchaunweizi = (RelativeLayout) findViewById(R.id.rll_shangchaunweizi);
+        updataphoto();
+        rll_shangchaunweizi = (LinearLayout) findViewById(R.id.rll_shangchaunweizi);
         rll_shangchaunweizi.setOnClickListener(this);
         //获取主界面传过来的 经纬度
         initDatas();
+    }
+    /*
+    * 上传头像到控件上
+    * */
+    private void updataphoto() {
+        imageurl = ShareUtils.getString(getApplicationContext(),"touxiangURL","");
+        if (!TextUtils.isEmpty(imageurl)) {
+            GlideUtils.loadImageViewCache(getApplicationContext(), imageurl, image_yuanxing);
+            if (imageurl.contains("http")) {
+                GlideUtils.loadImageViewCache(getApplicationContext(), imageurl, image_yuanxing);
+            } else {
+                String url = ConfigUtils.ZHU_YU_MING + "public/avatar/" + imageurl;
+                GlideUtils.loadImageViewCache(getApplicationContext(), url, image_yuanxing);
+            }
+        } else {
+            //这里表示用户第一次登录并没有上传头像
+            Glide.with(getApplicationContext()).load(R.drawable.liuyifei).into(image_yuanxing);
+        }
     }
 
     private void initDatas() {
@@ -142,8 +157,8 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
         //在取出管理员账号
         zhanghao = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
         //获取钱包金额
-        WalletManeyPerserent wmp = new WalletManeyPerserent(this);
-        wmp.fach(this);
+/*        WalletManeyPerserent wmp = new WalletManeyPerserent(this);
+        wmp.fach(this);*/
         //获取登录账号返回得字段判断是否为管理员
         int isroots = ShareUtils.getInt(getApplicationContext(),"isroots",0);
         if (isroots != 1) { // 1 代表是管理员登录 如果不等于 1 代表是普通用户
@@ -151,15 +166,24 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        L.e("走起 "+"onResume");
+        updataphoto();
+
+        //这里取出保存的入驻商家的字段
+        is_aut =  ShareUtils.getString(getApplicationContext(),"is_aut","");
+
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            //返回上一个界面 ll_layoutss
             case R.id.image_back:
-             //   finish();
-                //这里finish 是有过渡动画的
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    finishAfterTransition();
-                }
+                AnimUtils.finishAmins(SettingsYusanActivity.this,R.id.rl_layoutssss,view,R.id.ll_layoutss);
                 break;
             //历史记录
             case R.id.rl_layout_jilu:
@@ -186,16 +210,28 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
                 break;
             //我的钱包
             case R.id.ll_layout:
-            /*    PopUpWindowBootom pwb = new PopUpWindowBootom(this);
-                pwb.showPopupWindow();*/
                 Intent intent = new Intent(this,MyWalletActivity.class);
-                intent.putExtra("moneysss",deposit);
+                intent.putExtra("yajin",deposit);
                 intent.putExtra("yuer", money);
-                startActivity(intent);
+                //  AnimUtils.startIntent(intent,view,this,R.id.ll_layout);
+                AnimUtils.startIntent(intent,view,this,R.id.sv_layout);
                 break;
             //邀请好友
             case R.id.rll_Invitingfriends:
                 startActivity(new Intent(this,InvitingFriendsAcitivity.class));
+                break;
+            //联系客户
+            case R.id.ll_lyout:
+                startActivity(new Intent(this,LianXiKeFuActivity.class));
+                break;
+            //这里点击 跳转到商家界面
+            case R.id.rl_layout_shopping:
+                /* 这里入驻商家
+                * 网络请求获取该用户是否认证商家通过
+                * */
+               // startActivity(new Intent(getApplicationContext(), ShoppingShangjiaxinxiActivity.class));
+                ShoppingQueryAuthentionPerserent shoppingAut = new ShoppingQueryAuthentionPerserent(this);
+                shoppingAut.shoppingAut(zhanghao);
                 break;
         }
     }
@@ -208,6 +244,11 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void showLogin(String phone, String password, LoginBean logindata) {
+
+    }
+
+    @Override
+    public void showLoginError() {
 
     }
 
@@ -250,6 +291,45 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
 
                 }
             }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        AnimUtils.finishonBackPressed(SettingsYusanActivity.this,R.id.ll_layoutss);
+    }
+    /*
+    * 该接口用来查询是否认证过了商家
+    * */
+    @Override
+    public void showComplte(Object object) {
+        ShoppingQueryAutBean shpAut = (ShoppingQueryAutBean) object;
+        int status = shpAut.getStatus();
+        if (status == 1) {
+            ShoppingQueryAutBean.DataBean spaut = shpAut.getData();
+            //获取商家认证的字段
+            String aut = spaut.getIs_Authentication();
+            if (aut.equals("1")) { // 1表示 已经认证
+                startActivity(new Intent(getApplicationContext(), ShoppingShangjiaxinxiActivity.class));
+            } else if (aut.equals("2")) { // 2表示正在认证中
+                StyledDialog.buildIosAlert("商家认证", "您的资料我们已经收到，我们将在24小时内为您审核通过，谢谢！", new MyDialogListener() {
+                    @Override
+                    public void onFirst() { //这里是确定
+
+                    }
+
+                    @Override
+                    public void onSecond() {
+
+                    }
+
+
+                }).setBtnText("确定", "取消").show();
+            } else { //否则就是0 表示还未证人 直接跳转到认证提交资料的界面
+              startActivity(new Intent(getApplicationContext(), ShoppingSettledDataActivity.class));
+            }
+        } else if (status == 0) {
+            startActivity(new Intent(getApplicationContext(), ShoppingSettledDataActivity.class));
         }
     }
 }

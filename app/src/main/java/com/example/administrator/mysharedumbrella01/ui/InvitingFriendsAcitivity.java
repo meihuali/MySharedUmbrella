@@ -30,11 +30,14 @@ public class InvitingFriendsAcitivity extends AppCompatActivity implements View.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invitingfriends);
         //沉浸式
-        ImmersionBar.with(this)
+/*        ImmersionBar.with(this)
                 .statusBarColor(R.color.but_color3) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
                 // .statusBarDarkFont(true,0.2f)    如果是白色或者透明状态的时候就加上他
                 .fitsSystemWindows(true) //解决状态栏和布局重叠问题，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色
+                .init();*/
+        ImmersionBar.with(this)
                 .init();
+
         initView();
 
     }

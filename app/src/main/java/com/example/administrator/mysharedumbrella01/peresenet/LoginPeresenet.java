@@ -29,6 +29,11 @@ public class LoginPeresenet {
                 public void onComplete(LoginBean logindata) {
                     isLoginView.showLogin(phone,password,logindata);
                 }
+
+                @Override
+                public void onErrorComplte() {
+                    isLoginView.showLoginError();
+                }
             },phone,password,activity);
         }
     }

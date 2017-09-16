@@ -24,7 +24,6 @@ import okhttp3.Response;
 public class LoginModelImpl implements IsLognModel {
     @Override
     public void loginmode(final onLoginmodeLinistener linistener, String phone, String password, final Activity activity) {
-        final PromptDialog promptDialog = new PromptDialog(activity);
         //登录发请求
         String url = ConfigUtils.ZHU_YU_MING+ConfigUtils.LOGIN_HOUZHUI;
         OkGo.post(url)
@@ -33,7 +32,6 @@ public class LoginModelImpl implements IsLognModel {
                 .execute(new StringCallback() {
                              @Override
                              public void onSuccess(String s, Call call, Response response) {
-
                                  L.e("普通账号登录登录中··· "+s);
                                  //解析
                                  Gson gson = new Gson();
@@ -47,8 +45,8 @@ public class LoginModelImpl implements IsLognModel {
                                              linistener.onComplete(lb);
                                          }
                                      } else {
-                                         String statusEroor =  object.optString("data");
-                                         promptDialog.showError("密码错误");
+                                        linistener.onErrorComplte();
+
                                      }
 
 
@@ -60,7 +58,7 @@ public class LoginModelImpl implements IsLognModel {
                              @Override
                              public void onError(Call call, Response response, Exception e) {
                                  super.onError(call, response, e);
-
+                                 L.e("普通账号登录登录中··· "+response.message());
                              }
 
 

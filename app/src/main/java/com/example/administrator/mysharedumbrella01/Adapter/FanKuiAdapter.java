@@ -37,9 +37,11 @@ public class FanKuiAdapter extends BaseQuickAdapter<KeFuFanKuiBean.DataBean, Bas
         button1.setText(item.getCate_name());
         //下面的这个判断是 获取某个item 中的 Select属性 是否为true 或者为true
         if (item.isSelect()) {
-            button1.setBackgroundResource(R.drawable.button_xiaoyuanjiao_juse);
+            button1.setBackgroundResource(R.drawable.jianbian_x);
+            button1.setTextColor(context.getResources().getColor(R.color.white));
         } else {
-            button1.setBackgroundResource(R.drawable.button_yuanjiaokongxin);
+            button1.setBackgroundResource(R.drawable.button_yuanjiaokongxin_lanse);
+            button1.setTextColor(context.getResources().getColor(R.color.black));
         }
 
     }

@@ -23,9 +23,11 @@ import okhttp3.Call;
 import okhttp3.Response;
 import razerdp.basepopup.BasePopupWindow;
 
-/**
- * Created by Administrator on 2017/6/8 0008.
- */
+
+/*
+*  这个是主页广告 程序进来必须会走这个popupwindow
+*
+* */
 
 public class ZhuYeGuangGao extends BasePopupWindow  implements View.OnClickListener{
     private View popupView;
@@ -68,6 +70,7 @@ public class ZhuYeGuangGao extends BasePopupWindow  implements View.OnClickListe
         if (popupView!=null){
             popupView.findViewById(R.id.image_colse).setOnClickListener(this);
             imageView = (ImageView) popupView.findViewById(R.id.img_guanggao);
+
             // 直接请求 网络接口获取图片路径
             String url = ConfigUtils.ZHU_YU_MING+ConfigUtils.ZHUYEGUANGGAO;
             OkGo.post(url)
@@ -78,9 +81,9 @@ public class ZhuYeGuangGao extends BasePopupWindow  implements View.OnClickListe
                             L.e("主页广告 "+s);
                             Gson gson = new Gson();
                             ImgeBean ib = gson.fromJson(s, ImgeBean.class);
-                           String url =  ib.getData();
+                            String url =  ib.getData();
                             if (!TextUtils.isEmpty(url)) {
-                             GlideUtils.loadImageViewCache(activity,url,imageView);
+                                GlideUtils.loadImageViewCache(activity,url,imageView);
                             }
                         }
 

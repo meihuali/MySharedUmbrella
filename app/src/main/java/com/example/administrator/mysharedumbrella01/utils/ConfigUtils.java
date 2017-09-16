@@ -15,7 +15,7 @@ public class ConfigUtils {
     /*===================历史记录=================================================================*/
     public static final String HUOQULISHILI = "Share/umbrellahistory.php";
     /*===================登录接口 后缀==========================================================*/
-    public static final String LOGIN_HOUZHUI = "Share/Managerlogin.php";
+    public static final String LOGIN_HOUZHUI = "/Member/Memberlogin.php";
     /*====================管理员上传 当前 位子=========================================================*/
     public static final String DANGQAINWEIZI = "Share/UpdateStandposition.php";
     /*========================注册接口============================================================*/
@@ -74,7 +74,8 @@ public class ConfigUtils {
     /*
     * 退款 接口
     * */
-    public static final String TUIKUANJIEKOU = "Alipaynew/refound.php";
+   // public static final String TUIKUANJIEKOU = "Alipaynew/refound.php";
+    public static final String TUIKUANJIEKOU = "Refund/index.php";
     /*
     * 雨伞图标 还伞图标
     * */
@@ -84,5 +85,41 @@ public class ConfigUtils {
     * 用户是否取走雨伞
     * */
     public static final String USERGETYUSANSTATUS = "Unlock/getumbrella.php";
+    /*
+    * 提交问题反馈
+    * */
+    public static final String TIJIAOWENTFANKUI = "Feedback/check_feedback.php";
+    /*
+    * 获取用户是否 正在使用雨伞
+    * */
+    public static final String GET_USER_CURRENTS= "/Member/getinsuerumbrella.php";
+    /*
+    * 商家版本注册
+    * */
+    public static final String SHOPPINGUSERREGISTER = "Merchant/MerchantRegistration.php";
+    /*
+    * 商家登录
+    * */
+    public static final String SHOPPING_LOGIN = "Merchant/Merchantlogin.php";
+    /*
+    * 商家认证接口
+    * */
+    public static final String SHOPPING_AUTIONER = "Merchant/Authentication.php";
+    /*
+    * 商务中心认证界面
+    * */
+    public static final String SHANGWUZHONGXINRENZHENGJIEMIAN = "Merchant/check_merchant.php";
 
+    /*
+    * 检测用户是否绑定过手机号码
+    * */
+    public static final String CHECK_BINGDING = "/Merchant/checkphone.php ";
+    /*
+    * 查询商家是否已经认证过
+    * */
+    public static final String QUERYSHOPPINGAUT = "/Merchant/check_merchant.php";
+    /*
+    * 更换图片的 接口
+    * */
+    public static final String UPDATA_IMAGE_CHANG = "/Merchant/updata_img.php";
 }

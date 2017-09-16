@@ -9,7 +9,7 @@ public interface IsBangDingZhangHaoModel {
     /*
     * 三方登录绑定手机号码接口
     * */
-    void Bangding(OnBangdingLinerest linerest,String zh,String yzm,String r_id);
+    void Bangding(OnBangdingLinerest linerest,String zh,String yzm,String r_id,String pwd);
 
     /*
     * 接口回调

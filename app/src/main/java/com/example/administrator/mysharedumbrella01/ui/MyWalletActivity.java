@@ -5,19 +5,29 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.dialog.PopupWindowCenter;
+import com.example.administrator.mysharedumbrella01.dialog.TuiKuanPopupWindow;
+import com.example.administrator.mysharedumbrella01.entivity.ManeyBean;
 import com.example.administrator.mysharedumbrella01.entivity.TuikuanBean;
 import com.example.administrator.mysharedumbrella01.peresenet.TuikuanPerserent;
+import com.example.administrator.mysharedumbrella01.peresenet.WalletManeyPerserent;
+import com.example.administrator.mysharedumbrella01.utils.MyToast;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
+import com.example.administrator.mysharedumbrella01.utils.ToastUtil;
 import com.example.administrator.mysharedumbrella01.view.IsTuikuanView;
+import com.example.administrator.mysharedumbrella01.view.IsWalletManeyView;
+import com.google.zxing.common.StringUtils;
 import com.gyf.barlibrary.ImmersionBar;
+import com.whyalwaysmea.circular.AnimUtils;
 
 import me.leefeng.promptlibrary.PromptButton;
 import me.leefeng.promptlibrary.PromptButtonListener;
@@ -28,7 +38,7 @@ import me.leefeng.promptlibrary.PromptDialog;
  *  我的钱包
  */
 
-public class MyWalletActivity extends AppCompatActivity implements View.OnClickListener, IsTuikuanView {
+public class MyWalletActivity extends AppCompatActivity implements View.OnClickListener, IsTuikuanView, IsWalletManeyView {
     //返回键
     private ImageView image_back;
     //点击按钮充值
@@ -43,6 +53,10 @@ public class MyWalletActivity extends AppCompatActivity implements View.OnClickL
     private PromptDialog promptDialog;
     private String datas;
     private String yuer;
+    private double yajinmoney;
+    private String money,deposit;
+    private View fl_layout;
+    private RelativeLayout rl_layout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,13 +64,35 @@ public class MyWalletActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_mywallet);
         promptDialog = new PromptDialog(this);
         //沉浸式
-        ImmersionBar.with(this)
+/*        ImmersionBar.with(this)
                 .statusBarColor(R.color.zhutiyanse) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
                 .fitsSystemWindows(true) //解决状态栏和布局重叠问题，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色
+                .init();*/
+        ImmersionBar.with(this)
+                .transparentBar()
                 .init();
+        //过渡动画
+        initTartrser();
+        //获取服务器返回的押金跟金额
+        getHttpMoney();
+
         //初始化控件
         initView();
 
+    }
+    /*
+    * 过渡动画
+    * */
+    private void initTartrser() {
+        AnimUtils.animhpel(this,R.id.fl_layout);
+    }
+
+    /*
+    * 获取服务器返回的金额跟押金
+    * */
+    public void getHttpMoney() {
+        WalletManeyPerserent wmp = new WalletManeyPerserent(this);
+        wmp.fach(this);
     }
 
     private void initView() {
@@ -77,11 +113,13 @@ public class MyWalletActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void initDatas() {
-        Intent intent =   getIntent();
-        yajin = intent.getStringExtra("moneysss");
-         yuer = intent.getStringExtra("yuer");
+ /*       Intent intent =   getIntent();
+        yuer = intent.getStringExtra("yuer");
+        yajin = intent.getStringExtra("yajin");
+        //账户余额
         tv_yuer.setText(yuer+"元");
-        tv_yajin.setText("账户押金"+yajin+"元");
+        //账户押金
+        tv_yajin.setText("账户押金"+yajin+"元");*/
 
     }
 
@@ -89,10 +127,13 @@ public class MyWalletActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:
-                finish();
+                //finish();
+                AnimUtils.finishAmins(this,R.id.rl_layout,view,R.id.fl_layout);
                 break;
             case R.id.btn_Recharge:
-                double yajinmoney =  Double.parseDouble(yajin);
+                if (!TextUtils.isEmpty(deposit)) {
+                    yajinmoney = Double.parseDouble(deposit);
+                }
                 if (yajinmoney < 20.00) {
                     PopupWindowCenter pwc = new PopupWindowCenter(this);
                     pwc.showPopupWindow();
@@ -108,13 +149,24 @@ public class MyWalletActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //充值押金
             case R.id.btn_chongzhiYaJin:
-                startActivity(new Intent(getApplicationContext(), DepositRechargeActivity.class));
+                startActivity(new Intent(getApplicationContext(), DepositRechargeActivitys.class));
                 break;
             case R.id.tv_tuikuan:
                 //退款弹窗
                 tuikuantanchuang();
+
                 break;
         }
+    }
+
+    /*
+    * 退款押金
+    * */
+    private void tuikuanyajin() {
+
+        TuiKuanPopupWindow tuikuanyajin = new TuiKuanPopupWindow(this,deposit);
+        tuikuanyajin.showPopupWindow();
+
     }
 
     private void tuikuantanchuang() {
@@ -122,20 +174,20 @@ public class MyWalletActivity extends AppCompatActivity implements View.OnClickL
         PromptButton confirm = new PromptButton("确定", new PromptButtonListener() {
             @Override
             public void onClick(PromptButton button) {
-               double yuers = Double.parseDouble(yuer);
-                if (yuers < 0) {
-                    Toast.makeText(getApplicationContext(),"您的余额小于零不可以退款",Toast.LENGTH_SHORT).show();
+                double yuers = Double.parseDouble(money);
+                double yajins = Double.parseDouble(deposit);
+                if (yuers <=0.0 && yajins<20) {
+                    ToastUtil.showShortToast(getApplicationContext(),"您的余额小于零不可以退款");
                 } else {
-                    String zh = ShareUtils.getString(getApplicationContext(),"zhanghao","");
-                    TuikuanPerserent tuikuan = new TuikuanPerserent(MyWalletActivity.this);
-                    tuikuan.tuikuan(zh);
+                    //退款弹窗
+                    tuikuanyajin();
                 }
 
             }
         });
         confirm.setFocusBacColor(getResources().getColor(R.color.top_red));
-//Alert的调用
-        promptDialog.showWarnAlert("你确定要退款登录？", new PromptButton("取消", new PromptButtonListener() {
+        //Alert的调用
+        promptDialog.showWarnAlert("你确定要退款吗？", new PromptButton("取消", new PromptButtonListener() {
             @Override
             public void onClick(PromptButton button) {
                 Toast.makeText(MyWalletActivity.this, button.getText(), Toast.LENGTH_SHORT).show();
@@ -144,8 +196,18 @@ public class MyWalletActivity extends AppCompatActivity implements View.OnClickL
     }
 
     /*
-    * 退款接口回调结果
+    * 充值成功后回调的时候再次掉一下网络请求 获取接口返回的 金额
     * */
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getHttpMoney();
+    }
+
+    /*
+        * 退款接口回调结果
+        * */
     @Override
     public void showRrult(Object object) {
         TuikuanBean tuikuanBean = (TuikuanBean) object;
@@ -157,5 +219,28 @@ public class MyWalletActivity extends AppCompatActivity implements View.OnClickL
 
             Toast.makeText(getApplicationContext(), "退款失败，"+datas, Toast.LENGTH_SHORT).show();
         }
+    }
+
+
+    /*
+    * 获取钱包金额 回调
+    * */
+    @Override
+    public void showManey(ManeyBean.DataBean list) {
+        //账户余额
+        money =  list.getMoney(); //余额
+        tv_yuer.setText(money+"元");
+        //账户押金
+        deposit = list.getDeposit(); // 押金
+        tv_yajin.setText("账户押金"+deposit+"元");
+    }
+
+    /*
+    * 返回键动画
+    * */
+
+    @Override
+    public void onBackPressed() {
+        AnimUtils.finishonBackPressed(MyWalletActivity.this,R.id.fl_layout);
     }
 }

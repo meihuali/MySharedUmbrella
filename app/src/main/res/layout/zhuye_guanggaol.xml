@@ -11,9 +11,9 @@
         android:background="@color/toumingse"
         android:paddingLeft="25dp"
         android:paddingRight="25dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
-
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="8dp">
         <LinearLayout
             android:id="@+id/popup_anima"
             android:layout_width="match_parent"
@@ -24,19 +24,18 @@
 
             <RelativeLayout
                 android:layout_margin="10dp"
-                android:background="@drawable/button_yuanjiao_baise"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                     <ImageView
                         android:id="@+id/img_guanggao"
-                        android:src="@drawable/shouyeguanggao"
+                        android:background="@drawable/button_yuanjiao_baise"
                         android:layout_width="match_parent"
                         android:layout_height="300dp" />
             </RelativeLayout>
             <ImageView
                 android:id="@+id/image_colse"
                 android:layout_marginTop="30dp"
-                android:src="@drawable/chahao"
+                android:src="@drawable/guanbi_x"
                 android:layout_gravity="center_horizontal"
                 android:layout_width="40dp"
                 android:layout_height="40dp" />

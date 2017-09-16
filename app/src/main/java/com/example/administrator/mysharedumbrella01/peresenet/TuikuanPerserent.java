@@ -17,14 +17,14 @@ public class TuikuanPerserent {
         tuiKuanModel = new TuikuanImpl();
     }
 
-    public void tuikuan(String zhanghao) {
+    public void tuikuan(String zhanghao,String num) {
         if (tuiKuanModel != null) {
             tuiKuanModel.tuikuan(new IsTuiKuanModel.onTuikuanjiekouLinereset() {
                 @Override
                 public void complte(Object object) {
                     tuikuanView.showRrult(object);
                 }
-            },zhanghao);
+            },zhanghao,num);
         }
     }
 }

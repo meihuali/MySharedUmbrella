@@ -8,6 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+
     <style name="line">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">0.5dp</item>
@@ -61,12 +63,14 @@
         <!--左右 弹出效果-->
         <item name="android:windowEnterAnimation" >@anim/in_lefttoright</item>
         <item name="android:windowExitAnimation">@anim/out_righttoleft</item>
-
-        //过渡动画
-        <item name="android:windowContentTransitions">true</item>
-        <item name="android:windowAllowEnterTransitionOverlap">false</item>
-        <item name="android:windowAllowReturnTransitionOverlap">false</item>
-        
     </style>
+
+    <!--整张图片全部挡住背景沉浸式-->
+    <style name="AppTheme.Transparent">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+
 
 </resources>

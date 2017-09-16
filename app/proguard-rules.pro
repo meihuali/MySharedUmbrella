@@ -368,9 +368,11 @@
 -dontwarn com.igexin.**
 -keep class com.igexin.** { *; }
 -keep class org.json.** { *; }
+# 沉浸式
+ -keep class com.gyf.barlibrary.* {*;}
 
 #百度语音
--libraryjars libs/com.baidu.tts_2.3.0.jar
+#-libraryjars libs/com.baidu.tts_2.3.0.jar
 
 
 

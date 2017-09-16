@@ -8,6 +8,8 @@
     <color name="huise">#CCC</color>
     <color name="huise2">#f1f1f1</color>
 
+    <color name="huise2ss">#537edc</color>
+
 
     <color name="top_color2">#ffa064</color>
     <color name="top_red">#F10000</color>
@@ -46,5 +48,12 @@
     <color name="black_80_alpha">#cc000000</color>
     <color name="black_85_alpha">#d9000000</color>
     <color name="black_90_alpha">#e6000000</color>
+
+    <color name="lanse">#7497df</color>
+    <color name="shenhuise_x">#535353</color>
+    <color name="lanse_x">#9bb5e9</color>
+    <color name="lanse_x_x">#7298df</color>
+
+
 
 </resources>

@@ -20,6 +20,8 @@ import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
 import com.example.administrator.mysharedumbrella01.utils.StaticClass;
 import com.example.administrator.mysharedumbrella01.utils.UtilTools;
+import com.gyf.barlibrary.BarHide;
+import com.gyf.barlibrary.ImmersionBar;
 
 
 public class SplashActivity extends AppCompatActivity {
@@ -41,9 +43,9 @@ public class SplashActivity extends AppCompatActivity {
                 case StaticClass.HANDLER_SPLASH:
                     //判断程序是否是第一次运行
                     if (isFirst()) {
-                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                        startActivity(new Intent(SplashActivity.this,MainActivity.class));
                     } else {
-                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                        startActivity(new Intent(SplashActivity.this,MainActivity.class));
                     }
                     finish();
                     break;
@@ -56,24 +58,24 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
+        //沉浸式
+        ImmersionBar.with(this).fullScreen(true).hideBar(BarHide.FLAG_HIDE_BAR)
+                .init();
         initView();
     }
     //初始化View
     private void initView() {
         //延时2000ms
         handler.sendEmptyMessageDelayed(StaticClass.HANDLER_SPLASH, 3000);
-
-//        tv_splash = (TextView) findViewById(R.id.tv_splash);
-//        //设置字体
-//        UtilTools.setFont(this,tv_splash);
     }
 
     //判断程序是否第一次运行
     private boolean isFirst() {
-        boolean isFirst = ShareUtils.getBoolean(this,StaticClass.SHARE_IS_FIRST,true);
+        //这里暂时写死保存为true
+       // ShareUtils.putBoolean(SplashActivity.this, StaticClass.SHARE_IS_FIRST,true);
+        boolean isFirst = ShareUtils.getBoolean(this,StaticClass.SHARE_IS_FIRSTS,true);
         if(isFirst){
-            ShareUtils.putBoolean(this,StaticClass.SHARE_IS_FIRST,false);
+            ShareUtils.putBoolean(this,StaticClass.SHARE_IS_FIRSTS,false);
             //是第一次运行
             return true;
         }else {

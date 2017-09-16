@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout
-        android:transitionName="comment"
-        android:id="@+id/ll_layoutss"
-        android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:id="@+id/ll_layoutss"
+    >
+
+    <ImageView
+        android:src="@drawable/wodeqianbao_x"
+        android:scaleType="fitXY"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
+        android:layout_height="match_parent" />
     <RelativeLayout
-        android:background="@color/zhutiyanse"
+        android:id="@+id/rl_layoutssss"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="50dp">
         <ImageView
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="10dp"
             android:layout_centerVertical="true"
             android:id="@+id/image_back"
             android:background="@drawable/btn_back"
@@ -34,23 +34,31 @@
             android:layout_height="wrap_content" />
     </RelativeLayout>
 
+    <LinearLayout
+        android:layout_marginTop="70dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <RelativeLayout
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            android:background="@drawable/gerenzhongxin">
-
+            >
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/image_yuanxing"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="30dp"
                 android:src="@drawable/liuyifei"
-                app:civ_border_color="@color/mediumorchid"
-                app:civ_border_width="2dp" />
+                app:civ_border_color="@color/lanse_x"
+                app:civ_border_width="8dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignEnd="@+id/tv_name" />
 
             <TextView
+                android:gravity="center"
+                android:background="@drawable/nicheng_x"
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -59,17 +67,15 @@
                 android:layout_marginTop="15dp"
                 android:inputType="textNoSuggestions"
                 android:text="@string/shoujihaoma"
-                android:textColor="@color/txt_balck"
+                android:textColor="@color/white"
                 android:textSize="16sp" />
-        </RelativeLayout>
+        </LinearLayout>
 
 
-        <View
-            android:background="@color/huise"
-            android:layout_width="match_parent"
-            android:layout_height="10dp"/>
+
 
         <ScrollView
+            android:id="@+id/sv_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
@@ -78,22 +84,29 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <RelativeLayout
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:gravity="center"
                     android:id="@+id/ll_layout"
                     android:layout_width="match_parent"
                     android:layout_height="50dp">
 
+                    <ImageView
+                        android:src="@drawable/qianbao_x"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="15dp"
                         android:gravity="center"
                         android:text="@string/wodeqianbao"
-                        android:textColor="@color/txt_balck"
+                        android:textColor="@color/white"
                         android:textSize="16sp" />
 
                     <TextView
+                        android:visibility="gone"
                         android:textColor="@color/top_red"
                         android:id="@+id/tv_jiner"
                         android:layout_width="wrap_content"
@@ -103,6 +116,7 @@
                         android:text="@string/jiner" />
 
                     <ImageView
+                        android:visibility="gone"
                         android:id="@+id/image_qianbao"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
@@ -110,66 +124,99 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dp"
                         android:src="@drawable/backs" />
-                </RelativeLayout>
+                </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.4dp"
-                    android:background="@color/huise" />
-                <RelativeLayout
+
+                <LinearLayout
+                    android:gravity="center"
                     android:id="@+id/rl_layout_jilu"
                     android:layout_width="match_parent"
                     android:layout_height="50dp">
+                    <ImageView
+                        android:src="@drawable/wodexingcheng_x"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="15dp"
                         android:gravity="center"
                         android:text="@string/wodejilu"
-                        android:textColor="@color/txt_balck"
+                        android:textColor="@color/white"
                         android:textSize="16sp" />
                     <ImageView
+                        android:visibility="gone"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dp"
                         android:src="@drawable/backs" />
-                </RelativeLayout>
+                </LinearLayout>
 
-                <View
+
+                <LinearLayout
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:id="@+id/ll_lyout"
                     android:layout_width="match_parent"
-                    android:layout_height="0.4dp"
-                    android:background="@color/huise" />
-                <RelativeLayout
+                    android:layout_height="50dp">
+                    <ImageView
+                        android:src="@drawable/yaoqinghaoyou_x"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:gravity="center"
+                        android:text="@string/lianxikehu"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                    <ImageView
+                        android:visibility="gone"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/backs" />
+                </LinearLayout>
+                <LinearLayout
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:orientation="horizontal"
                     android:id="@+id/rll_Invitingfriends"
                     android:layout_width="match_parent"
                     android:layout_height="50dp">
-
+                    <ImageView
+                        android:src="@drawable/yaoqinghaoyou_x"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="15dp"
                         android:gravity="center"
                         android:text="@string/yaoqinghaoyou"
-                        android:textColor="@color/txt_balck"
+                        android:textColor="@color/white"
                         android:textSize="16sp" />
 
                     <ImageView
+                        android:visibility="gone"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dp"
                         android:src="@drawable/backs" />
-                </RelativeLayout>
+                </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:background="@color/huise" />
+
                 <RelativeLayout
                     android:visibility="gone"
                     android:layout_width="match_parent"
@@ -193,11 +240,8 @@
                         android:src="@drawable/backs" />
                 </RelativeLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.4dp"
-                    android:background="@color/huise" />
-                <RelativeLayout
+                <LinearLayout
+                    android:gravity="center"
                     android:id="@+id/rll_shangchaunweizi"
                     android:layout_width="match_parent"
                     android:layout_height="50dp">
@@ -209,59 +253,71 @@
                         android:layout_marginLeft="10dp"
                         android:gravity="center"
                         android:text="@string/shangchuanweizi"
-                        android:textColor="@color/txt_balck"
+                        android:textColor="@color/white"
                         android:textSize="16sp" />
                     <ImageView
+                        android:visibility="gone"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dp"
                         android:src="@drawable/backs" />
-                </RelativeLayout>
+                </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.4dp"
-                    android:background="@color/huise" />
-
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.4dp"
-                    android:background="@color/huise" />
-                <RelativeLayout
+                <LinearLayout
+                    android:gravity="center"
                     android:id="@+id/rl_layout_settings"
                     android:layout_width="match_parent"
                     android:layout_height="50dp">
-
+                    <ImageView
+                        android:src="@drawable/shezhi_x"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="15dp"
                         android:gravity="center"
                         android:text="@string/tv_settings"
-                        android:textColor="@color/txt_balck"
+                        android:textColor="@color/white"
                         android:textSize="16sp" />
-
-
-
+                    <TextView
+                        android:layout_width="28dp"
+                        android:layout_height="wrap_content" />
                     <ImageView
-
+                        android:visibility="gone"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="10dp"
                         android:src="@drawable/backs" />
-                </RelativeLayout>
-
-                <View
+                </LinearLayout>
+                <LinearLayout
+                    android:gravity="center"
+                    android:id="@+id/rl_layout_shopping"
                     android:layout_width="match_parent"
-                    android:layout_height="0.4dp"
-                    android:background="@color/huise" />
+                    android:layout_height="50dp">
+                    <ImageView
+                        android:src="@drawable/shezhi_x"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:gravity="center"
+                        android:text="@string/shangjiaxinxi"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+
+                </LinearLayout>
+
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
-</LinearLayout>
+</FrameLayout>

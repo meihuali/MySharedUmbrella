@@ -48,6 +48,15 @@ public class HistoryBean {
         private String endtime;
         private double duration;
         private double expense;
+        private String la_umbrella_id;
+
+        public String getLa_umbrella_id() {
+            return la_umbrella_id;
+        }
+
+        public void setLa_umbrella_id(String la_umbrella_id) {
+            this.la_umbrella_id = la_umbrella_id;
+        }
 
         public String getId() {
             return id;

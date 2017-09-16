@@ -33,6 +33,7 @@ import com.example.administrator.mysharedumbrella01.utils.GlideUtils;
 import com.example.administrator.mysharedumbrella01.utils.L;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
 import com.example.administrator.mysharedumbrella01.utils.SystemUiUtils;
+import com.example.administrator.mysharedumbrella01.utils.ToastUtil;
 import com.example.administrator.mysharedumbrella01.view.IsShangChuanTouXiangView;
 import com.gyf.barlibrary.ImmersionBar;
 import com.yanzhenjie.permission.AndPermission;
@@ -82,10 +83,13 @@ public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implemen
         //创建dialog对象
         promptDialog = new PromptDialog(this);
         //沉浸式
-        ImmersionBar.with(this)
+/*        ImmersionBar.with(this)
                 .statusBarColor(R.color.top_red) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
                 .fitsSystemWindows(true) //解决状态栏和布局重叠问题，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色
+                .init();*/
+        ImmersionBar.with(this)
                 .init();
+
         intiview();
 
     }
@@ -336,6 +340,7 @@ public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implemen
             Bitmap bitmap = bundle.getParcelable("data");
             File file =  saveBitmapFile(bitmap);
             L.e("xiangce "+file);
+            promptDialog.showLoading("头像上传中···");
             ShangChuanTouXiangPersernet sctxp = new ShangChuanTouXiangPersernet(this);
             sctxp.fach(file,this);
             image_yuanxing.setImageBitmap(bitmap);
@@ -361,7 +366,7 @@ public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implemen
             if(!dirFile.exists()){
                 dirFile.mkdir();
             }
-            myCaptureFile = new File(path + UUID.randomUUID());
+            myCaptureFile = new File(path + UUID.randomUUID()+".png");
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(myCaptureFile));
             bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bos);
             bos.flush();
@@ -387,6 +392,15 @@ public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implemen
     /*这个是 打开相册 上传图片后的 回调结果*/
     @Override
     public void ShowRest(ShangChuanTouXiangBean sctxb) {
-
+        L.e("上传头像结果 "+sctxb);
+        int status = sctxb.getStatus();
+        if (status == 1) {
+            promptDialog.dismiss();
+            String datas = sctxb.getData();
+            ShareUtils.putString(getApplicationContext(),"touxiangURL",datas);
+        } else {
+            promptDialog.dismiss();
+            ToastUtil.showShortToast(getApplicationContext(), sctxb.getData());
+        }
     }
 }

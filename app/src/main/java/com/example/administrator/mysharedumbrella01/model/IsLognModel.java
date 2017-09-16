@@ -18,6 +18,13 @@ public interface IsLognModel {
     *   登录接口回调
     * */
     interface onLoginmodeLinistener{
+        /*
+        * 登录成功回调接口
+        * */
         void onComplete(LoginBean logindata);
+        /*
+        * 登录失败回调接口
+        * */
+        void onErrorComplte();
     }
 }

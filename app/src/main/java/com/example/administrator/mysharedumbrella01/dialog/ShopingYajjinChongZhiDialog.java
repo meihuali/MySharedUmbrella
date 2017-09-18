@@ -111,9 +111,11 @@ public class ShopingYajjinChongZhiDialog  extends BasePopupWindow implements Vie
                 tv_sums.setText(cuont+"");
                 //设置总金额
                 tv_shoppingYJ.setText(sum+"");
+
                 break;
             //申请伞座 减少
             case R.id.img_jian:
+
                 if (cuont > 6) {
                     sum = (cuont-=6) * 50;
                     //这里设置金额
@@ -123,6 +125,7 @@ public class ShopingYajjinChongZhiDialog  extends BasePopupWindow implements Vie
                 } else {
                     ToastUtil.showShortToast(getContext(),"默认6个伞座，300元！");
                 }
+
                 break;
             case R.id.img_yusan_add:
                 yusanCuont+=10;

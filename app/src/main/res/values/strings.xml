@@ -541,6 +541,9 @@ iv 其它根据用户协议、相关说明或规则导致我们无法向您提�
     <string name="yusan">雨伞：</string>
     <string name="weiqianshou">未签收：</string>
     <string name="qianyuexieyi">同意 《签约协议说明》</string>
+    <string name="gaosheng">高生</string>
+    <string name="shanchu">删除</string>
+    <string name="bianji">编辑</string>
 
 
 </resources>

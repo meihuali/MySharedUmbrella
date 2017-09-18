@@ -311,6 +311,8 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
             String aut = spaut.getIs_Authentication();
             if (aut.equals("1")) { // 1表示 已经认证
                 startActivity(new Intent(getApplicationContext(), ShoppingShangjiaxinxiActivity.class));
+                String shoppingId = spaut.getId();
+                ShareUtils.putString(getApplicationContext(),"shoppingId",shoppingId);
             } else if (aut.equals("2")) { // 2表示正在认证中
                 StyledDialog.buildIosAlert("商家认证", "您的资料我们已经收到，我们将在24小时内为您审核通过，谢谢！", new MyDialogListener() {
                     @Override

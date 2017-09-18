@@ -215,12 +215,30 @@
         android:text="@string/shewei"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-    <CheckBox
-        android:layout_marginRight="15dp"
-        android:layout_centerVertical="true"
+    <LinearLayout
+        android:id="@+id/img_status"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_centerInParent="true"
         android:layout_alignParentRight="true"
-        android:layout_width="30dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp">
+
+
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/img_gouxuan"
+        android:src="@drawable/dagou_x"
+        android:layout_width="20dp"
         android:layout_height="20dp" />
+    <ImageView
+
+        android:id="@+id/img_weigouxuan"
+        android:src="@drawable/budagou_x"
+        android:layout_width="20dp"
+        android:layout_height="20dp" />
+
+
+    </LinearLayout>
 </RelativeLayout>
 
 

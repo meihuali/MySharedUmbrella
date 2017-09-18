@@ -122,4 +122,25 @@ public class ConfigUtils {
     * 更换图片的 接口
     * */
     public static final String UPDATA_IMAGE_CHANG = "/Merchant/updata_img.php";
+
+    /*
+    * 添加商户的收获地址
+    * */
+    public static final String ADD_SHOPPING_ADDRESS = "/Merchant/add_address.php";
+    /*
+    * 获取用户新增 地址
+    * */
+    public static final String GET_SHOPPING_ADDRESS = "/Merchant/getaddress.php";
+    /*
+    * 修改商家收获地址
+    * */
+    public static final String EDIT_SHOPPING_ADDRSSS = "Merchant/update_address.php";
+    /*
+    * 获取商户的默认地址以及伞架的个数和伞的数量
+    * */
+    public static final String GET_SHOPPING_SANZUOSAN = "/Merchant/getstandandum.php";
+    /*
+    * 删除收获地址
+    * */
+    public static final String DELTE_SHOPPING_ADDRESS = "/Merchant/delete_address.php";
 }

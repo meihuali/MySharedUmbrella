@@ -1,9 +1,11 @@
 package com.example.administrator.mysharedumbrella01.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,6 +20,7 @@ import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
 import com.example.administrator.mysharedumbrella01.utils.ToastUtil;
 import com.example.administrator.mysharedumbrella01.view.IsGetShoppingSanZuoSanView;
 import com.gyf.barlibrary.ImmersionBar;
+import com.whyalwaysmea.circular.AnimUtils;
 
 /**
  * 项目名：MySharedUmbrella
@@ -42,11 +45,17 @@ public class ShanZuoSanActivity extends AppCompatActivity implements View.OnClic
     private ImageView img_yusan_jian;
     private int yusanCuont = 18;
     private TextView tv_yusans;
+    private TextView tv_addressName;
+    private TextView tv_phone;
+    private TextView tv_address;
+    private View rl_back;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sanzuosan);
+        AnimUtils.animhpel( this,R.id.ll_layout_aimn);
+
         //沉浸式
         ImmersionBar.with(this)
                 .statusBarColor(R.color.lanse_x_x) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
@@ -65,10 +74,20 @@ public class ShanZuoSanActivity extends AppCompatActivity implements View.OnClic
         getsanzuosan.getDatas(shoppingid);
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        initdata();
+    }
+
     /*
-    * 初始化
-    * */
+        * 初始化
+        * */
     private void initView() {
+        tv_address  = (TextView) findViewById(R.id.tv_address);
+        tv_phone = (TextView) findViewById(R.id.tv_phone);
+        tv_addressName = (TextView) findViewById(R.id.tv_addressName);
+
         tv_yusans = (TextView) findViewById(R.id.tv_yusans);
 
         img_yusan_jian = (ImageView) findViewById(R.id.img_yusan_jian);
@@ -95,7 +114,9 @@ public class ShanZuoSanActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.image_back:
-                finish();
+               // finish();
+                AnimUtils.finishAmins((Activity) this,R.id.rl_back,v,R.id.ll_layout_aimn);
+
                 break;
             case R.id.btn_confirm:
                 ShoppingYajinDialog shangjiayajin = new ShoppingYajinDialog(this);
@@ -106,7 +127,10 @@ public class ShanZuoSanActivity extends AppCompatActivity implements View.OnClic
                 break;
             //选择地址
             case R.id.ll_layout_addres:
-                startActivity(new Intent(getApplicationContext(),ShoppingHarvestAddress.class));
+              //  startActivity(new Intent(getApplicationContext(),ShoppingHarvestAddress.class));
+                Intent intent = new Intent(this,ShoppingHarvestAddress.class);
+                AnimUtils.startIntent(intent,v, (Activity)this,R.id.ll_layout_addres);
+
                 break;
             case R.id.imge_add:
                 sum =  (cuont+=6) * 50;
@@ -158,6 +182,22 @@ public class ShanZuoSanActivity extends AppCompatActivity implements View.OnClic
             String umbrella= sz.getUmbrella();
             //设置雨伞到textview
             tv_yusan.setText(umbrella);
+            //获取收货地址联系人
+
+            if (sz.getAddress() !=null) {
+                tv_addressName.setText(sz.getAddress().getName());
+            } else {
+                tv_addressName.setText("张三");
+            }
+
+            //获取收货地址 电话号码
+            if (sz.getAddress() != null) {
+                tv_phone.setText(sz.getAddress().getPhone());
+            }
+            if (sz.getAddress() != null) {
+                //获取详细地址
+                tv_address.setText(sz.getAddress().getRegion()+sz.getAddress().getAddress());
+            }
         }
     }
 }

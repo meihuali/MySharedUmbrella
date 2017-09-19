@@ -1,5 +1,6 @@
 package com.example.administrator.mysharedumbrella01.ui;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -29,6 +30,7 @@ import com.example.administrator.mysharedumbrella01.view.IsAliPayYaJinView;
 import com.example.administrator.mysharedumbrella01.view.IsWeChatYajinView;
 import com.example.administrator.mysharedumbrella01.wxapi.WxPayUtils;
 import com.gyf.barlibrary.ImmersionBar;
+import com.whyalwaysmea.circular.AnimUtils;
 
 import org.json.JSONObject;
 
@@ -60,11 +62,16 @@ public class DepositRechargeActivitys extends AppCompatActivity implements View.
     private String zh;
     private String dingdan;
     private Button btn_Recharge;
+    private View ll_layout;
+    private  View rl_fanhui;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activitys_depositrecharge);
+
+        AnimUtils.animhpel( this,R.id.ll_layout);
+
         //沉浸式
         ImmersionBar.with(this)
                 .transparentBar()
@@ -148,7 +155,9 @@ public class DepositRechargeActivitys extends AppCompatActivity implements View.
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.image_back:
-                finish();
+                //finish();
+                AnimUtils.finishAmins((Activity) this,R.id.rl_fanhui,v,R.id.ll_layout);
+
                 break;
 
             //点击支付宝勾选按钮

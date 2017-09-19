@@ -1,13 +1,16 @@
 package com.example.administrator.mysharedumbrella01.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -20,6 +23,7 @@ import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.utils.SocializeUtils;
+import com.whyalwaysmea.circular.AnimUtils;
 
 import java.util.Map;
 
@@ -41,11 +45,15 @@ public class settingsssssActivity extends AppCompatActivity implements View.OnCl
     private RelativeLayout rl_yjshuoming;
     private RelativeLayout rl_yjshuomings;
     private RelativeLayout rl_lejie;
+    private LinearLayout ll_layout_anim;
+    private View ll_xxxx;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sttingsssss);
+        AnimUtils.animhpel((Activity) this,R.id.ll_layout_anim);
         //沉浸式
  /*       ImmersionBar.with(this)
                 .statusBarColor(R.color.zhutiyanse) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
@@ -89,7 +97,8 @@ public class settingsssssActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_backs:
-                finish();
+               // finish();
+                AnimUtils.finishAmins((Activity)this,R.id.ll_xxxx,view,R.id.ll_layout_anim);
                 break;
             case R.id.btn_exits:
                 //这里取出账号

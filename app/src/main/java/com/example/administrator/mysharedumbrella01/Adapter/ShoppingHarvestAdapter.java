@@ -9,6 +9,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.entivity.GetShoppingAddressBean;
+import com.example.administrator.mysharedumbrella01.utils.ToastUtil;
 
 import java.util.List;
 
@@ -50,6 +51,14 @@ public class ShoppingHarvestAdapter extends BaseQuickAdapter<GetShoppingAddressB
         helper.addOnClickListener(R.id.tv_edit);
         //点击删除收货地址
         helper.addOnClickListener(R.id.tv_detle);
+        //点击勾选状态
+        helper.addOnClickListener(R.id.ll_layoutSeclet);
+        if (item.isSelect()) {
+            helper.getView(R.id.img_budagou).setVisibility(View.GONE);
+            helper.getView(R.id.img_dagou).setVisibility(View.VISIBLE);
+        } else {
+            ToastUtil.showShortToast(context,"否则");
+        }
 
     }
 }

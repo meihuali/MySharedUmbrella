@@ -79,6 +79,8 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
     private String imageurl;
     private LinearLayout rl_layout_shopping;
     private String is_aut;
+    private View ll_layout_amin;
+    private   View v;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -192,16 +194,23 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
                     Toast.makeText(getApplicationContext(),"管理员暂时没有历史记录",Toast.LENGTH_SHORT).show();
                 } else {
                     //否则表示是 普通用户的 历史记录
-                    startActivity(new Intent(this, UsagelogActivity.class));
+                   // startActivity(new Intent(this, UsagelogActivity.class));
+                    Intent intent = new Intent(getApplicationContext(),UsagelogActivity.class);
+                    AnimUtils.startIntent(intent,view, (Activity) SettingsYusanActivity.this,R.id.rl_layout_jilu);
                 }
 
                 break;
             //设置界面
             case R.id.rl_layout_settings:
-                startActivity(new Intent(this, settingsssssActivity.class));
+               // startActivity(new Intent(this, settingsssssActivity.class));
+                Intent intent1 = new Intent(this,settingsssssActivity.class);
+                AnimUtils.startIntent(intent1,view, (Activity)this,R.id.ll_layoutss);
+
                 break;
             case R.id.image_yuanxing:
-                startActivity(new Intent(this, YuanXingTouxiangSettingsActivity.class));
+               // startActivity(new Intent(this, YuanXingTouxiangSettingsActivity.class));
+                Intent intent2 = new Intent(this,YuanXingTouxiangSettingsActivity.class);
+                AnimUtils.startIntent(intent2,view, (Activity)SettingsYusanActivity.this,R.id.ll_layout_amin);
                 break;
             //管理里账号上传 地理位子
             case R.id.rll_shangchaunweizi:
@@ -222,7 +231,9 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
                 break;
             //联系客户
             case R.id.ll_lyout:
-                startActivity(new Intent(this,LianXiKeFuActivity.class));
+               // startActivity(new Intent(this,LianXiKeFuActivity.class));
+                Intent intent3 = new Intent(SettingsYusanActivity.this,LianXiKeFuActivity.class);
+                AnimUtils.startIntent(intent3,view, (Activity) SettingsYusanActivity.this,R.id.ll_lyout);
                 break;
             //这里点击 跳转到商家界面
             case R.id.rl_layout_shopping:
@@ -232,6 +243,7 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
                // startActivity(new Intent(getApplicationContext(), ShoppingShangjiaxinxiActivity.class));
                 ShoppingQueryAuthentionPerserent shoppingAut = new ShoppingQueryAuthentionPerserent(this);
                 shoppingAut.shoppingAut(zhanghao);
+                v = view;
                 break;
         }
     }
@@ -310,9 +322,12 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
             //获取商家认证的字段
             String aut = spaut.getIs_Authentication();
             if (aut.equals("1")) { // 1表示 已经认证
-                startActivity(new Intent(getApplicationContext(), ShoppingShangjiaxinxiActivity.class));
                 String shoppingId = spaut.getId();
                 ShareUtils.putString(getApplicationContext(),"shoppingId",shoppingId);
+               // startActivity(new Intent(getApplicationContext(), ShoppingShangjiaxinxiActivity.class));
+                Intent intent = new Intent(SettingsYusanActivity.this,ShoppingShangjiaxinxiActivity.class);
+                AnimUtils.startIntent(intent,v, (Activity)this,R.id.rl_layout_shopping);
+
             } else if (aut.equals("2")) { // 2表示正在认证中
                 StyledDialog.buildIosAlert("商家认证", "您的资料我们已经收到，我们将在24小时内为您审核通过，谢谢！", new MyDialogListener() {
                     @Override

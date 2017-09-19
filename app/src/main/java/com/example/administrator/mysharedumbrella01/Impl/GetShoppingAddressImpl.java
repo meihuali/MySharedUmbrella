@@ -5,8 +5,12 @@ import com.example.administrator.mysharedumbrella01.model.IsGetShoppingAddressMo
 import com.example.administrator.mysharedumbrella01.utils.ConfigUtils;
 import com.example.administrator.mysharedumbrella01.utils.L;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -31,9 +35,20 @@ public class GetShoppingAddressImpl implements IsGetShoppingAddressModel {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         L.e("获取商家新增的所有地址 "+s);
-                        Gson gson = new Gson();
-                        GetShoppingAddressBean getaddress =  gson.fromJson(s, GetShoppingAddressBean.class);
-                        linerster.onComplte(getaddress);
+                        try {
+                            JSONObject obj = new JSONObject(s);
+                            int status = obj.optInt("status");
+                            if (status == 1) {
+                                Gson gson = new Gson();
+                                GetShoppingAddressBean getaddress =  gson.fromJson(s, GetShoppingAddressBean.class);
+                                linerster.onComplte(getaddress);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
                     }
 
                     @Override

@@ -41,37 +41,36 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:gravity="center"
-            android:orientation="vertical"
+            android:id="@+id/ll_layout_amin"
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            >
+            android:gravity="center"
+            android:orientation="vertical">
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/image_yuanxing"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                android:layout_alignEnd="@+id/tv_name"
+                android:layout_alignParentTop="true"
                 android:src="@drawable/liuyifei"
                 app:civ_border_color="@color/lanse_x"
-                app:civ_border_width="8dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignEnd="@+id/tv_name" />
+                app:civ_border_width="8dp" />
 
             <TextView
-                android:gravity="center"
-                android:background="@drawable/nicheng_x"
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/image_yuanxing"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="15dp"
+                android:background="@drawable/nicheng_x"
+                android:gravity="center"
                 android:inputType="textNoSuggestions"
                 android:text="@string/shoujihaoma"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
         </LinearLayout>
-
-
 
 
         <ScrollView

@@ -1,5 +1,6 @@
 package com.example.administrator.mysharedumbrella01.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,16 +18,20 @@ import com.example.administrator.mysharedumbrella01.Adapter.ShoppingHarvestAdapt
 import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.entivity.GetShoppingAddressBean;
 import com.example.administrator.mysharedumbrella01.entivity.ShoppingDetelAddressBean;
+import com.example.administrator.mysharedumbrella01.entivity.ShoppingSettingAddressBean;
 import com.example.administrator.mysharedumbrella01.peresenet.GetShoppingAddressPerserent;
 import com.example.administrator.mysharedumbrella01.peresenet.ShoppingDetleAddressPerserent;
+import com.example.administrator.mysharedumbrella01.peresenet.ShoppingSettingAddressPerserent;
 import com.example.administrator.mysharedumbrella01.utils.L;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
 import com.example.administrator.mysharedumbrella01.utils.ToastUtil;
 import com.example.administrator.mysharedumbrella01.view.IsGetShoppingAddressView;
 import com.example.administrator.mysharedumbrella01.view.IsShoppingDetleAddressView;
+import com.example.administrator.mysharedumbrella01.view.IsShoppingSettingAddressView;
 import com.gyf.barlibrary.ImmersionBar;
 import com.hss01248.dialog.StyledDialog;
 import com.hss01248.dialog.interfaces.MyDialogListener;
+import com.whyalwaysmea.circular.AnimUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,18 +45,22 @@ import java.util.List;
  * 创建时间： 2017/9/13 0013 16:23
  * 描述：商家收获地址 列表
  */
-public class ShoppingHarvestAddress extends AppCompatActivity implements View.OnClickListener, IsGetShoppingAddressView, IsShoppingDetleAddressView {
+public class ShoppingHarvestAddress extends AppCompatActivity implements View.OnClickListener, IsGetShoppingAddressView, IsShoppingDetleAddressView, IsShoppingSettingAddressView {
     private ImageView image_back;
     private RecyclerView mRecyclerView;
     private List<GetShoppingAddressBean.DataBean> mlist = new ArrayList<>();
     private ShoppingHarvestAdapter adapter;
     private Button btn_add_address;
     private String ids;
+    private View ll_layout;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shoppingharvestaddress);
+
+        AnimUtils.animhpel(this,R.id.ll_layout);
         //沉浸式
         ImmersionBar.with(this)
                 .statusBarColor(R.color.lanse_x_x) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
@@ -87,20 +96,38 @@ public class ShoppingHarvestAddress extends AppCompatActivity implements View.On
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                GetShoppingAddressBean.DataBean dd  = (GetShoppingAddressBean.DataBean) adapter.getItem(position);
                 switch (view.getId()) {
                     case R.id.tv_detle:
-                        GetShoppingAddressBean.DataBean dd  = (GetShoppingAddressBean.DataBean) adapter.getItem(position);
+
                         //获取该对象的id字段
                         String id = dd.getId();
                         ShoppingDetleAddressPerserent detelAddress = new ShoppingDetleAddressPerserent(ShoppingHarvestAddress.this);
                         detelAddress.detleAddress(id);
                         break;
-
                     case R.id.tv_edit:
                         edites(position);
                         break;
+                    //勾选状态
+                    case R.id.ll_layoutSeclet:
+                        //获取被点击的item的子控件
+                        for (int i = 0; i < mlist.size(); i++) {
+                            if (i == position) {
+                                //mlist.get(i).setSelect(true);
+                                mlist.get(i).setIs_inuser("1");
 
+
+                                ShoppingSettingAddressPerserent settingaddress = new ShoppingSettingAddressPerserent(ShoppingHarvestAddress.this);
+                                settingaddress.setttingaddress( mlist.get(i).getMerchant_id(), mlist.get(i).getId());
+                            } else {
+                                // mlist.get(i).setSelect(false);
+                                mlist.get(i).setIs_inuser("0");
+                            }
+                        }
+                        adapter.notifyDataSetChanged();
+                        break;
                 }
+
 
 
             }
@@ -153,7 +180,8 @@ public class ShoppingHarvestAddress extends AppCompatActivity implements View.On
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.image_back:
-                finish();
+              // rl_layout_back  finish();
+                AnimUtils.finishAmins((Activity) this,R.id.rl_layout_back,v,R.id.ll_layout);
                 break;
             //跳转到仿淘宝地址选择器
             case R.id.btn_add_address:
@@ -174,7 +202,7 @@ public class ShoppingHarvestAddress extends AppCompatActivity implements View.On
     @Override
     protected void onRestart() {
         super.onRestart();
-           initData();
+        initData();
     }
 
     @Override
@@ -218,6 +246,19 @@ public class ShoppingHarvestAddress extends AppCompatActivity implements View.On
                 public void onSecond() {
                 }
             }).setBtnText("确定", "").show();
+        }
+    }
+    /*
+    * 商家手动在列表点点击修改 默认地址
+    * */
+    @Override
+    public void showSettingRelust(Object object) {
+        ShoppingSettingAddressBean spaddress = (ShoppingSettingAddressBean) object;
+        int status = spaddress.getStatus();
+        if (status == 1) {
+            ToastUtil.showShortToast(getApplicationContext(), spaddress.getData().getSuccess());
+        } else {
+            ToastUtil.showShortToast(getApplicationContext(), spaddress.getData().getError_reason());
         }
     }
 }

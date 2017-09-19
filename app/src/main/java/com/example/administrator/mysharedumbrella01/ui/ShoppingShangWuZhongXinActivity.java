@@ -1,8 +1,10 @@
 package com.example.administrator.mysharedumbrella01.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -29,6 +31,8 @@ import com.example.administrator.mysharedumbrella01.utils.ToastUtil;
 import com.example.administrator.mysharedumbrella01.view.IsShangChuanTouXiangView;
 import com.example.administrator.mysharedumbrella01.view.IsShangWuzhongxinRenzhengView;
 import com.gyf.barlibrary.ImmersionBar;
+import com.hss01248.dialog.StyledDialog;
+import com.whyalwaysmea.circular.AnimUtils;
 
 import org.w3c.dom.Text;
 
@@ -37,6 +41,10 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.leefeng.promptlibrary.PromptDialog;
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
+
+import static java.lang.System.load;
 
 /**
  * 项目名：MySharedUmbrella
@@ -64,11 +72,14 @@ public class ShoppingShangWuZhongXinActivity extends AppCompatActivity implement
     private PromptDialog promptDialog;
     private String imgPath;
     private ImageView image_backs;
-
+    private File files;
+    private View ll_layout;
+    private View ll_flayout;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shangwuzhongxin);
+        AnimUtils.animhpel((Activity) this,R.id.ll_layout);
         promptDialog = new PromptDialog(this);
 
         //沉浸式
@@ -111,7 +122,7 @@ public class ShoppingShangWuZhongXinActivity extends AppCompatActivity implement
         tv_wechat = (TextView) findViewById(R.id.tv_wechat);
         tv_QQ = (TextView) findViewById(R.id.tv_QQ);
         //程序进来取出服务器返回的那个头像路径因为用户上传头像到服务器成功过后通过sp保存到本地了，在下面回调中保存了
-        String photoImg = ShareUtils.getString(getApplicationContext(),"imgPath","");
+        String photoImg = ShareUtils.getString(getApplicationContext(),"touxiangURL","");
         String url = ConfigUtils.ZHU_YU_MING+"public/avatar/"+photoImg;
         if (!TextUtils.isEmpty(photoImg)) {
             Glide.with(getApplicationContext()).load(url).into(image_yuanxing);
@@ -130,6 +141,7 @@ public class ShoppingShangWuZhongXinActivity extends AppCompatActivity implement
                 Boxing.of(config).withIntent(this, BoxingActivity.class).start(this, REQUEST_CODE);
                 break;
             case R.id.image_backs:
+                AnimUtils.finishAmins((Activity)this,R.id.ll_flayout,v,R.id.ll_layout);
                 break;
         }
     }
@@ -145,17 +157,58 @@ public class ShoppingShangWuZhongXinActivity extends AppCompatActivity implement
             }
             if (!TextUtils.isEmpty(pathImg)) {
                 // 这里获取到本地SDK 图片的路径 后 通过 gilde 来加载出图片设置到 控件上
-                Glide.with(getApplicationContext())
-                        .load(new File(pathImg))
-                        .into(image_yuanxing);
+//                Glide.with(getApplicationContext())
+//                        .load(new File(pathImg))
+//                        .into(image_yuanxing);
                 //这里将图片设置在控件上(该拍照裁减库自带的方法)
                 //  BoxingMediaLoader.getInstance().displayThumbnail(image_yuanxing, pathImg, 200, 200);
 
                 promptDialog.showLoading("头像上传中···");
-                ShangChuanTouXiangPersernet sctxp = new ShangChuanTouXiangPersernet(this);
-                sctxp.fach(new File(pathImg),this);
+                //压缩图片
+                compressWithLs(pathImg);
+
+
             }
         }
+    }
+
+    private void compressWithLs(String pathImg) {
+        Luban.with(ShoppingShangWuZhongXinActivity.this)
+                .load(pathImg)
+                .ignoreBy(100)
+                .setTargetDir(getPath())
+                .setCompressListener(new OnCompressListener() {
+                    @Override
+                    public void onStart() {
+                        StyledDialog.buildLoading("压缩图片中···").show();
+                    }
+
+                    @Override
+                    public void onSuccess(File file) {
+                        // 压缩成果隐藏菊花
+                        StyledDialog.dismissLoading();
+                        L.e("压缩后 "+file);
+                        files = file;
+                        //这里将图片设置在控件上
+                        //  BoxingMediaLoader.getInstance().displayThumbnail(image_showImage, pathImg, 450, 360);
+                        Glide.with(ShoppingShangWuZhongXinActivity.this).load(files).into(image_yuanxing);
+                        ShangChuanTouXiangPersernet sctxp = new ShangChuanTouXiangPersernet(ShoppingShangWuZhongXinActivity.this);
+                        sctxp.fach(files,ShoppingShangWuZhongXinActivity.this);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+                }).launch();
+    }
+
+    private String getPath() {
+        String path = Environment.getExternalStorageDirectory() + "/Luban/image/";
+        File file = new File(path);
+        if (file.mkdirs()) {
+            return path;
+        }
+        return path;
     }
 
     /*
@@ -221,7 +274,7 @@ public class ShoppingShangWuZhongXinActivity extends AppCompatActivity implement
         if (status == 1) {
             promptDialog.dismiss();
             imgPath = sctxb.getData();
-            ShareUtils.putString(getApplicationContext(),"imgPath",imgPath);
+            ShareUtils.putString(getApplicationContext(),"touxiangURL",imgPath);
         } else {
             promptDialog.dismiss();
             ToastUtil.showShortToast(getApplicationContext(),"头像上传失败！");

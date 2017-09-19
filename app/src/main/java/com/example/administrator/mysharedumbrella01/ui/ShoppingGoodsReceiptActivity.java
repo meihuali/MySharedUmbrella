@@ -1,5 +1,6 @@
 package com.example.administrator.mysharedumbrella01.ui;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import com.example.administrator.mysharedumbrella01.Adapter.ShoppingGoodsReceipt
 import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.entivity.ShoppingGoodsReceiptBean;
 import com.gyf.barlibrary.ImmersionBar;
+import com.whyalwaysmea.circular.AnimUtils;
 
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -38,6 +40,8 @@ public class ShoppingGoodsReceiptActivity extends AppCompatActivity implements V
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shoppinggoodsreceiptactivity);
+        AnimUtils.animhpel(this,R.id.ll_layout);
+
         //沉浸式
         ImmersionBar.with(this)
                 .statusBarColor(R.color.lanse_x_x) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
@@ -45,7 +49,7 @@ public class ShoppingGoodsReceiptActivity extends AppCompatActivity implements V
                 .fitsSystemWindows(true) //解决状态栏和布局重叠问题，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色
                 .init();
         initView();
-    //    initData();
+        initData();
     }
     /*
     * 获取数据源
@@ -89,7 +93,8 @@ public class ShoppingGoodsReceiptActivity extends AppCompatActivity implements V
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.image_back:
-                finish();
+             //   finish();
+                AnimUtils.finishAmins((Activity) this,R.id.ll_xxxx,v,R.id.ll_layout);
                 break;
         }
     }

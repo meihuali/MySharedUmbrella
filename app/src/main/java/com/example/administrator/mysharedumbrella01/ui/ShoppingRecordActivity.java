@@ -1,5 +1,6 @@
 package com.example.administrator.mysharedumbrella01.ui;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -16,6 +17,7 @@ import com.example.administrator.mysharedumbrella01.Fragment.ShoppingJaJinJiLuFr
 import com.example.administrator.mysharedumbrella01.Fragment.StreetscapeFragment;
 import com.example.administrator.mysharedumbrella01.R;
 import com.gyf.barlibrary.ImmersionBar;
+import com.whyalwaysmea.circular.AnimUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,8 @@ public class ShoppingRecordActivity extends AppCompatActivity implements View.On
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shoppingrecord);
+
+        AnimUtils.animhpel(this,R.id.ll_layout);
         //沉浸式
         ImmersionBar.with(this)
                 .init();
@@ -98,7 +102,8 @@ public class ShoppingRecordActivity extends AppCompatActivity implements View.On
 
         switch (v.getId()) {
             case R.id.image_back:
-                finish();
+              //  finish();
+                AnimUtils.finishAmins((Activity) this,R.id.rl_layoutssss,v,R.id.ll_layout);
                 break;
 
         }

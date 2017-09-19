@@ -1,5 +1,6 @@
 package com.example.administrator.mysharedumbrella01.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -57,7 +58,8 @@ public class MyWalletActivity extends AppCompatActivity implements View.OnClickL
     private String money,deposit;
     private View fl_layout;
     private RelativeLayout rl_layout;
-
+    private View ll_layout_back;
+    private View ll_layout;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,6 +131,7 @@ public class MyWalletActivity extends AppCompatActivity implements View.OnClickL
             case R.id.image_back:
                 //finish();
                 AnimUtils.finishAmins(this,R.id.rl_layout,view,R.id.fl_layout);
+
                 break;
             case R.id.btn_Recharge:
                 if (!TextUtils.isEmpty(deposit)) {
@@ -145,11 +148,16 @@ public class MyWalletActivity extends AppCompatActivity implements View.OnClickL
                 break;
             //明细
             case R.id.tv_mingxi:
-                startActivity(new Intent(this,DetailofamountActivity.class));
+                //startActivity(new Intent(this,DetailofamountActivity.class));
+                Intent intent = new Intent(this,DetailofamountActivity.class);
+                AnimUtils.startIntent(intent,view, (Activity)this,R.id.rl_layout);
+
                 break;
             //充值押金
             case R.id.btn_chongzhiYaJin:
-                startActivity(new Intent(getApplicationContext(), DepositRechargeActivitys.class));
+               // startActivity(new Intent(getApplicationContext(), DepositRechargeActivitys.class));
+                Intent intent2= new Intent(this,DepositRechargeActivitys.class);
+                AnimUtils.startIntent(intent2,view, (Activity) MyWalletActivity.this,R.id.lay_layoutshabi);
                 break;
             case R.id.tv_tuikuan:
                 //退款弹窗
@@ -241,6 +249,6 @@ public class MyWalletActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onBackPressed() {
-        AnimUtils.finishonBackPressed(MyWalletActivity.this,R.id.fl_layout);
+        AnimUtils.finishonBackPressed(MyWalletActivity.this,R.id.ll_layout_back);
     }
 }

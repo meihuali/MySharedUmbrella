@@ -1,5 +1,6 @@
 package com.example.administrator.mysharedumbrella01.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import com.example.administrator.mysharedumbrella01.appliction.BaseAppliction;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
 import com.example.administrator.mysharedumbrella01.utils.StaticClass;
 import com.gyf.barlibrary.ImmersionBar;
+import com.whyalwaysmea.circular.AnimUtils;
 
 /**
  * 项目名：MySharedUmbrella
@@ -25,10 +27,13 @@ import com.gyf.barlibrary.ImmersionBar;
 public class ShoppingSettingsActivity extends AppCompatActivity implements View.OnClickListener {
     private Button btn_exits;
     private ImageView image_backs;
+    private View rl_back;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shoppingsettings);
+
+        AnimUtils.animhpel((Activity) this,R.id.ll_layout);
         //沉浸式
         ImmersionBar.with(this)
                 //  .transparentBar()
@@ -55,8 +60,10 @@ public class ShoppingSettingsActivity extends AppCompatActivity implements View.
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
                 break;
             case R.id.image_backs:
-                finish();
+             //   finish();
+                AnimUtils.finishAmins((Activity)this,R.id.rl_back,v,R.id.ll_layout);
                 break;
+
         }
     }
 }

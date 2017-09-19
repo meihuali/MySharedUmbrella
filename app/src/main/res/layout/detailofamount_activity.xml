@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:background="@color/white"
+    android:id="@+id/ll_layout_fubuju"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <FrameLayout
@@ -13,6 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <RelativeLayout
+            android:id="@+id/ll_xxxx"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="50dp">

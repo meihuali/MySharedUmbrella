@@ -20,6 +20,7 @@ import com.example.administrator.mysharedumbrella01.peresenet.DetailoFamountPers
 import com.example.administrator.mysharedumbrella01.utils.L;
 import com.example.administrator.mysharedumbrella01.view.IsDetailoFamounView;
 import com.gyf.barlibrary.ImmersionBar;
+import com.whyalwaysmea.circular.AnimUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +38,14 @@ public class DetailofamountActivity extends AppCompatActivity implements View.On
     private List<DetailoFamounBean.DataBean> lists = new ArrayList<>();
     //上拉加载各种变量
     int curPage = 0;
+    private View ll_layout_fubuju;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detailofamount_activity);
+        AnimUtils.animhpel((Activity) this,R.id.ll_layout_fubuju);
+
         //沉浸式
 /*        ImmersionBar.with(this)
                 .statusBarColor(R.color.zhutiyanse) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
@@ -80,7 +84,8 @@ public class DetailofamountActivity extends AppCompatActivity implements View.On
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:
-                finish();
+              //  finish();
+                AnimUtils.finishAmins((Activity)this,R.id.ll_xxxx,view,R.id.ll_layout_fubuju);
                 break;
         }
     }

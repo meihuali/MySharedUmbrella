@@ -1,5 +1,6 @@
 package com.example.administrator.mysharedumbrella01.ui;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -9,11 +10,13 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.example.administrator.mysharedumbrella01.Fragment.PropagandamapFragment;
 import com.example.administrator.mysharedumbrella01.Fragment.StreetscapeFragment;
 import com.example.administrator.mysharedumbrella01.R;
 import com.gyf.barlibrary.ImmersionBar;
+import com.whyalwaysmea.circular.AnimUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,10 +35,13 @@ public class UdataImageActivity extends AppCompatActivity implements View.OnClic
     private List<String> mTitle;
     private List<Fragment> mFragment;
     private ImageView image_back;
+    private View ll_layout;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_updataimage);
+        AnimUtils.animhpel(this,R.id.ll_layout);
+
         //沉浸式
         ImmersionBar.with(this)
                 .init();
@@ -94,7 +100,8 @@ public class UdataImageActivity extends AppCompatActivity implements View.OnClic
 
         switch (v.getId()) {
             case R.id.image_back:
-                finish();
+             //   finish();
+                AnimUtils.finishAmins((Activity)this,R.id.rl_layoutssss,v,R.id.ll_layout);
                 break;
         }
     }

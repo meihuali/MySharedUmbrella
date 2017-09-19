@@ -14,6 +14,11 @@ import com.example.administrator.mysharedumbrella01.Adapter.SanZuoSanRecordAdapt
 import com.example.administrator.mysharedumbrella01.Adapter.ShoppingHarvestAdapter;
 import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.entivity.SanZuoSanRecordBean;
+import com.example.administrator.mysharedumbrella01.entivity.ShoppingRecorBean;
+import com.example.administrator.mysharedumbrella01.peresenet.ShoppingRecorPerserent;
+import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
+import com.example.administrator.mysharedumbrella01.utils.ToastUtil;
+import com.example.administrator.mysharedumbrella01.view.IsShoppingRecorView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +32,11 @@ import java.util.List;
  * 创建时间： 2017/9/11 0011 19:15
  * 描述：伞座 / 伞记录
  */
-public class SanZuoSanFragent extends Fragment {
+public class SanZuoSanFragent extends Fragment implements IsShoppingRecorView {
 
     private RecyclerView mRecyclerView;
     private SanZuoSanRecordAdapter adapter;
-    private List<SanZuoSanRecordBean> mlist = new ArrayList<>();
+    private List<ShoppingRecorBean.DataBean> mlist = new ArrayList<>();
     private  SanZuoSanRecordBean  sanzuoData;
     @Nullable
     @Override
@@ -39,24 +44,17 @@ public class SanZuoSanFragent extends Fragment {
 
        View view = inflater.inflate(R.layout.activity_saozuosao,null);
         initView(view);
-      //  initData(view);
+         initData(view);
         return view;
     }
     /*
     * 数据
     * */
     private void initData(View view) {
-        for (int i = 0; i <100; i++) {
-            sanzuoData = new SanZuoSanRecordBean();
-            sanzuoData.setYearMothdata("2017-09-14");
-            sanzuoData.setTime("08: 36");
-            sanzuoData.setSanzuoCount("88");
-            sanzuoData.setYusanCount("88");
-            sanzuoData.setBianhao("13145201314520");
-            mlist.add(sanzuoData);
-        }
-        adapter.addData(mlist);
-        adapter.notifyDataSetChanged();
+        //获取手机号码
+        String zh =   ShareUtils.getString(getActivity(),"zhanghao","");
+        ShoppingRecorPerserent shprecor = new ShoppingRecorPerserent(this);
+        shprecor.sprecor(zh);
     }
 
     /*
@@ -74,4 +72,16 @@ public class SanZuoSanFragent extends Fragment {
         adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_RIGHT);
     }
 
+    @Override
+    public void showRelst(Object object) {
+        ShoppingRecorBean srb = (ShoppingRecorBean) object;
+        int status = srb.getStatus();
+        if (status == 1) {
+            List<ShoppingRecorBean.DataBean> list =  srb.getData();
+            adapter.addData(list);
+            adapter.notifyDataSetChanged();
+        } else {
+            ToastUtil.showShortToast(getActivity(),"获取商家记录失败");
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.administrator.mysharedumbrella01.ui;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -36,6 +37,7 @@ import com.example.administrator.mysharedumbrella01.utils.SystemUiUtils;
 import com.example.administrator.mysharedumbrella01.utils.ToastUtil;
 import com.example.administrator.mysharedumbrella01.view.IsShangChuanTouXiangView;
 import com.gyf.barlibrary.ImmersionBar;
+import com.whyalwaysmea.circular.AnimUtils;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
 import com.yanzhenjie.permission.Rationale;
@@ -75,11 +77,14 @@ public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implemen
     private File myCaptureFile;
     private TextView tv_UserNick;
     private TextView tv_userPhone;
-
+    private View ll_layout_amin;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settingsyuanxingtouxiang);
+
+        AnimUtils.animhpel((Activity) this,R.id.ll_layout_amin);
+
         //创建dialog对象
         promptDialog = new PromptDialog(this);
         //沉浸式
@@ -95,6 +100,7 @@ public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implemen
     }
     /*初始化 */
     private void intiview() {
+
         tv_UserNick = (TextView)findViewById(R.id.tv_UserNick);
         tv_userPhone = (TextView)findViewById(R.id.tv_userPhone);
         String shoujiPhone = ShareUtils.getString(getApplicationContext(),"zhanghao","");
@@ -155,12 +161,16 @@ public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implemen
                 toPicture(); //打开相册
                 break;
             case R.id.btn_camera:
-
-
                 break;
 
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        AnimUtils.finishonBackPressed(YuanXingTouxiangSettingsActivity.this,R.id.ll_layout_amin);
     }
 
     /**

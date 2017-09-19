@@ -1,5 +1,6 @@
 package com.example.administrator.mysharedumbrella01.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,6 +23,7 @@ import com.example.administrator.mysharedumbrella01.view.HisyoricalRecordView;
 import com.gyf.barlibrary.ImmersionBar;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.whyalwaysmea.circular.AnimUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +41,13 @@ public class UsagelogActivity extends AppCompatActivity implements HisyoricalRec
     private int curPage = 0;
     private String zhanghao;
     private  int isroot;
-
+    private View rl_waicheng;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usagelog);
+
+        AnimUtils.animhpel(this,R.id.rl_waicheng);
         //沉浸式
 /*        ImmersionBar.with(this)
                 .statusBarColor(R.color.zhutiyanse) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色

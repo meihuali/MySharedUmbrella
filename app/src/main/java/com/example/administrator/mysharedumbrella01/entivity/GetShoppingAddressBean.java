@@ -62,6 +62,17 @@ public class GetShoppingAddressBean {
         private String c_time;
         private String u_time;
         private String is_inuser;
+       private boolean isSelect =false ;
+
+
+        public boolean isSelect() {
+            return isSelect;
+        }
+
+        public void setSelect(boolean select) {
+            isSelect = select;
+        }
+
 
         public String getId() {
             return id;

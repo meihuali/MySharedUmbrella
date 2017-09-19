@@ -46,6 +46,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <TextView
+                        android:visibility="gone"
                         android:id="@+id/tv_time"
                         android:layout_marginLeft="15dp"
                         android:text="10: 30"
@@ -60,6 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                     <TextView
+                        android:id="@+id/tv_status"
                         android:text="@string/paisongzhong"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />

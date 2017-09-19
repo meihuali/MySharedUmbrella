@@ -56,10 +56,12 @@
             android:theme="@style/noAnimTheme"
             />
         <!--退出登录的那个设置界面-->
-        <activity android:name=".ui.settingsssssActivity"/>
+        <activity android:name=".ui.settingsssssActivity"
+            android:theme="@style/noAnimTheme"
+            />
         <!--原型头像进入后的activity-->
         <activity android:name=".ui.YuanXingTouxiangSettingsActivity"
-            android:theme="@style/AppTheme.Transparent"
+            android:theme="@style/noAnimTheme"
             />
         <activity android:name=".ui.MainActivity"
             android:theme="@style/AppTheme.Transparent"
@@ -80,7 +82,9 @@
         <!--押金充值界面-->
         <activity android:name=".ui.DepositRechargeActivity"/>
         <!--修改过的充押金界面 -->
-        <activity android:name=".ui.DepositRechargeActivitys"/>
+        <activity android:name=".ui.DepositRechargeActivitys"
+            android:theme="@style/noAnimTheme"
+            />
 
         <!--邀请好友界面-->
         <activity android:name=".ui.InvitingFriendsAcitivity"/>
@@ -180,7 +184,9 @@
         <!--充值押金协议-->
         <activity android:name=".ui.User_chongzhiyajinxieyiActivity"/>
         <!--联系客户-->
-        <activity android:name=".ui.LianXiKeFuActivity"/>
+        <activity android:name=".ui.LianXiKeFuActivity"
+            android:theme="@style/noAnimTheme"
+            />
         <!--押金说明-->
         <activity android:name=".ui.YajinshuomingActivity"/>
         <!--用户协议-->
@@ -281,28 +287,44 @@
         <!--商家认证界面-->
         <activity android:name=".ui.ShangJiaRenZhengActivity"/>
         <!--商家信息类容界面-->
-        <activity android:name=".ui.ShoppingShangjiaxinxiActivity"/>
+        <activity android:name=".ui.ShoppingShangjiaxinxiActivity"
+            android:theme="@style/noAnimTheme"
+            />
         <!--商务中心 界面-->
-        <activity android:name=".ui.ShoppingShangWuZhongXinActivity"/>
+        <activity android:name=".ui.ShoppingShangWuZhongXinActivity"
+            android:theme="@style/noAnimTheme"
+            />
         <!--商家设置界面-->
-        <activity android:name=".ui.ShoppingSettingsActivity"/>
+        <activity android:name=".ui.ShoppingSettingsActivity"
+            android:theme="@style/noAnimTheme"
+            />
         <!--伞座和伞界面-->
-        <activity android:name=".ui.ShanZuoSanActivity"/>
+        <activity android:name=".ui.ShanZuoSanActivity"
+            android:theme="@style/noAnimTheme"
+            />
         <!--图片更改界面-->
-        <activity android:name=".ui.UdataImageActivity"/>
+        <activity android:name=".ui.UdataImageActivity"
+            android:theme="@style/noAnimTheme"
+            />
         <!--入驻商家提供资料-->
         <activity android:name=".ui.ShoppingSettledDataActivity"/>
         <!--商家记录-->
-        <activity android:name=".ui.ShoppingRecordActivity" />
+        <activity android:name=".ui.ShoppingRecordActivity"
+            android:theme="@style/noAnimTheme"
+            />
         <!--商家收获地址管理-->
-        <activity android:name=".ui.ShoppingHarvestAddress"/>
+        <activity android:name=".ui.ShoppingHarvestAddress"
+            android:theme="@style/noAnimTheme"
+            />
         <!--商家新增地址选择界面-->
         <activity android:name=".ui.AddressSelectorActivity"/>
         <!--地址选择界面-->
         <activity android:name=".ui.CitySelect1Activity"/>
         <activity android:name=".ui.CitySelect2Activity"/>
         <!--商家货物签收-->
-        <activity android:name=".ui.ShoppingGoodsReceiptActivity"/>
+        <activity android:name=".ui.ShoppingGoodsReceiptActivity"
+            android:theme="@style/noAnimTheme"
+            />
     </application>
 
     <!--高德地图权限-->

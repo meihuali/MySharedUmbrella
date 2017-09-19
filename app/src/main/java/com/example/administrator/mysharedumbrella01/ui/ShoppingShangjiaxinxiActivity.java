@@ -69,10 +69,18 @@ public class ShoppingShangjiaxinxiActivity extends AppCompatActivity implements 
     private LinearLayout rl_layout_jilu;
     private LinearLayout ll_layoutGoods;
     private ImageView image_back;
+    private View ll_layouts;
+    private TextView tv_sanzuosan;
+    private TextView tv_huowuqianshou;
+    private TextView img_updata;
+    private TextView tv_shopping_jilu;
+    private TextView tv_settings;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shangjiaxinxi);
+
+        AnimUtils.animhpel((Activity) this,R.id.ll_layoutss);
 
         //这句话的意思 将activity添加到Activity管理的方法中以便在别的activity销毁
         BaseAppliction.addDestoryActivity(this,"ShoppingShangjiaxinxiActivity");
@@ -87,6 +95,17 @@ public class ShoppingShangjiaxinxiActivity extends AppCompatActivity implements 
     * 初始化
     * */
     private void initView() {
+        tv_settings = (TextView) findViewById(R.id.tv_settings);
+        tv_settings.setOnClickListener(this);
+        tv_shopping_jilu = (TextView) findViewById(R.id.tv_shopping_jilu);
+        tv_shopping_jilu.setOnClickListener(this);
+
+        img_updata = (TextView) findViewById(R.id.img_updata);
+        img_updata.setOnClickListener(this);
+        tv_huowuqianshou = (TextView)findViewById(R.id.tv_huowuqianshou);
+        tv_huowuqianshou.setOnClickListener(this);
+        tv_sanzuosan  = (TextView)findViewById(R.id.tv_sanzuosan);
+        tv_sanzuosan.setOnClickListener(this);
         image_back = (ImageView) findViewById(R.id.image_back);
         image_back.setOnClickListener(this);
         ll_layoutGoods = (LinearLayout) findViewById(R.id.ll_layoutGoods);
@@ -109,7 +128,7 @@ public class ShoppingShangjiaxinxiActivity extends AppCompatActivity implements 
     protected void onResume() {
         super.onResume();
         //程序进来取出服务器返回的那个头像路径因为用户上传头像到服务器成功过后通过sp保存到本地了，在下面回调中保存了
-        String photoImg = ShareUtils.getString(getApplicationContext(),"imgPath","");
+        String photoImg = ShareUtils.getString(getApplicationContext(),"touxiangURL","");
         if (!TextUtils.isEmpty(photoImg)) {
             String url = ConfigUtils.ZHU_YU_MING+"public/avatar/"+photoImg;
             Glide.with(getApplicationContext()).load(url).into(image_yuanxing);
@@ -120,30 +139,44 @@ public class ShoppingShangjiaxinxiActivity extends AppCompatActivity implements 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_back:
-                finish();
+                // finish();
+                AnimUtils.finishAmins((Activity)this,R.id.rl_layoutssss,view,R.id.ll_layoutss);
+
                 break;
             case R.id.image_yuanxing:
                 Intent intent = new Intent(getApplicationContext(), ShoppingShangWuZhongXinActivity.class);
-                startActivity(intent);
+                AnimUtils.startIntent(intent,view, (Activity)this,R.id.ll_layouts);
                 break;
-            case R.id.rl_layout_settings:
-                startActivity(new Intent(getApplicationContext(),ShoppingSettingsActivity.class));
+            case R.id.tv_settings:
+                // startActivity(new Intent(getApplicationContext(),ShoppingSettingsActivity.class));
+                Intent intent8 = new Intent(getApplicationContext(),ShoppingSettingsActivity.class);
+                AnimUtils.startIntent(intent8,view, (Activity)this,R.id.rl_layout_settings);
+
                 break;
 
-            case R.id.ll_layout:
-                startActivity(new Intent(getApplicationContext(),ShanZuoSanActivity.class));
+            case R.id.tv_sanzuosan:
+                //   startActivity(new Intent(getApplicationContext(),ShanZuoSanActivity.class));
+                Intent intent1 = new Intent(this,ShanZuoSanActivity.class);
+                AnimUtils.startIntent(intent1,view, (Activity)this,R.id.ll_layout);
                 break;
             //更改图图片
-            case R.id.rl_layout_jilu:
-                startActivity(new Intent(getApplicationContext(),UdataImageActivity.class));
+            case R.id.img_updata:
+                //   startActivity(new Intent(getApplicationContext(),UdataImageActivity.class));
+                Intent intent2 = new Intent(this,UdataImageActivity.class);
+                AnimUtils.startIntent(intent2,view, (Activity) this,R.id.rl_layout_jilu);
                 break;
             //商家记录
-            case R.id.ll_lyout:
-                startActivity(new Intent(getApplicationContext(),ShoppingRecordActivity.class));
+            case R.id.tv_shopping_jilu:
+                // startActivity(new Intent(getApplicationContext(),ShoppingRecordActivity.class));
+                Intent intent5 = new Intent(this,ShoppingRecordActivity.class);
+                AnimUtils.startIntent(intent5,view, (Activity)this,R.id.ll_lyout);
+
                 break;
             //获取签收
-            case R.id.ll_layoutGoods:
-                startActivity(new Intent(getApplicationContext(),ShoppingGoodsReceiptActivity.class));
+            case R.id.tv_huowuqianshou:
+                //   startActivity(new Intent(getApplicationContext(),ShoppingGoodsReceiptActivity.class));
+                Intent intent3 = new Intent(this,ShoppingGoodsReceiptActivity.class);
+                AnimUtils.startIntent(intent3,view, (Activity) this,R.id.ll_layoutGoods);
                 break;
         }
     }

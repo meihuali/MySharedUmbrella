@@ -143,4 +143,13 @@ public class ConfigUtils {
     * 删除收获地址
     * */
     public static final String DELTE_SHOPPING_ADDRESS = "/Merchant/delete_address.php";
+
+    /*
+    * 商家充钱记录
+    * */
+    public static final String SHOPPING_MONEY_RECOR = "/Merchant/get_placeorder.php";
+    /*
+    * 商家手动修改默认地址
+    * */
+    public static final String SHOPPING_SETTING_ADDRESS = "/Merchant/update.php";
 }

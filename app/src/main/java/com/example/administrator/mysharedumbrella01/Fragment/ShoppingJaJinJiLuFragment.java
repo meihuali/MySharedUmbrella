@@ -15,6 +15,11 @@ import com.example.administrator.mysharedumbrella01.Adapter.ShoppingYaJinJluAdap
 import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.entivity.SanZuoSanRecordBean;
 import com.example.administrator.mysharedumbrella01.entivity.ShoppingJiLubean;
+import com.example.administrator.mysharedumbrella01.entivity.ShoppingRecorBean;
+import com.example.administrator.mysharedumbrella01.peresenet.ShoppingRecorPerserent;
+import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
+import com.example.administrator.mysharedumbrella01.utils.ToastUtil;
+import com.example.administrator.mysharedumbrella01.view.IsShoppingRecorView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +33,10 @@ import java.util.List;
  * 创建时间： 2017/9/11 0011 19:17
  * 描述：商家押金记录
  */
-public class ShoppingJaJinJiLuFragment extends Fragment {
+public class ShoppingJaJinJiLuFragment extends Fragment{
     private RecyclerView mRecyclerView;
     private ShoppingYaJinJluAdapter adapter;
-    private List<ShoppingJiLubean> mlist = new ArrayList<>();
+    private List<ShoppingRecorBean.DataBean> mlist = new ArrayList<>();
     private  ShoppingJiLubean  sanzuoData;
 
     @Nullable
@@ -39,24 +44,15 @@ public class ShoppingJaJinJiLuFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_shangjiayajinjilu,null);
         initView(view);
-       // initData(view);
+        initData(view);
         return view;
     }
 
     /*
-* 数据
+* 请求商家充值记录的接口
 * */
     private void initData(View view) {
-        for (int i = 0; i <100; i++) {
-            sanzuoData = new ShoppingJiLubean();
-            sanzuoData.setTime("2017-09-14 11: 32");
-            sanzuoData.setDanhao("13145201314520");
-            sanzuoData.setYajin("￥"+300);
-            sanzuoData.setStyle("支付宝支付");
-            mlist.add(sanzuoData);
-        }
-        adapter.addData(mlist);
-        adapter.notifyDataSetChanged();
+
     }
 
     /*

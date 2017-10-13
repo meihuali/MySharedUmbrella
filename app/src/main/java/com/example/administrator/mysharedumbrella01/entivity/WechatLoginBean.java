@@ -63,6 +63,15 @@ public class WechatLoginBean implements Serializable{
         private String is_Authentication;
         private String wechat;
         private String qq;
+        private int is_manager;
+
+        public int getIs_manager() {
+            return is_manager;
+        }
+
+        public void setIs_manager(int is_manager) {
+            this.is_manager = is_manager;
+        }
 
         public String getR_id() {
             return r_id;

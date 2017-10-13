@@ -20,14 +20,14 @@ public class AliPayYaJinPersernet {
         aipayYaJinModel = new AliPayYaJinModelImpl();
     }
 
-    public void fach(String zhifujixing,String money,String user, String zhifubiaoti) {
+    public void fach(String zhifujixing,String money,String user, String zhifubiaoti,String is_merchant) {
         if (aipayYaJinModel != null) {
             aipayYaJinModel.ZhiFuBaoYaJin(new IsAipayYaJinModel.OnZhifubaoYajinLinenere() {
                 @Override
                 public void OnCompelte(ZhifubaoBean zfb) {
                     aliPayYaJinView.showRestuelYaJin(zfb);
                 }
-            },zhifujixing,money,user,zhifubiaoti);
+            },zhifujixing,money,user,zhifubiaoti,is_merchant);
         }
     }
 

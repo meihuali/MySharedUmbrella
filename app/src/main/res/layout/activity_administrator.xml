@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:background="@drawable/zhujiemlanse_x"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <ImageView
+            android:id="@+id/image_back"
+            android:layout_marginLeft="8dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/btn_back"
+            android:layout_width="35dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:textColor="@color/white"
+            android:textSize="19sp"
+            android:gravity="center"
+            android:text="@string/guanliyuan"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_layout_search"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="55dp">
+        <TextView
+            android:textColor="@color/lanse_x_x"
+            android:textSize="24dp"
+            android:text="@string/saomakaisuol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <View
+        android:background="@color/qianhuise2"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"/>
+    <LinearLayout
+        android:id="@+id/ll_layout_authentication"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="55dp">
+        <TextView
+            android:textColor="@color/lanse_x_x"
+            android:textSize="24dp"
+            android:text="@string/xinxirenzheng"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <View
+        android:background="@color/qianhuise2"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"/>
+
+</LinearLayout>

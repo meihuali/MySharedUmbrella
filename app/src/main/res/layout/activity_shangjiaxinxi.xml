@@ -36,7 +36,7 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="90dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -46,7 +46,7 @@
             android:gravity="center"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="180dp"
             >
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/image_yuanxing"
@@ -58,11 +58,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignEnd="@+id/tv_name" />
 
-
         </LinearLayout>
-
-
-
 
         <ScrollView
             android:id="@+id/sv_layout"
@@ -83,7 +79,7 @@
                     <ImageView
                         android:layout_marginLeft="110dp"
                         android:layout_gravity="center_vertical"
-                        android:src="@drawable/qianbao_x"
+                        android:src="@drawable/sanzuosan_x"
                         android:layout_width="20dp"
                         android:layout_height="20dp" />
                     <TextView
@@ -125,7 +121,7 @@
                     <ImageView
                         android:layout_marginLeft="110dp"
                         android:layout_gravity="center_vertical"
-                        android:src="@drawable/qianbao_x"
+                        android:src="@drawable/huowuqianshou_x"
                         android:layout_width="20dp"
                         android:layout_height="20dp" />
                     <TextView
@@ -158,16 +154,36 @@
                         android:layout_marginRight="10dp"
                         android:src="@drawable/backs" />
                 </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ll_layout_yajin"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+                    <ImageView
+                        android:layout_marginLeft="110dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/wodeyanjin_x"
+                        android:layout_width="20dp"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/tv_tuihui"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:gravity="center"
+                        android:text="@string/wodeyajin"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
 
+                </LinearLayout>
                 <LinearLayout
                     android:id="@+id/rl_layout_jilu"
                     android:layout_width="match_parent"
                     android:layout_height="50dp">
                     <ImageView
-
                         android:layout_marginLeft="110dp"
                         android:layout_gravity="center_vertical"
-                        android:src="@drawable/wodexingcheng_x"
+                        android:src="@drawable/tupiangenggai_x"
                         android:layout_width="20dp"
                         android:layout_height="20dp" />
                     <TextView
@@ -199,7 +215,7 @@
                     <ImageView
                         android:layout_marginLeft="110dp"
                         android:layout_gravity="center_vertical"
-                        android:src="@drawable/yaoqinghaoyou_x"
+                        android:src="@drawable/shangjiajilu_x"
                         android:layout_width="20dp"
                         android:layout_height="20dp" />
                     <TextView
@@ -229,9 +245,9 @@
                     <ImageView
                         android:layout_marginLeft="110dp"
                         android:layout_gravity="center_vertical"
-                        android:src="@drawable/shezhi_x"
+                        android:src="@drawable/settings_x"
                         android:layout_width="20dp"
-                        android:layout_height="20dp" />
+                        android:layout_height="wrap_content" />
                     <TextView
                         android:id="@+id/tv_settings"
                         android:layout_width="wrap_content"

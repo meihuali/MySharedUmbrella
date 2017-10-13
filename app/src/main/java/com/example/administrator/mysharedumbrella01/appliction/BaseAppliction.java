@@ -21,6 +21,13 @@ import com.example.administrator.mysharedumbrella01.utils.BoxingGlideLoader;
 import com.hss01248.dialog.MyActyManager;
 import com.hss01248.dialog.StyledDialog;
 import com.igexin.sdk.PushManager;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.cache.CacheEntity;
+import com.lzy.okgo.cache.CacheMode;
+import com.lzy.okgo.cookie.CookieJarImpl;
+import com.lzy.okgo.https.HttpsUtils;
+import com.lzy.okgo.model.HttpHeaders;
+import com.lzy.okgo.model.HttpParams;
 import com.taobao.sophix.PatchStatus;
 import com.taobao.sophix.SophixManager;
 import com.taobao.sophix.listener.PatchLoadStatusListener;
@@ -30,12 +37,15 @@ import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.common.QueuedWork;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import cn.smssdk.SMSSDK;
 import me.leefeng.promptlibrary.PromptDialog;
+import okhttp3.OkHttpClient;
 
 import static com.tencent.bugly.Bugly.applicationContext;
 
@@ -57,6 +67,9 @@ public class BaseAppliction extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        //配置OKGO HTTPS
+        okgoHttps();
+
         //dialogUtils
         StyledDialog.init(getApplicationContext());
         registCallback();
@@ -97,7 +110,26 @@ public class BaseAppliction extends Application {
             Config.DEBUG = true;
         }
     }
+    /*
+    * OKgo https  协议
+    * */
+    private void okgoHttps() {
+        try {
+            OkGo.getInstance().setCertificates() //可以设置https的证书,以下几种方案根据需要自己设置
+                    // .setCertificates(new SafeTrustManager())            //方法二：自定义信任规则，校验服务端证书
+                    .setCertificates(getAssets().open("u.sunsyi.com.cer"));      //方法三：使用预埋证书，校验服务端证书（自签名证书）
+            //方法四：使用bks证书和密码管理客户端证书（双向认证），使用预埋证书，校验服务端证书（自签名证书）
+            // .setCertificates(getAssets().open("xxx.bks"), "123456", getAssets().open("yyy.cer"))//
 
+            //配置https的域名匹配规则，详细看demo的初始化介绍，不需要就不要加入，使用不当会导致https握手失败
+            // .setHostnameVerifier(new SafeHostnameVerifier())
+        } catch (Exception e) {
+
+        }
+
+
+
+    }
 
 
     /*

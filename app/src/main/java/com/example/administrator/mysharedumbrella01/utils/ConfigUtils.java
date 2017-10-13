@@ -6,7 +6,10 @@ package com.example.administrator.mysharedumbrella01.utils;
 
 public class ConfigUtils {
     //主域名
-    public static final String ZHU_YU_MING = "http://u.sunyie.com/";
+    //测试服务器
+    //public static final String ZHU_YU_MING = "http://u.sunyie.com/";
+    // 正式服务器
+     public static final String ZHU_YU_MING = "https://u.sunsyi.com/";
 
     // =============获取雨伞分布图=================================
     public static final String FENBUTU_HOUZHUI = "Share/umbrellaindex.php";
@@ -79,7 +82,7 @@ public class ConfigUtils {
     /*
     * 雨伞图标 还伞图标
     * */
-    public static final String YUSANTUBIAO = "http://u.sunyie.com/public/uploads/";
+    public static final String YUSANTUBIAO = ConfigUtils.ZHU_YU_MING+"public/uploads/";
 
     /*
     * 用户是否取走雨伞
@@ -152,4 +155,34 @@ public class ConfigUtils {
     * 商家手动修改默认地址
     * */
     public static final String SHOPPING_SETTING_ADDRESS = "/Merchant/update.php";
+    /*
+    * 确认收获里面的列表数据
+    * */
+    public static final String CONFIRM_GOODS = "/Merchant/calculation.php";
+
+    public static final String CONFIREM_GOODSSSS = "/Merchant/ensure_order.php";
+    /*
+    * 商户下单
+    * */
+
+    public static final String SHANGHUXIADAN = "/Merchant/placeorder.php";
+    /*
+    *
+    * 获取商家押金
+    * */
+    public static final String GET_SHOPPING_YAJIN = "/Merchant/getmoney.php";
+    /*
+    *  获取商家的充值记录
+    * */
+    public static final String GET_JILU = "/Merchant/getpayrecord.php";
+
+    /*
+    * 管理员扫描开锁 全部的锁
+    * */
+    public static final String ANDMIN_SEARCH_ALL = "Manage/openstand.php";
+    /*
+    *  管理员 扫伞的特定id开启对应的伞座号
+    * */
+    public static final String ANDMIN_SEARCH_ID = "/Unlock/umbrellaidopen.php";
+
 }

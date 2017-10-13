@@ -14,11 +14,11 @@
         android:id="@+id/relativeLayout">
         <ImageView
             android:id="@+id/image_back"
-            android:layout_marginLeft="8dp"
-            android:layout_centerVertical="true"
-            android:src="@drawable/btn_back"
             android:layout_width="30dp"
-            android:layout_height="30dp" />
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:src="@drawable/btn_back" />
         <TextView
             android:textColor="@color/white"
             android:textSize="19sp"
@@ -34,41 +34,47 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/relativeLayout">
 
-    <com.mylhyl.zxing.scanner.ScannerView
-        android:id="@+id/scanner_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/toggleButton" />
-        <Button
-        android:visibility="gone"
-        android:id="@+id/button4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="相册" />
+        <com.mylhyl.zxing.scanner.ScannerView
+            android:id="@+id/scanner_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/toggleButton"
 
-
-        <ToggleButton
-            android:textOn="@string/kongbai"
-            android:textOff="@string/kongbai"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/guanbidengpao"
-            android:layout_gravity="center_horizontal|bottom"
-            android:id="@+id/toggleButton"
-            android:layout_width="45dp"
-            android:layout_height="50dp"
             />
-        <ToggleButton
+
+        <Button
             android:visibility="gone"
-            android:textOn="@string/kongbai"
-            android:textOff="@string/kongbai"
-            android:id="@+id/img_open"
+            android:id="@+id/button4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="相册" />
+
+        <RelativeLayout
             android:layout_marginBottom="15dp"
-            android:background="@drawable/guanbidengpao"
-            android:layout_gravity="center|bottom"
-            android:layout_width="45dp"
-            android:layout_height="50dp" />
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/img_tv"
+                android:layout_marginLeft="25dp"
+                android:src="@drawable/shoudongshuru"
+                android:layout_width="100dp"
+                android:layout_height="100dp" />
+            <ToggleButton
+                android:background="@drawable/shoudiantongguan_x"
+                android:id="@+id/toggleButton"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="23dp"
+                android:layout_marginTop="7dp" />
+        </RelativeLayout>
+
+
+
 
     </FrameLayout>
 </RelativeLayout>

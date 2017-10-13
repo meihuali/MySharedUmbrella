@@ -9,7 +9,7 @@ import com.example.administrator.mysharedumbrella01.entivity.ZhifubaoBean;
 
 public interface IsAipayYaJinModel {
     //充值押金
-    void ZhiFuBaoYaJin(OnZhifubaoYajinLinenere linenere,String zhifujixing,String money,String user, String zhifubiaoti);
+    void ZhiFuBaoYaJin(OnZhifubaoYajinLinenere linenere,String zhifujixing,String money,String user, String zhifubiaoti,String is_merchant);
 
     //充值押金 接口回调
     interface OnZhifubaoYajinLinenere{

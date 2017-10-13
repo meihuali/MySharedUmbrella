@@ -325,6 +325,17 @@
         <activity android:name=".ui.ShoppingGoodsReceiptActivity"
             android:theme="@style/noAnimTheme"
             />
+        <activity android:name=".ui.ShoppingYaJinActivity"
+            android:theme="@style/noAnimTheme"
+            />
+
+        <!-- 输入二维码编号的界面-->
+        <activity android:name=".ui.GetErWeiMaActivity"/>
+        <!--商家资料界面-->
+        <activity android:name=".ui.ShoppingDataActivity"/>
+        <!--管理员界面-->
+        <activity android:name=".ui.AdimIstratorActivity"/>
+
     </application>
 
     <!--高德地图权限-->

@@ -36,7 +36,7 @@ public class UmbrellaPresenet {
 
     }
 
-    public void binds(String mincdeID, final String phone,Activity activity) {
+    public void binds(String mincdeID, final String phone,Activity activity,String app_type) {
         if (isUmbrellaStand != null) {
             isUmbrellaStand.SaoYiSao(new IsUmbrellaStandMode.OnSaoYiSaoListeners() {
                 @Override
@@ -45,7 +45,7 @@ public class UmbrellaPresenet {
                 }
 
 
-            },mincdeID,phone,activity);
+            },mincdeID,phone,activity,app_type);
         }
     }
 

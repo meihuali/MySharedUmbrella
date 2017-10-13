@@ -133,7 +133,7 @@ public class ShoppingShangWuZhongXinActivity extends AppCompatActivity implement
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_shoppingRz:
-                startActivity(new Intent(getApplicationContext(),ShangJiaRenZhengActivity.class));
+                startActivity(new Intent(getApplicationContext(),ShoppingDataActivity.class));
                 break;
             //这里是商家上传头像 点击该按钮打开图库拍照
             case R.id.image_yuanxing:
@@ -156,12 +156,6 @@ public class ShoppingShangWuZhongXinActivity extends AppCompatActivity implement
                 pathImg = medias.get(i).getPath();
             }
             if (!TextUtils.isEmpty(pathImg)) {
-                // 这里获取到本地SDK 图片的路径 后 通过 gilde 来加载出图片设置到 控件上
-//                Glide.with(getApplicationContext())
-//                        .load(new File(pathImg))
-//                        .into(image_yuanxing);
-                //这里将图片设置在控件上(该拍照裁减库自带的方法)
-                //  BoxingMediaLoader.getInstance().displayThumbnail(image_yuanxing, pathImg, 200, 200);
 
                 promptDialog.showLoading("头像上传中···");
                 //压缩图片
@@ -252,7 +246,7 @@ public class ShoppingShangWuZhongXinActivity extends AppCompatActivity implement
             }*/
 
         } else {
-            ToastUtil.showShortToast(getApplicationContext(),"服务器返回status不等于1");
+         //   ToastUtil.showShortToast(getApplicationContext(),"服务器返回status不等于1");
         }
     }
     /*

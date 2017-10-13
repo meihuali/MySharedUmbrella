@@ -37,8 +37,11 @@ public class IsUserCurrentImpl implements IsUserCurrentMonde {
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        L.e("用户正在使用的雨伞："+response.message());
-                        liners.onErres();
+                        try {
+                            liners.onErres();
+                        } catch (Exception e1) {
+                        }
+
                     }
                 });
     }

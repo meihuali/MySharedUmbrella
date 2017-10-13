@@ -24,6 +24,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bilibili.boxing.Boxing;
+import com.bilibili.boxing.model.config.BoxingConfig;
+import com.bilibili.boxing.model.entity.BaseMedia;
+import com.bilibili.boxing_impl.ui.BoxingActivity;
+import com.bumptech.glide.Glide;
 import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.SaoYiSao.ScannerActivity;
 import com.example.administrator.mysharedumbrella01.dialog.CustomDialog;
@@ -37,6 +42,7 @@ import com.example.administrator.mysharedumbrella01.utils.SystemUiUtils;
 import com.example.administrator.mysharedumbrella01.utils.ToastUtil;
 import com.example.administrator.mysharedumbrella01.view.IsShangChuanTouXiangView;
 import com.gyf.barlibrary.ImmersionBar;
+import com.hss01248.dialog.StyledDialog;
 import com.whyalwaysmea.circular.AnimUtils;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
@@ -48,6 +54,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -55,6 +62,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import me.leefeng.promptlibrary.PromptButton;
 import me.leefeng.promptlibrary.PromptButtonListener;
 import me.leefeng.promptlibrary.PromptDialog;
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
 
 /**
  * Created by Administrator on 2017/6/5 0005.
@@ -62,7 +71,6 @@ import me.leefeng.promptlibrary.PromptDialog;
  */
 
 public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implements View.OnClickListener, IsShangChuanTouXiangView {
-    private ImageView imge_backes;
     private CircleImageView image_yuanxing;
     private CustomDialog dialog;
     private TextView btn_cancel;
@@ -78,6 +86,11 @@ public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implemen
     private TextView tv_UserNick;
     private TextView tv_userPhone;
     private View ll_layout_amin;
+    private static final int REQUEST_CODE = 1024;
+    private String pathImg;
+    private  ImageView imge_backes;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,7 +113,8 @@ public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implemen
     }
     /*初始化 */
     private void intiview() {
-
+        imge_backes = (ImageView) findViewById(R.id.imge_backes);
+        imge_backes.setOnClickListener(this);
         tv_UserNick = (TextView)findViewById(R.id.tv_UserNick);
         tv_userPhone = (TextView)findViewById(R.id.tv_userPhone);
         String shoujiPhone = ShareUtils.getString(getApplicationContext(),"zhanghao","");
@@ -117,6 +131,12 @@ public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implemen
         //进来该界面的时候去取图片路径设置在控件上
         String  imageurl = ShareUtils.getString(getApplicationContext(),"touxiangURL","");
         if (!TextUtils.isEmpty(imageurl)) {
+            if (imageurl.equals("0")) {
+                //这里表示用户第一次登录并没有上传头像
+                Glide.with(getApplicationContext()).load(R.drawable.liuyifei).into(image_yuanxing);
+                return;
+            }
+
             if (imageurl.contains("http")) {
                 GlideUtils.loadImageViewCache(getApplicationContext(), imageurl, image_yuanxing);
             } else {
@@ -147,10 +167,10 @@ public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implemen
                 finish();
                 break;
             case R.id.image_yuanxing:
-                //打开dialog
-//                dialog.show();
-                //打开dialog
-                openDialog();
+               // openDialog();
+                BoxingConfig config = new BoxingConfig(BoxingConfig.Mode.MULTI_IMG).needCamera(R.drawable.ic_boxing_camera_white).needGif().withMaxCount(1);
+                Boxing.of(config).withIntent(this, BoxingActivity.class).start(this, REQUEST_CODE);
+
                 break;
             //取消
             case R.id.btn_cancel:
@@ -312,6 +332,23 @@ public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implemen
                         }
                     }
                     break;
+
+            }
+        }
+
+        if (resultCode == RESULT_OK) {
+            final ArrayList<BaseMedia> medias = Boxing.getResult(data);
+            L.e("选择图片的结果 "+medias.size());
+            for (int i = 0; i < medias.size(); i++) {
+                pathImg = medias.get(i).getPath();
+            }
+            if (!TextUtils.isEmpty(pathImg)) {
+
+                promptDialog.showLoading("头像上传中···");
+                //压缩图片
+                compressWithLs(pathImg);
+
+
             }
         }
     }
@@ -351,11 +388,56 @@ public class YuanXingTouxiangSettingsActivity extends AppCompatActivity implemen
             File file =  saveBitmapFile(bitmap);
             L.e("xiangce "+file);
             promptDialog.showLoading("头像上传中···");
-            ShangChuanTouXiangPersernet sctxp = new ShangChuanTouXiangPersernet(this);
-            sctxp.fach(file,this);
-            image_yuanxing.setImageBitmap(bitmap);
+
+            //压缩图片
+          //  compressWithLs(pathImg);
+
+
         }
     }
+
+    private void compressWithLs(String pathImg) {
+        Luban.with(YuanXingTouxiangSettingsActivity.this)
+                .load(pathImg)
+                .ignoreBy(100)
+                .setTargetDir(getPath())
+                .setCompressListener(new OnCompressListener() {
+                    @Override
+                    public void onStart() {
+                        StyledDialog.buildLoading("压缩图片中···").show();
+                    }
+
+                    @Override
+                    public void onSuccess(File file) {
+                        // 压缩成果隐藏菊花
+                        StyledDialog.dismissLoading();
+                        L.e("压缩后 "+file);
+                        Glide.with(getApplicationContext()).load(file).into(image_yuanxing);
+                      //  files = file;
+                        ShangChuanTouXiangPersernet sctxp = new ShangChuanTouXiangPersernet(YuanXingTouxiangSettingsActivity.this);
+                        sctxp.fach(file,YuanXingTouxiangSettingsActivity.this);
+
+
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+                }).launch();
+    }
+
+
+
+    private String getPath() {
+        String path = Environment.getExternalStorageDirectory() + "/Luban/image/";
+        File file = new File(path);
+        if (file.mkdirs()) {
+            return path;
+        }
+        return path;
+    }
+
 
     //跳转相机
     private void toCamera() {

@@ -75,7 +75,7 @@ public class GetUmberllaModeImpl implements IsUmbrellaStandMode {
 
     /*扫描二维码 借伞*/
     @Override
-    public void SaoYiSao(final OnSaoYiSaoListeners listeners, String mincdeID, String phone, final Activity activity) {
+    public void SaoYiSao(final OnSaoYiSaoListeners listeners, String mincdeID, String phone, final Activity activity,String app_type) {
         //初始化下dialog
         promptDialog = new PromptDialog(activity);
         String url = ConfigUtils.ZHU_YU_MING+ConfigUtils.SAOMIAOERWEIMA_HOUZHUI;
@@ -84,6 +84,7 @@ public class GetUmberllaModeImpl implements IsUmbrellaStandMode {
         OkGo.post(url)
                 .params("appid",ph)
                 .params("machineid", shebeihao)
+                .params("app_type",app_type)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {

@@ -64,14 +64,7 @@ public class PopupShopping extends BasePopupWindow  implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_queding:
-//                BaseAppliction.destoryActivity("ShangJiaRenZhengActivity");
-//                BaseAppliction.destoryActivity("ShoppingUserRegister");
-                BaseAppliction.destoryActivity("LoginActivity");
-                BaseAppliction.destoryActivity("MainActivity");
-
-                //保存状态为true 下次从启动页面取出来直接进入商家
-            //    ShareUtils.putBoolean(activity, StaticClass.SHARE_IS_FIRSTS,true);
-                activity.startActivity(new Intent(activity, ShoppingShangjiaxinxiActivity.class));
+                BaseAppliction.destoryActivity("ShoppingSettledDataActivity");
                 dismiss();
                 break;
 

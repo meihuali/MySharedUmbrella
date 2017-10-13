@@ -91,7 +91,7 @@
                     android:layout_height="50dp">
 
                     <ImageView
-                        android:src="@drawable/qianbao_x"
+                        android:src="@drawable/querenshouhuo_x"
                         android:layout_width="20dp"
                         android:layout_height="20dp" />
                     <TextView
@@ -153,6 +153,8 @@
                         android:layout_marginRight="10dp"
                         android:src="@drawable/backs" />
                 </LinearLayout>
+
+
 
 
                 <LinearLayout
@@ -283,16 +285,9 @@
                         android:textColor="@color/white"
                         android:textSize="16sp" />
                     <TextView
-                        android:layout_width="28dp"
-                        android:layout_height="wrap_content" />
-                    <ImageView
-                        android:visibility="gone"
                         android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="10dp"
-                        android:src="@drawable/backs" />
+                        android:layout_height="wrap_content" />
+
                 </LinearLayout>
                 <LinearLayout
                     android:gravity="center"
@@ -300,7 +295,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp">
                     <ImageView
-                        android:src="@drawable/shezhi_x"
+                        android:src="@drawable/ruzhushangjiaa_x"
                         android:layout_width="20dp"
                         android:layout_height="20dp" />
                     <TextView
@@ -312,8 +307,30 @@
                         android:text="@string/shangjiaxinxi"
                         android:textColor="@color/white"
                         android:textSize="16sp" />
-
-
+                </LinearLayout>
+                <!--管理员-->
+                <LinearLayout
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:id="@+id/rl_layout_isroot"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+                    <ImageView
+                        android:src="@drawable/ruzhushangjiaa_x"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:gravity="center"
+                        android:text="@string/guanliyuan"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+                    <TextView
+                        android:layout_width="17dp"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
             </LinearLayout>

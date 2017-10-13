@@ -18,14 +18,14 @@ public class WeChatZhiFuJinErPerserent {
         weChatPayZhiFuJinErModel = new WeChatPayZhiFuJinErModelImpl();
     }
 
-    public void weixinjiner(String goods,double total_fee,String apptype,String member_id) {
+    public void weixinjiner(String goods,double total_fee,String apptype,String member_id,String is_merchant) {
         if (weChatPayZhiFuJinErModel != null) {
             weChatPayZhiFuJinErModel.WeChatZhiFu(new IsWeChatPayZhiFuJinErModel.OnWeChatLinisenet() {
                 @Override
                 public void onComplet(Object object) {
                     weChatPayJinErView.showWeChatPay(object);
                 }
-            }, goods, total_fee, apptype, member_id);
+            }, goods, total_fee, apptype, member_id,is_merchant);
         }
     }
 }

@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.administrator.mysharedumbrella01.R;
+import com.example.administrator.mysharedumbrella01.entivity.ShoppingConfirmGoodsBean;
 import com.example.administrator.mysharedumbrella01.entivity.ShoppingGoodsReceiptBean;
 
 import java.util.List;
@@ -19,31 +20,20 @@ import java.util.List;
  * 创建时间： 2017/9/14 0014 15:25
  * 描述：商家 货物签收
  */
-public class ShoppingGoodsReceiptAdapter extends BaseQuickAdapter<ShoppingGoodsReceiptBean,BaseViewHolder>{
+public class ShoppingGoodsReceiptAdapter extends BaseQuickAdapter<ShoppingConfirmGoodsBean.DataBean,BaseViewHolder>{
 
-    public ShoppingGoodsReceiptAdapter(@LayoutRes int layoutResId, @Nullable List<ShoppingGoodsReceiptBean> data) {
+    public ShoppingGoodsReceiptAdapter(@LayoutRes int layoutResId, @Nullable List<ShoppingConfirmGoodsBean.DataBean> data) {
         super(layoutResId, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, ShoppingGoodsReceiptBean item) {
-        //单号
-        helper.setText(R.id.tv_danhao,item.getDanhao());
-        //地址
-        helper.setText(R.id.tv_address,item.getAddress());
-        //新增伞座
-        helper.setText(R.id.tv_newSanZuo, item.getNewSanZuoCount());
-        //新增雨伞
-        helper.setText(R.id.tv_newYusan,item.getNewYuSanCuont());
-        //合计
-        helper.setText(R.id.tv_sums, item.getSum());
-        //实际雨伞
-        helper.setText(R.id.tv_shijiyusan,item.getYusan());
-        //实际伞座
-        helper.setText(R.id.tv_shijisanzuo,item.getSanzuo());
-        //未签收雨伞
-        helper.setText(R.id.tv_sj_yusan,item.getYusan());
-        //未签收伞座
-        helper.setText(R.id.tv_sjsanzuo,item.getSanzuo());
+    protected void convert(BaseViewHolder helper, ShoppingConfirmGoodsBean.DataBean item) {
+        //获取新增雨伞个数
+        helper.setText(R.id.tv_newSanZuo,item.getStand()+"个");
+        //获取雨伞
+        helper.setText(R.id.tv_newYusan,item.getUmbrella()+"个");
+
+        //注册子控件的点击事件
+        helper.addOnClickListener(R.id.btn_confirm);
     }
 }

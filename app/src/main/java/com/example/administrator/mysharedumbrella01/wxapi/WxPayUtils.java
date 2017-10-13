@@ -11,7 +11,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 
 /**
- * Created by 余横峰 on 2016/11/17.
+ * Created by 梅华黎 on 2016/11/17.
  * Version 1.0
  */
 public class WxPayUtils {

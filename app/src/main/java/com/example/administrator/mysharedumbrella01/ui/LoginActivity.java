@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,18 +67,18 @@ import me.leefeng.promptlibrary.PromptDialog;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, IsLoginView, IsWechatLoginView, IsShoppingLoginView {
     private Button btn_login;
-    private EditTextWithDelete edit_phone; //手机号码
+    private EditText edit_phone; //手机号码
     private EditText edit_pwd; //密码
     private LoginPeresenet lp;
     private String zhanghao,mima;
     private TextView txt_register;
     //忘记密码
     private TextView tv_forget;
-    private LinearLayout btn_weixinLogin;
+    private ImageView btn_weixinLogin;
     public  PromptDialog promptDialog;
     private SHARE_MEDIA share_media;
     private boolean isauth;
-    private LinearLayout btn_login_QQ;
+    private ImageView btn_login_QQ;
     private String userImg;
     private String r_id;
     //商家注册按钮
@@ -86,16 +87,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //商家登录
     private Button btn_shpoinglogin;
     private String type;
+    private ImageView image_back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_login);
+
         BaseAppliction.addDestoryActivity(this,"LoginActivity");
         //初始化下dialog
         promptDialog = new PromptDialog(this);
         //沉浸式
         ImmersionBar.with(this)
-                .statusBarColor(R.color.white) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
+                .statusBarColor(R.color.lanse_x_x) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
                 .statusBarDarkFont(true,0.2f)
                 .fitsSystemWindows(true) //解决状态栏和布局重叠问题，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色
                 .init();
@@ -114,13 +118,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     // 初始化
     private void initView() {
-        btn_shpoinglogin = (Button) findViewById(R.id.btn_shpoinglogin);
-        btn_shpoinglogin.setOnClickListener(this);
+        image_back = (ImageView) findViewById(R.id.image_back);
+        image_back.setOnClickListener(this);
+//        btn_shpoinglogin = (Button) findViewById(R.id.btn_shpoinglogin);
+//        btn_shpoinglogin.setOnClickListener(this);
         txt_shpngregister = (TextView) findViewById(R.id.txt_shpngregister);
         txt_shpngregister.setOnClickListener(this);
-        btn_login_QQ = (LinearLayout) findViewById(R.id.btn_login_QQ);
+        btn_login_QQ = (ImageView) findViewById(R.id.btn_login_QQ);
         btn_login_QQ.setOnClickListener(this);
-        btn_weixinLogin = (LinearLayout) findViewById(R.id.btn_weixinLogin);
+        btn_weixinLogin = (ImageView) findViewById(R.id.btn_weixinLogin);
         btn_weixinLogin.setOnClickListener(this);
         txt_register = (TextView) findViewById(R.id.txt_register);
         tv_forget = (TextView) findViewById(R.id.tv_forget);
@@ -131,7 +137,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         txt_register.setOnClickListener(this);
         btn_login = (Button) findViewById(R.id.btn_login);
         btn_login.setOnClickListener(this);
-        edit_phone = (EditTextWithDelete) findViewById(R.id.edit_phone);
+        edit_phone = (EditText) findViewById(R.id.edit_phone);
         edit_pwd = (EditText) findViewById(R.id.edit_pwd);
         String zhanghaos = ShareUtils.getString(getApplicationContext(),"zhanghao","");
         String mimas = ShareUtils.getString(getApplicationContext(),"mima","");
@@ -148,6 +154,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.image_back:
+                finish();
+                break;
+
             //点击普通账号登录
             case R.id.btn_login:
                 phone = edit_phone.getText().toString().trim();
@@ -198,12 +208,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 startActivity(new Intent(getApplicationContext(), ShoppingUserRegister.class));
                 break;
             //商家登录按钮
-            case R.id.btn_shpoinglogin:
+/*            case R.id.btn_shpoinglogin:
                 phone = edit_phone.getText().toString().trim();
                 pwd = edit_pwd.getText().toString().trim();
                 ShoppingLoginPerserent shangjiaLogin = new ShoppingLoginPerserent(this);
                 shangjiaLogin.shoppinglogin(phone,pwd);
-                break;
+                break;*/
         }
     }
 
@@ -260,6 +270,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             promptDialog.showSuccess("登录成功");
 
             WechatLoginBean.DataBean wchatbean = wlb.getData();
+            //这里获取管理 字段 1为管理员 0则为普通用户
+            int isAdministrotar =  wchatbean.getIs_manager();
+            ShareUtils.putInt(getApplicationContext(),"isAdministrotar",isAdministrotar);
+
             r_id = wchatbean.getR_id();
             ShareUtils.putString(getApplicationContext(),"r_id",r_id);
             //用户名
@@ -322,6 +336,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             L.e("普通账号返回接口 "+status);
             if (status == 1) {
                 promptDialog.dismiss();
+                //获取用户管理员字段 1表示管理员 0表示不是
+                int isAdministrotar =  logindata.getData().getIs_manager();
+                ShareUtils.putInt(getApplicationContext(),"isAdministrotar",isAdministrotar);
                 // 这里获取 r_id 并且保存后到MainActivity 取出来然后请求 获取用户是否正在使用雨伞
                 String r_id =  logindata.getData().getR_id();
                 ShareUtils.putString(getApplicationContext(),"r_id",r_id);
@@ -346,8 +363,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 //    String  url = list.getPhoto();
                 String url = logindata.getData().getR_img();
                 if (!TextUtils.isEmpty(url)) {
-                    String urls =  ConfigUtils.ZHU_YU_MING+"public/avatar/"+url;
-                    ShareUtils.putString(getApplicationContext(),"touxiangURL",urls);
+                    //   String urls =  ConfigUtils.ZHU_YU_MING+"public/avatar/"+url;
+                    ShareUtils.putString(getApplicationContext(),"touxiangURL",url);
                 }
                 int isroot = list.getIsroot();
                 //保存 该字段 该字段判断是否为管理员权限

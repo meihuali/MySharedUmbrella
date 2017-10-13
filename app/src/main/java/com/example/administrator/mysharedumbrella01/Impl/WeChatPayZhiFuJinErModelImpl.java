@@ -20,13 +20,14 @@ import okhttp3.Response;
 public class WeChatPayZhiFuJinErModelImpl implements IsWeChatPayZhiFuJinErModel {
 
     @Override
-    public void WeChatZhiFu(final OnWeChatLinisenet linisenet, String goods, double total_fee, String apptype, String member_id) {
+    public void WeChatZhiFu(final OnWeChatLinisenet linisenet, String goods, double total_fee, String apptype, String member_id,String is_merchant) {
         String url = ConfigUtils.ZHU_YU_MING + ConfigUtils.WECHATPAYZHIFU;
         OkGo.post(url)
                 .params("goods",goods)
                 .params("total_fee",total_fee)
                 .params("apptype",apptype)
                 .params("member_id",member_id)
+                .params("is_merchant",is_merchant)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {

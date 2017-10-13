@@ -6,7 +6,135 @@
     android:background="@color/white"
     android:orientation="vertical">
 
+
+    <RelativeLayout
+        android:background="@drawable/zhujiemlanse_x"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <ImageView
+            android:id="@+id/image_back"
+            android:layout_marginLeft="8dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/btn_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+        <TextView
+            android:visibility="gone"
+            android:textColor="@color/white"
+            android:textSize="19sp"
+            android:gravity="center"
+            android:text="@string/wodeqianbaos"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_mingxi"
+            android:layout_marginRight="10dp"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:text="@string/mingxi"
+            android:gravity="center"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_marginTop="130px"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+        <ImageView
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="80px"
+            android:src="@drawable/huanyingning_x"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:visibility="gone"
+            android:gravity="center"
+            android:textSize="33sp"
+            android:textColor="@color/lanse_x_x"
+            android:text="@string/huanyingshiyong"
+            android:layout_marginLeft="15dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/edit_phone"
+        android:layout_marginTop="90px"
+        android:textColor="@color/qianhuise2"
+        android:hint=" 请输入手机号码"
+        android:layout_marginRight="98px"
+        android:layout_marginLeft="98px"
+        android:background="@drawable/button_yuanjiaokongxin"
+        android:layout_width="match_parent"
+        android:layout_height="126px" />
+
+    <EditText
+        android:id="@+id/edit_pwd"
+        android:textSize="16sp"
+        android:layout_marginTop="90px"
+        android:textColor="@color/qianhuise2"
+        android:hint=" 请输入密码"
+        android:layout_marginRight="98px"
+        android:layout_marginLeft="98px"
+        android:background="@drawable/button_yuanjiaokongxin"
+        android:layout_width="match_parent"
+        android:layout_height="42dp" />
+        <LinearLayout
+            android:layout_marginTop="90px"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/edit_verifycode"
+                android:textSize="16sp"
+                android:textColor="@color/qianhuise2"
+                android:hint=" 请输入验证码"
+                android:layout_marginLeft="98px"
+                android:background="@drawable/button_yuanjiaokongxin"
+                android:layout_width="200dp"
+                android:layout_height="126px" />
+            <Button
+                android:id="@+id/tv_hqyzm"
+                android:textColor="@color/white"
+                android:text="@string/huoquyanzhengma"
+                android:background="@drawable/jianbian_x"
+                android:layout_width="99dp"
+                android:layout_height="35dp" />
+        </LinearLayout>
+    <EditText
+        android:id="@+id/ed_names"
+        android:textSize="16sp"
+        android:layout_marginTop="90px"
+        android:textColor="@color/qianhuise2"
+        android:hint=" 输入昵称"
+        android:layout_marginRight="98px"
+        android:layout_marginLeft="98px"
+        android:background="@drawable/button_yuanjiaokongxin"
+        android:layout_width="match_parent"
+        android:layout_height="126px" />
+
+
+    <LinearLayout
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_register"
+            android:textColor="@color/white"
+            android:text="@string/zhuce"
+            android:background="@drawable/jianbian_x"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
     <ScrollView
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none">
@@ -15,48 +143,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-                <ImageView
-                    android:id="@+id/imageView1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:src="@drawable/sbackzmm" />
-
-                <TextView
-                    android:id="@+id/remyback"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@+id/imageView1"
-                    android:text="返回"
-                    android:textColor="#fffe7625"
-                    android:textSize="14sp" />
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/liuyifei"
-                    app:civ_border_color="@color/mediumorchid"
-                    app:civ_border_width="2dp" />
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="294dp"
@@ -83,7 +169,7 @@
                         android:textSize="18sp" />
 
                     <com.example.administrator.mysharedumbrella01.utils.EditTextWithDelete
-                        android:id="@+id/edit_phone"
+                        android:id="@+id/edit_phones"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -119,7 +205,7 @@
                         android:textSize="18sp" />
 
                     <EditText
-                        android:id="@+id/edit_pwd"
+                        android:id="@+id/edit_pwds"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -159,7 +245,7 @@
                         android:textSize="18sp" />
 
                     <EditText
-                        android:id="@+id/edit_verifycode"
+                        android:id="@+id/edit_verifycodes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -173,7 +259,7 @@
                         android:textSize="18sp" />
 
                     <TextView
-                        android:id="@+id/tv_hqyzm"
+                        android:id="@+id/tv_hqyzms"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
@@ -218,7 +304,7 @@
                 <View style="@style/line" />
 
                 <Button
-                    android:id="@+id/btn_register"
+                    android:id="@+id/btn_registers"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="29dp"

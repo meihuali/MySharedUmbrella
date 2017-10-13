@@ -53,6 +53,7 @@ public class ShoppingHarvestAddress extends AppCompatActivity implements View.On
     private Button btn_add_address;
     private String ids;
     private View ll_layout;
+    private List<GetShoppingAddressBean.DataBean> GetList;
 
 
     @Override
@@ -98,12 +99,24 @@ public class ShoppingHarvestAddress extends AppCompatActivity implements View.On
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 GetShoppingAddressBean.DataBean dd  = (GetShoppingAddressBean.DataBean) adapter.getItem(position);
                 switch (view.getId()) {
+                    // 删除地址
                     case R.id.tv_detle:
+                        if (GetList.size() != 1) {
+                            //获取该对象的id字段
+                            String id = dd.getId();
+                            ShoppingDetleAddressPerserent detelAddress = new ShoppingDetleAddressPerserent(ShoppingHarvestAddress.this);
+                            detelAddress.detleAddress(id);
+                        } else {
+                            StyledDialog.buildIosAlert("提示", "您必须默认最低一条收获地址，次地址可以编辑！", new MyDialogListener() {
+                                @Override
+                                public void onFirst() {
+                                }
+                                @Override
+                                public void onSecond() {
+                                }
+                            }).setBtnText("确定","").show();
+                        }
 
-                        //获取该对象的id字段
-                        String id = dd.getId();
-                        ShoppingDetleAddressPerserent detelAddress = new ShoppingDetleAddressPerserent(ShoppingHarvestAddress.this);
-                        detelAddress.detleAddress(id);
                         break;
                     case R.id.tv_edit:
                         edites(position);
@@ -180,7 +193,7 @@ public class ShoppingHarvestAddress extends AppCompatActivity implements View.On
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.image_back:
-              // rl_layout_back  finish();
+                // rl_layout_back  finish();
                 AnimUtils.finishAmins((Activity) this,R.id.rl_layout_back,v,R.id.ll_layout);
                 break;
             //跳转到仿淘宝地址选择器
@@ -210,10 +223,13 @@ public class ShoppingHarvestAddress extends AppCompatActivity implements View.On
         GetShoppingAddressBean getaddres = (GetShoppingAddressBean) object;
         int status = getaddres.getStatus();
         if (status == 1) {
-            List<GetShoppingAddressBean.DataBean> GetList = getaddres.getData();
+            GetList = getaddres.getData();
+
             mlist.clear();
             adapter.addData(GetList);
             adapter.notifyDataSetChanged();
+
+
         } else {
             ToastUtil.showShortToast(getApplicationContext(),"获取接口商家收获地址挂了");
         }
@@ -234,6 +250,7 @@ public class ShoppingHarvestAddress extends AppCompatActivity implements View.On
 
                 @Override
                 public void onSecond() {
+
                 }
             }).setBtnText("确定", "").show();
         } else {

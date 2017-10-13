@@ -2,6 +2,7 @@ package com.example.administrator.mysharedumbrella01.ui;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -22,7 +23,9 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -93,6 +96,8 @@ import com.example.administrator.mysharedumbrella01.view.IsUserGetYuSanStatusVie
 import com.example.administrator.mysharedumbrella01.view.IsYuSanTuIconView;
 import com.gyf.barlibrary.BarHide;
 import com.gyf.barlibrary.ImmersionBar;
+import com.hss01248.dialog.StyledDialog;
+import com.hss01248.dialog.interfaces.MyDialogListener;
 import com.mylhyl.zxing.scanner.common.Intents;
 import com.whyalwaysmea.circular.AnimUtils;
 import com.yanzhenjie.permission.AndPermission;
@@ -188,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private PopupWindowGuanGao pwgg;
     // 扫一扫相关 颜色  如果不赋值的话· 扫描上下滚动的就是绿色这里默认 赋值为 支付宝 那种网格的
-    private int laserMode = ScannerActivity.EXTRA_LASER_LINE_MODE_1;
+    private int laserMode = ScannerActivity.EXTRA_LASER_LINE_MODE_0;
     private double latitudes;
     private LatLng latLng_xianludiana;
     //右下角的 用户反馈按钮
@@ -252,7 +257,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String des;
     private Bitmap bitEnd;
     private WalkRouteOverlay walkRouteOverlay;
-    private Button tv_current;
+    private RelativeLayout tv_current;
+    private Button btn_cuonst;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -263,12 +269,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //初始化下dialog
         promptDialog = new PromptDialog(this);
         //沉浸式
-/*        ImmersionBar.with(this)
-                .statusBarColor(R.color.zhutiyanse) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
+        ImmersionBar.with(this)
+                .statusBarColor(R.color.lanse_x_x) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
                 .fitsSystemWindows(true) //解决状态栏和布局重叠问题，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色
-                .init();*/
-        ImmersionBar.with(this).hideBar(BarHide.FLAG_HIDE_NAVIGATION_BAR)
                 .init();
+
 
         init();
         //这里请求·还伞 图标icon  跟 借伞图标 ICOn
@@ -489,7 +494,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
                 } else {
-                   // ToastUtil.showShortToast(getApplicationContext(),"定位失败！ErrorCode()不等于0");
+                    // ToastUtil.showShortToast(getApplicationContext(),"定位失败！ErrorCode()不等于0");
                 }
             } else {
                 ToastUtil.showShortToast(getApplicationContext(),"定位失败！amapLocation对象为空！");
@@ -505,7 +510,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /*========================初始化一些控件=====================================*/
 
     private void init() {
-        tv_current = (Button)findViewById(R.id.tv_current);
+        btn_cuonst = (Button) findViewById(R.id.btn_cuonst);
+        tv_current = (RelativeLayout) findViewById(R.id.tv_current);
         tv_current.setOnClickListener(this);
         ll_xxxx = (RelativeLayout) findViewById(R.id.ll_xxxx);
         image_shuaxin = (ImageView) findViewById(R.id.image_shuaxin);
@@ -526,6 +532,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         image_backs.setOnClickListener(this);
         plgig = (GifImageView) findViewById(R.id.plgig);
         plgig.setOnClickListener(this);
+
         tv_adds = (TextView) findViewById(R.id.tv_adds);
         tv_adds.setOnClickListener(this);
     }
@@ -662,8 +669,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //启动过场动画
                 AnimUtils.startIntent(intentkehu,view,MainActivity.this,R.id.ll_xxxx);
 
-
-
                 break;
             //更新APP 弹出的dialog 取消按钮
             case R.id.btn_cancel:
@@ -768,7 +773,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     * */
     private void initShowZhuYeGuangGao() {
         ZhuYeGuangGao zygg = new ZhuYeGuangGao(MainActivity.this);
+        zygg.setPopupWindowFullScreen(true);
         zygg.showPopupWindow();
+
+
     }
 
     @Override
@@ -919,7 +927,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /*===================扫描二维码============================================*/
  /*启动扫描二维码*/
     private void initViewes() {
-
         if (ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -930,6 +937,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //权限已经被授予，在这里直接写要执行的相应方法即可
             ScannerActivity.gotoActivity(MainActivity.this,
                     true, laserMode);
+            //服务器返回过程中·这里 禁止掉 扫描按钮的 监听事件
+            plgig.setOnClickListener(null);
         }
     }
 
@@ -947,7 +956,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (!TextUtils.isEmpty(zhanghao)) {
                         //扫描请求借伞
                         UmbrellaPresenet up = new UmbrellaPresenet(this);
-                        up.binds(stringExtra, zhanghao, this);
+                        String stringExtras  =  stringExtra.substring(stringExtra.length()-19);
+                        up.binds(stringExtras, zhanghao, this, "2");
                         //扫描成功后再次请求下网络获取雨伞个数
                         up.fech(MainActivity.this, laitudes, longitudes, types);
 //                //定时刷新
@@ -987,6 +997,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         statusSaoYiSao = object.getStatus();
         String data = object.getData();
         if (statusSaoYiSao == 11) {
+            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
+            plgig.setOnClickListener(this);
             //手机震动
             shoujizhengdong();
             //promptDialog.showSuccess("借伞成功");
@@ -996,6 +1008,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //隐藏开锁广告popup
             pwgg.dismiss();
         } else if (statusSaoYiSao == 1) {
+            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
+            plgig.setOnClickListener(this);
             //手机震动
             shoujizhengdong();
             mSpeechSynthesizer.speak("您已开锁成功，请取走雨伞");
@@ -1023,6 +1037,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             zy.showPopupWindow();
 
         } else if (statusSaoYiSao == 2) {
+            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
+            plgig.setOnClickListener(this);
             //手机震动
             shoujizhengdong();
             // promptDialog.showSuccess("押金不足");
@@ -1035,6 +1051,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         } else if (statusSaoYiSao == 3) {
+            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
+            plgig.setOnClickListener(this);
             //手机震动
             shoujizhengdong();
             // promptDialog.showSuccess("余额不足");
@@ -1046,7 +1064,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             yaJinGuangGao.showPopupWindow();
 
 
+
         } else if (statusSaoYiSao == 4) {
+            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
+            plgig.setOnClickListener(this);
             //手机震动
             shoujizhengdong();
             // promptDialog.showSuccess("请求超时，开锁失败");
@@ -1054,8 +1075,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             pwgg.stopUpdata(statusSaoYiSao);
             //隐藏开锁广告popup
             pwgg.dismiss();
+            dialogss("借伞",data);
 
         } else if (statusSaoYiSao == 5) {
+            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
+            plgig.setOnClickListener(this);
             //手机震动
             shoujizhengdong();
             //  promptDialog.showSuccess("无伞可借");
@@ -1063,8 +1087,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             pwgg.stopUpdata(statusSaoYiSao);
             //隐藏开锁广告popup
             pwgg.dismiss();
+            dialogss("借伞",data);
 
         } else if (statusSaoYiSao == 6) {
+            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
+            plgig.setOnClickListener(this);
             //手机震动
             shoujizhengdong();
             //  promptDialog.showSuccess("重新发起开锁请求");
@@ -1072,8 +1099,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             pwgg.stopUpdata(statusSaoYiSao);
             //隐藏开锁广告popup
             pwgg.dismiss();
+            dialogss("借伞",data);
 
         } else if (statusSaoYiSao == 7) {
+            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
+            plgig.setOnClickListener(this);
             //手机震动
             shoujizhengdong();
             //  promptDialog.showSuccess("重新发起开锁请求");
@@ -1081,8 +1111,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             pwgg.stopUpdata(statusSaoYiSao);
             //隐藏开锁广告popup
             pwgg.dismiss();
+            dialogss("借伞",data);
 
         } else if (statusSaoYiSao == 0) {
+            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
+            plgig.setOnClickListener(this);
             //手机震动
             shoujizhengdong();
             //  promptDialog.showSuccess("通信错误");
@@ -1090,11 +1123,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             pwgg.stopUpdata(statusSaoYiSao);
             //隐藏开锁广告popup
             pwgg.dismiss();
+            dialogss("借伞",data);
 
+        } else if (statusSaoYiSao == 8){
+            dialogss("借伞",data);
+            //手机震动
+            shoujizhengdong();
+
+            //隐藏开锁广告popup
+            pwgg.dismiss();
         }
+    }
 
+    public void dialogss(String title, String messgg) {
+        StyledDialog.buildIosAlert("借伞", messgg, new MyDialogListener() {
+            @Override
+            public void onFirst() {
 
+            }
 
+            @Override
+            public void onSecond() {
+
+            }
+        }).setBtnText("确定" ,"").show();
     }
 
 
@@ -1292,8 +1344,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //取消语音合成
         this.mSpeechSynthesizer.release();
         //取消手机震动//   vibrator.cancel();
-
     }
+
+
 
     /**
      * 开始定位
@@ -1401,6 +1454,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     * */
     @Override
     public void showGetyunsanStatus(Object object) {
+        //这句话是 用户不管取走不取走雨伞 都要再次设置 扫描按钮的监听
+        plgig.setOnClickListener(this);
+
         JSONObject obj = (JSONObject) object;
         int status = obj.optInt("status");
         String data =  obj.optString("data");
@@ -1668,14 +1724,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     * */
     @Override
     public void showCurrent(Object object) {
-        UserCurrentYusanBean userYuSanBean = (UserCurrentYusanBean) object;
+/*        UserCurrentYusanBean userYuSanBean = (UserCurrentYusanBean) object;
         int status = userYuSanBean.getStatus();
         if (status == 0) {
             tv_current.setVisibility(View.GONE);
         } else if (status == 1) {
             tv_current.setVisibility(View.VISIBLE);
-            tv_current.setText("您正在使用的雨伞个数为："+userYuSanBean.getData());
-        }
+            btn_cuonst.setText(userYuSanBean.getData());
+        }*/
     }
 
     /*
@@ -1687,4 +1743,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void showErres() {
         tv_current.setVisibility(View.GONE);
     }
+
+
 }

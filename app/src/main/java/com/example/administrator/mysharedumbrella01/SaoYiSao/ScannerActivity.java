@@ -22,6 +22,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.administrator.mysharedumbrella01.R;
+import com.example.administrator.mysharedumbrella01.ui.GetErWeiMaActivity;
 import com.example.administrator.mysharedumbrella01.utils.L;
 import com.google.zxing.Result;
 import com.gyf.barlibrary.ImmersionBar;
@@ -50,6 +51,8 @@ public class ScannerActivity extends DeCodeActivity implements View.OnClickListe
     private  boolean IsFreset = true;
     private CameraManager manager;
     private Camera.Parameters parameters = null;
+    private ImageView img_tv;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,9 @@ public class ScannerActivity extends DeCodeActivity implements View.OnClickListe
                 .statusBarDarkFont(true,0.2f)   // 如果是白色或者透明状态的时候就加上他
                 .fitsSystemWindows(true) //解决状态栏和布局重叠问题，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色
                 .init();
+
+        img_tv = (ImageView) findViewById(R.id.img_tv);
+        img_tv.setOnClickListener(this);
         mScannerView = (ScannerView) findViewById(R.id.scanner_view);
         mScannerView.setOnScannerCompletionListener(this);
         image_back = (ImageView)findViewById(R.id.image_back);
@@ -73,9 +79,9 @@ public class ScannerActivity extends DeCodeActivity implements View.OnClickListe
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 L.e("灯泡状态 "+isChecked);
                 if (isChecked) {
-                    toggleButton.setBackground(getResources().getDrawable(R.drawable.dakaidengpao));
+                    toggleButton.setBackground(getResources().getDrawable(R.drawable.shoudiantongdakai_x));
                 } else {
-                    toggleButton.setBackground(getResources().getDrawable(R.drawable.guanbidengpao));
+                    toggleButton.setBackground(getResources().getDrawable(R.drawable.shoudiantongguan_x));
                 }
                 mScannerView.toggleLight(isChecked);
 
@@ -100,12 +106,12 @@ public class ScannerActivity extends DeCodeActivity implements View.OnClickListe
             laserMode = extras.getInt(EXTRA_LASER_LINE_MODE);
         }
         mScannerView.setMediaResId(R.raw.beep);//设置扫描成功的声音
-        mScannerView.setDrawText("将二维码放入框内",true);
+      //  mScannerView.setDrawText("将二维码放入框内",true);
         mScannerView.setDrawTextColor(Color.RED);
 
-//        mScannerView.setLaserFrameTopMargin(100);//扫描框与屏幕上方距离
+        mScannerView.setLaserFrameTopMargin(100);//扫描框与屏幕上方距离
 //        mScannerView.setLaserFrameSize(200, 200);//扫描框大小
-//        mScannerView.setLaserFrameCornerLength(25);//设置4角长度
+            mScannerView.setLaserFrameCornerLength(25);//设置4角长度
 //        mScannerView.setLaserLineHeight(5);//设置扫描线高度
 
         switch (laserMode) {
@@ -113,11 +119,11 @@ public class ScannerActivity extends DeCodeActivity implements View.OnClickListe
                 mScannerView.setLaserLineResId(R.drawable.wx_scan_line);//线图
                 break;
             case EXTRA_LASER_LINE_MODE_1:
-                mScannerView.setLaserGridLineResId(R.drawable.zfb_grid_scan_line);//网格图
-                mScannerView.setLaserFrameBoundColor(0xFF26CEFF);//支付宝颜色
+             //  mScannerView.setLaserGridLineResId(R.drawable.zfb_grid_scan_line);//网格图
+                mScannerView.setLaserFrameBoundColor(0x7497df);//支付宝颜色
                 break;
             case EXTRA_LASER_LINE_MODE_2:
-                mScannerView.setLaserColor(Color.RED);
+                mScannerView.setLaserColor(getResources().getColor(R.color.lanse_x_x));
                 break;
         }
     }
@@ -191,6 +197,9 @@ public class ScannerActivity extends DeCodeActivity implements View.OnClickListe
             case R.id.image_back:
                 finish();
                 break;
+                case R.id.img_tv:
+                    startActivity(new Intent(getApplicationContext(),GetErWeiMaActivity.class));
+                    break;
 
         }
     }

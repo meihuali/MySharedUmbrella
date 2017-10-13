@@ -321,10 +321,22 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="0.1dp"/>
+        <LinearLayout
+            android:id="@+id/btn_zhifubao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
         <ImageView
+            android:id="@+id/btn_zhifubao_liang"
             android:src="@drawable/zhifubaozhifu_x"
             android:layout_width="50dp"
             android:layout_height="50dp" />
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/btn_zhifubao_huise"
+            android:src="@drawable/zhifubaohuise_x"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+        </LinearLayout>
         <TextView
             android:layout_gravity="bottom"
             android:textColor="@color/lanse_x_x"
@@ -333,10 +345,23 @@
             android:text="@string/xuanzhezhifu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+        <LinearLayout
+            android:id="@+id/btn_weixin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
         <ImageView
+            android:id="@+id/btn_weixin_huise"
+            android:src="@drawable/weixinhuise_x"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/btn_weixin_liang"
             android:src="@drawable/weixinzhifu_x"
             android:layout_width="50dp"
             android:layout_height="50dp" />
+
+        </LinearLayout>
         <View
             android:layout_gravity="bottom"
             android:background="@color/huise"
@@ -350,6 +375,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <Button
+            android:id="@+id/btn_shenqing"
             android:textColor="@color/white"
             android:background="@drawable/jianbian_x"
             android:text="@string/shenqing"

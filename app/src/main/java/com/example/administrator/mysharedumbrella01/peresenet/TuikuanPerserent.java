@@ -1,5 +1,7 @@
 package com.example.administrator.mysharedumbrella01.peresenet;
 
+import android.app.Activity;
+
 import com.example.administrator.mysharedumbrella01.Impl.TuikuanImpl;
 import com.example.administrator.mysharedumbrella01.model.IsTuiKuanModel;
 import com.example.administrator.mysharedumbrella01.view.IsTuikuanView;
@@ -17,14 +19,16 @@ public class TuikuanPerserent {
         tuiKuanModel = new TuikuanImpl();
     }
 
-    public void tuikuan(String zhanghao,String num) {
+
+
+    public void tuikuan(String zhanghao,String num,String type) {
         if (tuiKuanModel != null) {
             tuiKuanModel.tuikuan(new IsTuiKuanModel.onTuikuanjiekouLinereset() {
                 @Override
                 public void complte(Object object) {
                     tuikuanView.showRrult(object);
                 }
-            },zhanghao,num);
+            },zhanghao,num,type);
         }
     }
 }

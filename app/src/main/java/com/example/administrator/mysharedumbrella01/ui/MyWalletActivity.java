@@ -218,6 +218,7 @@ public class MyWalletActivity extends AppCompatActivity implements View.OnClickL
         * */
     @Override
     public void showRrult(Object object) {
+
         TuikuanBean tuikuanBean = (TuikuanBean) object;
         int status = tuikuanBean.getStatus();
         datas = tuikuanBean.getData();

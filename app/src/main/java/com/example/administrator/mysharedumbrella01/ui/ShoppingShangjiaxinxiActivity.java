@@ -75,6 +75,7 @@ public class ShoppingShangjiaxinxiActivity extends AppCompatActivity implements 
     private TextView img_updata;
     private TextView tv_shopping_jilu;
     private TextView tv_settings;
+    private TextView tv_tuihui;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +96,8 @@ public class ShoppingShangjiaxinxiActivity extends AppCompatActivity implements 
     * 初始化
     * */
     private void initView() {
+        tv_tuihui = (TextView) findViewById(R.id.tv_tuihui);
+        tv_tuihui.setOnClickListener(this);
         tv_settings = (TextView) findViewById(R.id.tv_settings);
         tv_settings.setOnClickListener(this);
         tv_shopping_jilu = (TextView) findViewById(R.id.tv_shopping_jilu);
@@ -177,6 +180,10 @@ public class ShoppingShangjiaxinxiActivity extends AppCompatActivity implements 
                 //   startActivity(new Intent(getApplicationContext(),ShoppingGoodsReceiptActivity.class));
                 Intent intent3 = new Intent(this,ShoppingGoodsReceiptActivity.class);
                 AnimUtils.startIntent(intent3,view, (Activity) this,R.id.ll_layoutGoods);
+                break;
+            case R.id.tv_tuihui:
+                Intent intents = new Intent(this,ShoppingYaJinActivity.class);
+                AnimUtils.startIntent(intents,view, (Activity) this,R.id.ll_layout_yajin);
                 break;
         }
     }

@@ -444,7 +444,7 @@ iv 其它根据用户协议、相关说明或规则导致我们无法向您提�
     <string name="jiesanshuoming">注：可以同时借用多把雨伞，一把雨伞的押金为20元！</string>
     <string name="beizhu">备注</string>
     <string name="paizhaoshuoming">拍摄雨伞或者伞座周围环境，便于工作人员维修</string>
-    <string name="lianxikehu">联系客户</string>
+    <string name="lianxikehu">联系客服</string>
     <string name="gongsidianhua">公司电话：</string>
     <string name="dianhua">020-29832531</string>
     <string name="gongsyouxiang">公司邮箱：</string>
@@ -544,6 +544,29 @@ iv 其它根据用户协议、相关说明或规则导致我们无法向您提�
     <string name="gaosheng">高生</string>
     <string name="shanchu">删除</string>
     <string name="bianji">编辑</string>
+    <string name="ge">个</string>
+    <string name="wodeyajin">我的押金</string>
+    <string name="shuzis">0.00</string>
+    <string name="tuihuiyajin">退回押金</string>
+    <string name="keyong">可用押金（元）</string>
+    <string name="ninxuyaotuikuanma">您真的需要退掉当前押金吗？</string>
+    <string name="shoudiantong">手电筒</string>
+    <string name="shurusanzuobianhao">输入伞座编号</string>
+    <string name="yijrenzheng">已认证</string>
+    <string name="shangjiazil">商家资料</string>
+    <string name="leduhui">乐都汇</string>
+    <string name="shanghumingcheng">商户名称</string>
+    <string name="shanghudizhi">商户地址</string>
+    <string name="xiangxidizhi">广东广州市天河区中山大道11116号</string>
+    <string name="nindeyingyezhizhao">您的营业执照</string>
+    <string name="huanyingshiyong">欢迎使用</string>
+    <string name="denglu">登录</string>
+    <string name="wangjimima">忘记密码</string>
+    <string name="zhuce">注册</string>
+    <string name="xiugaimima">修改密码</string>
+    <string name="guanliyuan">管理员</string>
+    <string name="saomakaisuol">扫码开锁</string>
+    <string name="xinxirenzheng">信息认证</string>
 
 
 </resources>

@@ -14,6 +14,7 @@ import com.example.administrator.mysharedumbrella01.peresenet.TuikuanPerserent;
 import com.example.administrator.mysharedumbrella01.ui.DepositRechargeActivity;
 import com.example.administrator.mysharedumbrella01.ui.MyWalletActivity;
 import com.example.administrator.mysharedumbrella01.ui.RechargeActivity;
+import com.example.administrator.mysharedumbrella01.ui.ShoppingYaJinActivity;
 import com.example.administrator.mysharedumbrella01.utils.L;
 import com.example.administrator.mysharedumbrella01.utils.MyToast;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
@@ -119,8 +120,7 @@ public class TuiKuanPopupWindow extends BasePopupWindow  implements View.OnClick
     private void tuikuanQyest() {
             String zh = ShareUtils.getString(activity,"zhanghao","");
             TuikuanPerserent tuikuan = new TuikuanPerserent((IsTuikuanView) activity);
-            tuikuan.tuikuan(zh,count+"");
-
+            tuikuan.tuikuan(zh,count+"","0"); //0为用户 1为商户
     }
 
     /*

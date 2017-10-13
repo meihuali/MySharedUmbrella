@@ -41,6 +41,8 @@ import com.example.administrator.mysharedumbrella01.utils.ToastUtil;
 import com.example.administrator.mysharedumbrella01.view.IsKefufankuiView;
 import com.example.administrator.mysharedumbrella01.view.IsKefufankuisView;
 import com.gyf.barlibrary.ImmersionBar;
+import com.hss01248.dialog.StyledDialog;
+import com.hss01248.dialog.interfaces.MyDialogListener;
 import com.whyalwaysmea.circular.AnimUtils;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.PermissionListener;
@@ -112,6 +114,7 @@ public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void initData() {
+
         //这里请求客户反馈问题列表 的接口
         KefufankuiPerserent wentiliebiao = new KefufankuiPerserent(this);
         wentiliebiao.kehufankui();
@@ -442,8 +445,33 @@ public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClic
     public void ShowBugFankui(Object object) {
         promptDialog.dismiss();
         KefufankuisBean kf = (KefufankuisBean) object;
-        kf.getData();
-        finish();
+        if (kf.getData().equals("反馈成功")) {
+            StyledDialog.buildIosAlert("问题反馈", kf.getData() + ", 您的问题我们将在12小时内立即处理！", new MyDialogListener() {
+                @Override
+                public void onFirst() {
+                    finish();
+                }
+
+                @Override
+                public void onSecond() {
+
+                }
+            }).setBtnText("确定", "").show();
+        } else {
+            StyledDialog.buildIosAlert("问题反馈", kf.getData() , new MyDialogListener() {
+                @Override
+                public void onFirst() {
+                    finish();
+                }
+
+                @Override
+                public void onSecond() {
+
+                }
+            }).setBtnText("确定", "").show();
+        }
+
+      //  finish();
         //   ToastUtil.showShortToast(getApplicationContext(),kf.getData());
     }
 }

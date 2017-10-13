@@ -1,5 +1,6 @@
 package com.example.administrator.mysharedumbrella01.ui;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -37,35 +38,38 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private boolean isSeen = false,isRead = true;
     private TextView remyback;
     //手机号码
-    private EditTextWithDelete edit_phone;
+    private EditText edit_phone;
     //用户设置都密码
     private EditText edit_pwd;
     //用户添加的验证码
     private EditText edit_verifycode;
     //用户姓名
-    private  EditTextWithDelete ed_names;
+    private  EditText ed_names;
     //注册按钮
     private Button btn_register;
     //注册下面按钮的 那个关于详细阅读说明 选择框
     private ImageView ck;
     //点击按钮获取短信验证码
     private TextView tv_hqyzm;
-
+private ImageView image_back;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_regster);
+
         //沉浸式
         ImmersionBar.with(this)
-                .statusBarColor(R.color.white) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
-                .statusBarDarkFont(true,0.2f)    //如果是白色或者透明状态的时候就加上他
+                .statusBarColor(R.color.lanse_x_x) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
+                .statusBarDarkFont(true,0.2f)
                 .fitsSystemWindows(true) //解决状态栏和布局重叠问题，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色
                 .init();
         initView();
     }
     /*初始化控件*/
     private void initView() {
+        image_back = (ImageView) findViewById(R.id.image_back);
+        image_back.setOnClickListener(this);
         //获取验证码
         edit_verifycode = (EditText) findViewById(R.id.edit_verifycode);
         tv_hqyzm = (TextView) findViewById(R.id.tv_hqyzm);
@@ -74,26 +78,29 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         ck.setOnClickListener(this);
         btn_register = (Button) findViewById(R.id.btn_register);
         btn_register.setOnClickListener(this);
-        edit_phone = (EditTextWithDelete) findViewById(R.id.edit_phone);
+        edit_phone = (EditText) findViewById(R.id.edit_phone);
         edit_phone.setOnClickListener(this);
         edit_pwd = (EditText) findViewById(R.id.edit_pwd);
         edit_pwd.setOnClickListener(this);
         edit_verifycode = (EditText) findViewById(R.id.edit_verifycode);
         edit_verifycode.setOnClickListener(this);
-        ed_names = (EditTextWithDelete) findViewById(R.id.ed_names);
+        ed_names = (EditText) findViewById(R.id.ed_names);
         ed_names.setOnClickListener(this);
-        remyback = (TextView) findViewById(R.id.remyback);
-        remyback.setOnClickListener(this);
-        img_eye = (ImageView) findViewById(R.id.img_eye);
-        img_eye.setOnClickListener(this);
+//         remyback = (TextView) findViewById(R.id.remyback);
+//        remyback.setOnClickListener(this);
+//        img_eye = (ImageView) findViewById(R.id.img_eye);
+//        img_eye.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.remyback:
+            case R.id.image_back:
                 finish();
                 break;
+//            case R.id.remyback:
+//                finish();
+//                break;
             //显示隐藏账号密码
             case R.id.img_eye:
                 if (isSeen == false) {

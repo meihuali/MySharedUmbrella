@@ -81,6 +81,8 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
     private String is_aut;
     private View ll_layout_amin;
     private   View v;
+    private View ll_layout_yajin;
+    private LinearLayout rl_layout_isroot;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -97,6 +99,14 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
 
 
     private void initView() {
+
+        rl_layout_isroot = (LinearLayout) findViewById(R.id.rl_layout_isroot);
+        rl_layout_isroot.setOnClickListener(this);
+        //程序进来判断 该字段是否为 管理员
+        int isAdministrotar = ShareUtils.getInt(getApplicationContext(),"isAdministrotar",0);
+        if (isAdministrotar == 1) { //0 表示 非管理员
+            rl_layout_isroot.setVisibility(View.VISIBLE);
+        }
         rl_layout_shopping = (LinearLayout) findViewById(R.id.rl_layout_shopping);
         rl_layout_shopping.setOnClickListener(this);
         ll_lyout = (LinearLayout) findViewById(R.id.ll_lyout);
@@ -138,6 +148,11 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
     private void updataphoto() {
         imageurl = ShareUtils.getString(getApplicationContext(),"touxiangURL","");
         if (!TextUtils.isEmpty(imageurl)) {
+            if (imageurl.equals("0")) {
+                //这里表示用户第一次登录并没有上传头像
+                Glide.with(getApplicationContext()).load(R.drawable.liuyifei).into(image_yuanxing);
+                return;
+            }
             GlideUtils.loadImageViewCache(getApplicationContext(), imageurl, image_yuanxing);
             if (imageurl.contains("http")) {
                 GlideUtils.loadImageViewCache(getApplicationContext(), imageurl, image_yuanxing);
@@ -194,7 +209,7 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
                     Toast.makeText(getApplicationContext(),"管理员暂时没有历史记录",Toast.LENGTH_SHORT).show();
                 } else {
                     //否则表示是 普通用户的 历史记录
-                   // startActivity(new Intent(this, UsagelogActivity.class));
+                    // startActivity(new Intent(this, UsagelogActivity.class));
                     Intent intent = new Intent(getApplicationContext(),UsagelogActivity.class);
                     AnimUtils.startIntent(intent,view, (Activity) SettingsYusanActivity.this,R.id.rl_layout_jilu);
                 }
@@ -202,13 +217,13 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
                 break;
             //设置界面
             case R.id.rl_layout_settings:
-               // startActivity(new Intent(this, settingsssssActivity.class));
+                // startActivity(new Intent(this, settingsssssActivity.class));
                 Intent intent1 = new Intent(this,settingsssssActivity.class);
                 AnimUtils.startIntent(intent1,view, (Activity)this,R.id.ll_layoutss);
 
                 break;
             case R.id.image_yuanxing:
-               // startActivity(new Intent(this, YuanXingTouxiangSettingsActivity.class));
+                // startActivity(new Intent(this, YuanXingTouxiangSettingsActivity.class));
                 Intent intent2 = new Intent(this,YuanXingTouxiangSettingsActivity.class);
                 AnimUtils.startIntent(intent2,view, (Activity)SettingsYusanActivity.this,R.id.ll_layout_amin);
                 break;
@@ -231,20 +246,26 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
                 break;
             //联系客户
             case R.id.ll_lyout:
-               // startActivity(new Intent(this,LianXiKeFuActivity.class));
+                // startActivity(new Intent(this,LianXiKeFuActivity.class));
                 Intent intent3 = new Intent(SettingsYusanActivity.this,LianXiKeFuActivity.class);
                 AnimUtils.startIntent(intent3,view, (Activity) SettingsYusanActivity.this,R.id.ll_lyout);
                 break;
             //这里点击 跳转到商家界面
             case R.id.rl_layout_shopping:
+                StyledDialog.buildLoading("加载中···").show();
                 /* 这里入驻商家
                 * 网络请求获取该用户是否认证商家通过
                 * */
-               // startActivity(new Intent(getApplicationContext(), ShoppingShangjiaxinxiActivity.class));
+                // startActivity(new Intent(getApplicationContext(), ShoppingShangjiaxinxiActivity.class));
                 ShoppingQueryAuthentionPerserent shoppingAut = new ShoppingQueryAuthentionPerserent(this);
                 shoppingAut.shoppingAut(zhanghao);
                 v = view;
                 break;
+                //跳转到管理员界面
+            case R.id.rl_layout_isroot:
+                    startActivity(new Intent(getApplicationContext(),AdimIstratorActivity.class));
+                break;
+
         }
     }
 
@@ -315,16 +336,18 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
     * */
     @Override
     public void showComplte(Object object) {
+        StyledDialog.dismissLoading();
         ShoppingQueryAutBean shpAut = (ShoppingQueryAutBean) object;
         int status = shpAut.getStatus();
         if (status == 1) {
             ShoppingQueryAutBean.DataBean spaut = shpAut.getData();
             //获取商家认证的字段
             String aut = spaut.getIs_Authentication();
+
             if (aut.equals("1")) { // 1表示 已经认证
                 String shoppingId = spaut.getId();
                 ShareUtils.putString(getApplicationContext(),"shoppingId",shoppingId);
-               // startActivity(new Intent(getApplicationContext(), ShoppingShangjiaxinxiActivity.class));
+                // startActivity(new Intent(getApplicationContext(), ShoppingShangjiaxinxiActivity.class));
                 Intent intent = new Intent(SettingsYusanActivity.this,ShoppingShangjiaxinxiActivity.class);
                 AnimUtils.startIntent(intent,v, (Activity)this,R.id.rl_layout_shopping);
 
@@ -343,7 +366,7 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
 
                 }).setBtnText("确定", "取消").show();
             } else { //否则就是0 表示还未证人 直接跳转到认证提交资料的界面
-              startActivity(new Intent(getApplicationContext(), ShoppingSettledDataActivity.class));
+                startActivity(new Intent(getApplicationContext(), ShoppingSettledDataActivity.class));
             }
         } else if (status == 0) {
             startActivity(new Intent(getApplicationContext(), ShoppingSettledDataActivity.class));

@@ -9,7 +9,7 @@ public interface IsWeChatPayZhiFuJinErModel {
     /*
     *  微信支付接口
     * */
-    void WeChatZhiFu(OnWeChatLinisenet linisenet,String goods,double total_fee,String apptype,String member_id);
+    void WeChatZhiFu(OnWeChatLinisenet linisenet,String goods,double total_fee,String apptype,String member_id,String is_merchant);
 
     /*
     * 微信支付接口回调

@@ -18,13 +18,14 @@ import okhttp3.Response;
 
 public class AliPayModelImpl implements IsAlipayModel {
     @Override
-    public void ZhiFuBao(final OnZhiFuBaoLinset linset, String zhifujixing, String money, String user, String zhifubiaoti) {
+    public void ZhiFuBao(final OnZhiFuBaoLinset linset, String zhifujixing, String money, String user, String zhifubiaoti,String is_merchant) {
         String url = ConfigUtils.ZHU_YU_MING+ConfigUtils.ZHIFUBAO_CHONGZHI_JINER;
         OkGo.post(url)
                 .params("app",zhifujixing)
                 .params("money",money)
                 .params("user",user)
                 .params("body",zhifubiaoti)
+                .params("is_merchant",is_merchant)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {

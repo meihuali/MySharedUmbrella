@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,34 +29,34 @@ import cn.smssdk.SMSSDK;
 
 public class ModifyPasswordActivity extends AppCompatActivity implements View.OnClickListener, IsModifyPasswordView {
     private TextView myback;
-    private EditTextWithDelete edit_phone,zym_sznew,new_serpass;
+    private EditText edit_phone,zym_sznew,new_serpass;
     private Button szpass_button;
-    private TextView hqmm;
+    private Button hqmm;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modifypassword);
         //沉浸式
         ImmersionBar.with(this)
-                .statusBarColor(R.color.white) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
-                .statusBarDarkFont(true,0.2f)    //如果是白色或者透明状态的时候就加上他
+                .statusBarColor(R.color.lanse_x_x) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
+                // .statusBarDarkFont(true,0.2f)    如果是白色或者透明状态的时候就加上他
                 .fitsSystemWindows(true) //解决状态栏和布局重叠问题，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色
                 .init();
         initView();
     }
 
     private void initView() {
-        hqmm = (TextView) findViewById(R.id.hqmm);
+        hqmm = (Button) findViewById(R.id.hqmm);
         hqmm.setOnClickListener(this);
-        myback = (TextView) findViewById(R.id.myback);
-        myback.setOnClickListener(this);
+//        myback = (TextView) findViewById(R.id.myback);
+//        myback.setOnClickListener(this);
         //获取手机号码
-        edit_phone = (EditTextWithDelete) findViewById(R.id.edit_phone);
-        //获取验证码
-        zym_sznew = (EditTextWithDelete) findViewById(R.id.zym_sznew);
-        //获取用户的新密码
-        new_serpass = (EditTextWithDelete) findViewById(R.id.new_serpass);
-        //点击修改密码按钮
+        edit_phone = (EditText) findViewById(R.id.edit_phone);
+//        //获取验证码
+        zym_sznew = (EditText) findViewById(R.id.zym_sznew);
+//        //获取用户的新密码f
+       new_serpass = (EditText) findViewById(R.id.new_serpass);
+//        //点击修改密码按钮
         szpass_button = (Button) findViewById(R.id.szpass_button);
         szpass_button.setOnClickListener(this);
 
@@ -64,9 +65,9 @@ public class ModifyPasswordActivity extends AppCompatActivity implements View.On
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.myback:
-                finish();
-                break;
+//            case R.id.myback:
+//                finish();
+//                break;
             case R.id.szpass_button:
 
                 String phones = edit_phone.getText().toString().trim();

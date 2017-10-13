@@ -11,10 +11,9 @@ package com.example.administrator.mysharedumbrella01.entivity;
  */
 public class SanZuoSanBean {
 
-
     /**
      * status : 1
-     * data : {"seat":30,"umbrella":"20","address":{"id":"5","name":"啊啊啊","phone":"擦擦擦刺激了","zipcode":"baccalaure","region":"浙江省绍兴市上虞市","address":"不知道","merchant_id":"7","c_time":"0","u_time":"0","is_inuser":"1"}}
+     * data : {"seat":30,"umbrella":"20","address":{"id":"20","name":"啊啊啊啊啊啊","phone":"14533562478","zipcode":"111111","region":"山西省阳泉市矿区","address":"好哦www","merchant_id":"7","c_time":"1505794529","u_time":"0","is_inuser":"1"}}
      */
 
     private int status;
@@ -40,7 +39,7 @@ public class SanZuoSanBean {
         /**
          * seat : 30
          * umbrella : 20
-         * address : {"id":"5","name":"啊啊啊","phone":"擦擦擦刺激了","zipcode":"baccalaure","region":"浙江省绍兴市上虞市","address":"不知道","merchant_id":"7","c_time":"0","u_time":"0","is_inuser":"1"}
+         * address : {"id":"20","name":"啊啊啊啊啊啊","phone":"14533562478","zipcode":"111111","region":"山西省阳泉市矿区","address":"好哦www","merchant_id":"7","c_time":"1505794529","u_time":"0","is_inuser":"1"}
          */
 
         private int seat;
@@ -73,14 +72,14 @@ public class SanZuoSanBean {
 
         public static class AddressBean {
             /**
-             * id : 5
-             * name : 啊啊啊
-             * phone : 擦擦擦刺激了
-             * zipcode : baccalaure
-             * region : 浙江省绍兴市上虞市
-             * address : 不知道
+             * id : 20
+             * name : 啊啊啊啊啊啊
+             * phone : 14533562478
+             * zipcode : 111111
+             * region : 山西省阳泉市矿区
+             * address : 好哦www
              * merchant_id : 7
-             * c_time : 0
+             * c_time : 1505794529
              * u_time : 0
              * is_inuser : 1
              */

@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.entivity.ShoppingImgChangBean;
 import com.example.administrator.mysharedumbrella01.peresenet.ImageChangPerserent;
+import com.example.administrator.mysharedumbrella01.utils.ConfigUtils;
 import com.example.administrator.mysharedumbrella01.utils.L;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
 import com.example.administrator.mysharedumbrella01.utils.SystemUiUtils;
@@ -74,9 +75,10 @@ public class StreetscapeFragment extends Fragment implements View.OnClickListene
         //这里获取服务器返回的图片路径
         String jiejing = ShareUtils.getString(getActivity(),"jiejing","");
         if (!TextUtils.isEmpty(jiejing)) {
-            String url = "http://u.sunyie.com/public/"+jiejing;
+            String url = ConfigUtils.ZHU_YU_MING+jiejing;
+            String urls = url+jiejing;
             //这里将图片设置在控件上
-            Glide.with(getActivity()).load(url).override(450,360).into(image_showImage);
+            Glide.with(getActivity()).load(urls).override(450,360).into(image_showImage);
         }
     }
 
@@ -89,6 +91,7 @@ public class StreetscapeFragment extends Fragment implements View.OnClickListene
         image_showImage = (ImageView) view.findViewById(R.id.image_showImage);
         ll_image = (Button) view.findViewById(R.id.ll_image);
         ll_image.setOnClickListener(this);
+
     }
 
     @Override

@@ -5,8 +5,12 @@ import com.example.administrator.mysharedumbrella01.model.IsShoppingRecordModel;
 import com.example.administrator.mysharedumbrella01.utils.ConfigUtils;
 import com.example.administrator.mysharedumbrella01.utils.L;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -30,9 +34,19 @@ public class ShoppingRecorImpl implements IsShoppingRecordModel {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         L.e("商家充值记录 "+s);
-//                        Gson gson = new Gson();
-//                        ShoppingRecorBean sprb =  gson.fromJson(s, ShoppingRecorBean.class);
-//                        linserent.onComplte(sprb);
+                        try {
+                            JSONObject obj = new JSONObject(s);
+                            if (obj.optInt("status") == 1) {
+                                Gson gson = new Gson();
+                                ShoppingRecorBean sprb =  gson.fromJson(s, ShoppingRecorBean.class);
+                                linserent.onComplte(sprb);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+                        }
+
                     }
 
                     @Override

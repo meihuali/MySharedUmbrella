@@ -23,14 +23,14 @@ public class AlipayPerserent {
     }
 
     //中间者 绑定方法
-    public void fach(String zhifujixing, String money, String user, String zhifubiaoti) {
+    public void fach(String zhifujixing, String money, String user, String zhifubiaoti, String is_merchant) {
         if (alipayModel != null) {
             alipayModel.ZhiFuBao(new IsAlipayModel.OnZhiFuBaoLinset() {
                 @Override
                 public void onCompelte(ZhifubaoBean zfb) {
                     aliPayView.showRestuel(zfb);
                 }
-            },zhifujixing,money,user,zhifubiaoti);
+            },zhifujixing,money,user,zhifubiaoti,is_merchant);
         }
 
     }

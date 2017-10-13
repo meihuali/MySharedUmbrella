@@ -49,19 +49,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:textSize="18sp"
-                android:layout_marginLeft="37dp"
+                android:layout_marginTop="3dp"
+                android:textSize="16sp"
+                android:layout_marginLeft="15dp"
                 android:textColor="@color/lanse_x_x"
                 android:text="@string/shangjiamingchen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <com.example.administrator.mysharedumbrella01.utils.EditTextWithDelete
                 android:id="@+id/edit_phone"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="17dp"
-                android:layout_marginRight="17dp"
+                android:layout_marginRight="15dp"
                 android:ems="10"
                 android:backgroundTint="@color/huise"
                 android:textColor="@color/shenhuise_x"
@@ -80,19 +80,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
-                android:textSize="18sp"
-                android:layout_marginLeft="37dp"
+                android:layout_marginTop="3dp"
+                android:textSize="16sp"
+                android:layout_marginLeft="15dp"
                 android:textColor="@color/lanse_x_x"
                 android:text="@string/shangjiadizhi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <com.example.administrator.mysharedumbrella01.utils.EditTextWithDelete
                 android:id="@+id/et_address"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="17dp"
-                android:layout_marginRight="17dp"
+                android:layout_marginRight="15dp"
                 android:ems="10"
                 android:backgroundTint="@color/huise"
                 android:textColor="@color/shenhuise_x"
@@ -106,9 +106,9 @@
         android:layout_height="wrap_content">
         <TextView
             android:textColor="@color/lanse_x_x"
-            android:textSize="20sp"
+            android:textSize="14sp"
             android:text="@string/qingpaishe"
-            android:layout_marginLeft="37dp"
+            android:layout_marginLeft="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -120,41 +120,45 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <ImageView
-                android:layout_marginRight="40dp"
-                android:layout_marginLeft="40dp"
-                android:id="@+id/show_img"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:id="@+id/img_paizhao"
                 android:scaleType="fitXY"
-                android:src="@color/huise"
+                android:src="@drawable/ruzhushangjia_x"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
             <ImageView
-                android:id="@+id/img_paizhao"
+                android:visibility="gone"
                 android:src="@drawable/paizhao_x"
                 android:layout_gravity="center"
                 android:layout_width="62dp"
                 android:layout_height="62dp" />
         </FrameLayout>
     </LinearLayout>
+
     <LinearLayout
+        android:gravity="center_vertical"
         android:id="@+id/ll_layout_qianyue"
         android:layout_marginTop="30dp"
-        android:gravity="center"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="15dp">
+        android:layout_height="40dp">
         <ImageView
+            android:layout_marginLeft="15dp"
             android:id="@+id/img_qianyueweigouxuan"
             android:src="@drawable/qianyueweigouxuan_x"
-            android:layout_width="20dp"
-            android:layout_height="20dp" />
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
         <ImageView
+            android:layout_marginLeft="15dp"
+            android:layout_gravity="center_vertical"
             android:id="@+id/img_qianyuegouxuan"
             android:visibility="gone"
             android:src="@drawable/qianyugouxuan_x"
-            android:layout_width="20dp"
-            android:layout_height="205dp" />
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
         <TextView
-            android:textColor="@color/top_red"
+            android:layout_gravity="center_vertical"
             android:textSize="12dp"
             android:text="@string/qianyuexieyi"
             android:layout_width="wrap_content"

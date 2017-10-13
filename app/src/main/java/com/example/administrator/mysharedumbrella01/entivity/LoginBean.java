@@ -47,7 +47,15 @@ public class LoginBean {
         private String is_Authentication;
         private String QQ;
         private String wechat;
+        private int is_manager;
 
+        public int getIs_manager() {
+            return is_manager;
+        }
+
+        public void setIs_manager(int is_manager) {
+            this.is_manager = is_manager;
+        }
 
         public String getIs_Authentication() {
             return is_Authentication;

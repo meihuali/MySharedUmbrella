@@ -20,11 +20,12 @@ import okhttp3.Response;
 
 public class TuikuanImpl implements IsTuiKuanModel {
     @Override
-    public void tuikuan(final onTuikuanjiekouLinereset linereset, String zhanghao,String num) {
+    public void tuikuan(final onTuikuanjiekouLinereset linereset, String zhanghao,String num,String type) {
         String url = ConfigUtils.ZHU_YU_MING+ConfigUtils.TUIKUANJIEKOU;
         OkGo.post(url)
                 .params("appid",zhanghao)
                 .params("num",num)
+                .params("type",type)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {

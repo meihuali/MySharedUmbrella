@@ -8,12 +8,15 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.administrator.mysharedumbrella01.R;
+import com.example.administrator.mysharedumbrella01.entivity.MessageEvent;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
+import org.greenrobot.eventbus.EventBus;
 
 
 public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
@@ -64,6 +67,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
         switch (resp.errCode){
             case BaseResp.ErrCode.ERR_OK:
                 str = "支付成功";
+
                 break;
             case BaseResp.ErrCode.ERR_COMM:
                 str = "出现错误,请稍后再试";
@@ -73,16 +77,16 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                 break;
         }
         Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
-
-
+        EventBus.getDefault().post(new MessageEvent(str));
         this.finish();
-
-
     }
 
     public PayCallBack payCallBack;
     public interface PayCallBack {
-        void success();
+        void success(String str);
         void failed();
+    }
+    public void weChatpay(PayCallBack payCallBack) {
+        this.payCallBack = payCallBack;
     }
 }

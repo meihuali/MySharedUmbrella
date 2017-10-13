@@ -8,19 +8,11 @@
     android:orientation="vertical"
     android:background="@color/white"
     tools:context="com.example.administrator.mysharedumbrella01.ui.MainActivity">
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-
-    <ImageView
-        android:background="@drawable/dingbujianbian"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
     <RelativeLayout
+        android:background="@drawable/zhujiemlanse_x"
         android:id="@+id/ll_flayout"
-        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_centerVertical="true"
@@ -58,7 +50,7 @@
             android:textSize="35dp" />
     </RelativeLayout>
 
-</FrameLayout>
+
 
     <LinearLayout
         android:visibility="gone"
@@ -114,18 +106,32 @@
     </LinearLayout>
 
 
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
-        <Button
-            android:textColor="@color/white"
+
+        <RelativeLayout
             android:id="@+id/tv_current"
             android:layout_marginTop="5dp"
-            android:background="@color/lanse_x"
-            android:text="@string/zhengzaishiyong"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp" />
+            android:background="@drawable/jiesanxianshi_x"
+            android:layout_width="160dp"
+            android:layout_height="30dp">
+            <Button
+                android:layout_marginBottom="5dp"
+                android:id="@+id/btn_cuonst"
+                android:textColor="@color/white"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="111dp"
+                android:layout_marginTop="5dp"
+                android:background="@null"
+                android:text="3"
+                android:layout_width="25dp"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
+
 
         <com.amap.api.maps.MapView
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -150,14 +156,14 @@
                 android:id="@+id/image_shuaxin"
                 android:layout_marginBottom="15dp"
                 android:src="@drawable/shauxin_x"
-                android:layout_width="35dp"
-                android:layout_height="35dp" />
+                android:layout_width="45dp"
+                android:layout_height="45dp" />
 
             <pl.droidsonroids.gif.GifImageView
                 android:id="@+id/plgig"
                 android:layout_centerInParent="true"
-                android:layout_width="110dp"
-                android:layout_height="110dp"
+                android:layout_width="138dp"
+                android:layout_height="138dp"
                 android:src="@drawable/saomiaojianbian_x"
                 />
 
@@ -168,10 +174,11 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="15dp"
                 android:src="@drawable/jingao_x"
-                android:layout_width="35dp"
-                android:layout_height="35dp" />
+                android:layout_width="45dp"
+                android:layout_height="45dp" />
 
         </RelativeLayout>
+
     </RelativeLayout>
 
 

@@ -124,6 +124,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent" />
                 <TextView
+                    android:textColor="@color/top_red"
                     android:id="@+id/tv_yajin"
                     android:layout_marginLeft="10dp"
                     android:text="@string/jinbi"

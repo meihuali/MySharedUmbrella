@@ -10,7 +10,7 @@ import com.example.administrator.mysharedumbrella01.entivity.ZhifubaoBean;
 
 public interface IsAlipayModel {
     //接口
-    void ZhiFuBao(OnZhiFuBaoLinset linset,String zhifujixing,String money,String user, String zhifubiaoti);
+    void ZhiFuBao(OnZhiFuBaoLinset linset,String zhifujixing,String money,String user, String zhifubiaoti,String is_merchant);
     //接口回调
     interface OnZhiFuBaoLinset{
         void onCompelte(ZhifubaoBean zfb);

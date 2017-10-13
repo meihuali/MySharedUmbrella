@@ -186,14 +186,13 @@ public class DepositRechargeActivitys extends AppCompatActivity implements View.
                 if (type == 2) {
                     zh = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
                     AliPayYaJinPersernet apyhp = new AliPayYaJinPersernet(this);
-                    apyhp.fach("2", myMoney + "", zh, "1");
+                    apyhp.fach("2", myMoney + "", zh, "1","0");
 
                 } else {
-
                     zh = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
                     //这里表示 微信支付的 网络请求 获取到服务器返回的 订单号 这里看的明白吗？
                     WeChatYaJinPersernet weixinyajin = new WeChatYaJinPersernet(this);
-                    weixinyajin.wechatyajin("1",myMoney,"2",zh);
+                    weixinyajin.wechatyajin("1",myMoney,"2",zh,"0");
                 }
 
                 break;

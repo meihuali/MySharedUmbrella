@@ -17,14 +17,14 @@ public class WeChatYaJinPersernet {
         weChatYaJinModel = new WeChatYajinModelImpl();
     }
 
-    public void wechatyajin(String goods,double total_fee,String apptype,String member_id) {
+    public void wechatyajin(String goods,double total_fee,String apptype,String member_id,String is_merchant) {
         if (weChatYaJinModel != null) {
             weChatYaJinModel.wechatYajin(new IsWeChatYaJinModel.OnWechatYajinLinerest() {
                 @Override
                 public void onComplet(Object object) {
                     weChatYajinView.showWechatYajin(object);
                 }
-            }, goods, total_fee, apptype, member_id);
+            }, goods, total_fee, apptype, member_id,is_merchant);
         }
     }
 }

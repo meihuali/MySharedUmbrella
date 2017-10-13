@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_layout"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:src="@drawable/wodeqianbao_x"
+        android:scaleType="fitXY"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <RelativeLayout
+        android:id="@+id/rl_layoutssss"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <ImageView
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:id="@+id/image_back"
+            android:background="@drawable/btn_back"
+            android:layout_width="25dp"
+            android:layout_height="25dp" />
+        <TextView
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/gerenzhongxin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_marginRight="15dp"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/white"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/jilu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+        <LinearLayout
+            android:gravity="center"
+            android:layout_marginTop="70dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_shangjia"
+                    android:textSize="40dp"
+                    android:textColor="@color/lanse_x_x"
+                    android:text="@string/shuzis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:textSize="18dp"
+                    android:textColor="@color/lanse_x_x"
+                    android:text="@string/keyong"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/btn_tuikuan"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="200dp"
+                    android:text="@string/tuihuiyajin"
+                    android:background="@drawable/jianbian_x"
+                    android:layout_width="130dp"
+                    android:layout_height="46dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+</FrameLayout>

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.example.administrator.mysharedumbrella01.entivity.GetumbrellaBean;
+import com.example.administrator.mysharedumbrella01.entivity.GetumbrellaBean_two;
 import com.example.administrator.mysharedumbrella01.entivity.SaoYiSaoBean;
 import com.example.administrator.mysharedumbrella01.entivity.SaoYiSaoErrorBean;
 
@@ -21,7 +22,7 @@ public interface IsUmbrellaStandMode {
     //获取雨伞接口回调
      interface OnGetUmbrellaLiseners{
 
-        void onComlete(List<GetumbrellaBean.DataBean> list);
+        void onComlete(List<GetumbrellaBean_two.DataBean> list);
     }
 
     /*

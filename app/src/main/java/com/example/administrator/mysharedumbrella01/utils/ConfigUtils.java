@@ -184,5 +184,13 @@ public class ConfigUtils {
     *  管理员 扫伞的特定id开启对应的伞座号
     * */
     public static final String ANDMIN_SEARCH_ID = "/Unlock/umbrellaidopen.php";
+    /*
+    * 管理员信息 认证 接口
+    * */
+    public static final String ADMIN_AUTHENICATION = "/Manage/getmerchant.php";
+    /*
+    * 管理员绑定
+    * */
+    public static final String ANDMIN_BANGDIN = "/Manage/change_machine.php";
 
 }

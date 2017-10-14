@@ -305,7 +305,7 @@
             android:id="@+id/tv_shoppingYJ"
             android:textSize="20sp"
             android:textColor="@color/lanse_x_x"
-            android:text="@string/sanbai"
+            android:text="@string/ling"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>

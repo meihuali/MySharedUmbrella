@@ -17,11 +17,14 @@ import android.widget.LinearLayout;
 
 import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.SaoYiSao.ScannerActivity;
+import com.example.administrator.mysharedumbrella01.entivity.AdminAuthenticationBean;
 import com.example.administrator.mysharedumbrella01.entivity.AdminSearchAllBean;
+import com.example.administrator.mysharedumbrella01.peresenet.AdminAuthenticationPerensert;
 import com.example.administrator.mysharedumbrella01.peresenet.AdminSearchAllPerserent;
 import com.example.administrator.mysharedumbrella01.peresenet.AdminSearchPerenset;
 import com.example.administrator.mysharedumbrella01.utils.MyDialog;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
+import com.example.administrator.mysharedumbrella01.view.IsAdminAuthenticationView;
 import com.example.administrator.mysharedumbrella01.view.IsAdminSearchAllView;
 import com.example.administrator.mysharedumbrella01.view.IsAdminSearchView;
 import com.gyf.barlibrary.ImmersionBar;
@@ -36,13 +39,17 @@ import com.mylhyl.zxing.scanner.common.Intents;
  * 创建时间： 2017/10/13 0013 12:16
  * 描述：管理操作界面
  */
-public class AdimIstratorActivity extends AppCompatActivity implements View.OnClickListener, IsAdminSearchAllView, IsAdminSearchView {
+public class AdimIstratorActivity extends AppCompatActivity implements View.OnClickListener, IsAdminSearchAllView, IsAdminSearchView, IsAdminAuthenticationView {
     // 扫一扫相关 颜色  如果不赋值的话· 扫描上下滚动的就是绿色这里默认 赋值为 支付宝 那种网格的
     private int laserMode = ScannerActivity.EXTRA_LASER_LINE_MODE_0;
     private ImageView image_back;
     private LinearLayout ll_layout_search;
     private LinearLayout ll_layout_authentication;
     private int type;
+    private String result;
+
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,10 +84,10 @@ public class AdimIstratorActivity extends AppCompatActivity implements View.OnCl
                 type = 1;
                 initViewes();
                 break;
-                case R.id.ll_layout_authentication:
-                    type = 2;
-                    initViewes();
-                    break;
+            case R.id.ll_layout_authentication:
+                type = 2;
+                initViewes();
+                break;
         }
     }
     /*
@@ -102,43 +109,55 @@ public class AdimIstratorActivity extends AppCompatActivity implements View.OnCl
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_CANCELED && resultCode == Activity.RESULT_OK) {
             if (requestCode == ScannerActivity.REQUEST_CODE_SCANNER) {
-                    if (type == 1) {
-                        if (data != null) {
-                            String stringExtra = data.getStringExtra(Intents.Scan.RESULT);
-                            Log.e("扫描结果 ", "" + stringExtra);
+                if (type == 1) {
+                    if (data != null) {
+                        String stringExtra = data.getStringExtra(Intents.Scan.RESULT);
+                        Log.e("扫描结果 ", "" + stringExtra);
 
-                            if (!TextUtils.isEmpty(stringExtra)) {
-                                if (stringExtra.contains("CS") && stringExtra.length() == 20) {
-                                    StyledDialog.buildLoading("请求数据···").show();
-                                    String jiequhou = stringExtra.substring(stringExtra.length() - 18);
-                                    AdminSearchPerenset searchPerenset = new AdminSearchPerenset(this);
-                                    searchPerenset.adminsearch(jiequhou);
+                        if (!TextUtils.isEmpty(stringExtra)) {
+                            if (stringExtra.contains("CS") && stringExtra.length() == 20) {
+                                StyledDialog.buildLoading("请求数据···").show();
+                                String jiequhou = stringExtra.substring(stringExtra.length() - 18);
+                                AdminSearchPerenset searchPerenset = new AdminSearchPerenset(this);
+                                searchPerenset.adminsearch(jiequhou);
 
-                                } else if (stringExtra.length() > 19) {
-                                    StyledDialog.buildLoading("请求数据···").show();
-                                    String jiequhou = stringExtra.substring(stringExtra.length() - 19);
-                                    AdminSearchAllPerserent searchPerserent = new AdminSearchAllPerserent(this);
-                                    String phone = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
-                                    searchPerserent.adminSearchAll(phone, jiequhou);
-                                } else {
-                                    MyDialog.dialog("警告", "无效的二维码", "确定", "");
-                                }
-
+                            } else if (stringExtra.length() > 19) {
+                                StyledDialog.buildLoading("请求数据···").show();
+                                String jiequhou = stringExtra.substring(stringExtra.length() - 19);
+                                AdminSearchAllPerserent searchPerserent = new AdminSearchAllPerserent(this);
+                                String phone = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
+                                searchPerserent.adminSearchAll(phone, jiequhou);
                             } else {
-                                MyDialog.dialog("警告", "二维码不能为空", "确定", "");
+                                MyDialog.dialog("警告", "无效的二维码", "确定", "");
                             }
-                        }
-                    } else if (type == 2) {
-                        if (data != null) {
-                            String stringExtra = data.getStringExtra(Intents.Scan.RESULT);
-                            Log.e("扫描结果 ", "" + stringExtra);
 
+                        } else {
+                            MyDialog.dialog("警告", "二维码不能为空", "确定", "");
                         }
                     }
+                } else if (type == 2) {
+                    StyledDialog.buildLoading("加载中···").show();
+                    if (data != null) {
+                        String stringExtra = data.getStringExtra(Intents.Scan.RESULT);
+                        Log.e("扫描结果 ", "" + stringExtra);
+                        if (!TextUtils.isEmpty(stringExtra)) {
+                            result = stringExtra.substring(stringExtra.length() - 19);
+                            AdminAuthenticationPerensert authenticationPerensert = new AdminAuthenticationPerensert(AdimIstratorActivity.this);
+                            String phone  = ShareUtils.getString(getApplicationContext(),"zhanghao","");
+                            authenticationPerensert.authentiact(phone);
+                        }
+                    }
+                }
 
 
 
@@ -151,7 +170,7 @@ public class AdimIstratorActivity extends AppCompatActivity implements View.OnCl
     * */
     @Override
     public void onAdminSearch(Object object) {
-        StyledDialog.dismissLoading();
+       StyledDialog.dismissLoading();
         AdminSearchAllBean allBean = (AdminSearchAllBean) object;
         int state = allBean.getStatus();
         if (state == 1) {
@@ -165,13 +184,29 @@ public class AdimIstratorActivity extends AppCompatActivity implements View.OnCl
     * */
     @Override
     public void showRelust(Object object) {
-        StyledDialog.dismissLoading();
+       StyledDialog.dismissLoading();
         AdminSearchAllBean allBean = (AdminSearchAllBean) object;
         int stare = allBean.getStatus();
         if (stare == 1) {
             MyDialog.dialog("提示", allBean.getData(), "确定", "");
         } else {
             MyDialog.dialog("提示", allBean.getError_reason(), "确定", "");
+        }
+    }
+    /*
+    * 这个回调就是 管理员界面 信息认证 扫描二维码 后的回调
+    * */
+    @Override
+    public void showRestultAuthenticon(Object object) {
+        StyledDialog.dismissLoading();
+        AdminAuthenticationBean bean = (AdminAuthenticationBean) object;
+        int state = bean.getStatus();
+        if (state == 1) {
+            Intent intent = new Intent(getApplicationContext(),AdministratorInformation.class);
+            intent.putExtra("sanzuoID",result);
+            startActivity(intent);
+        } else {
+            MyDialog.dialog("提示","服务器挂了","确定","");
         }
     }
 }

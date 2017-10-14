@@ -1,7 +1,7 @@
 package com.example.administrator.mysharedumbrella01.Impl;
 
-import com.example.administrator.mysharedumbrella01.entivity.CheckBingdingBean;
-import com.example.administrator.mysharedumbrella01.model.IsCheckBindingModel;
+import com.example.administrator.mysharedumbrella01.entivity.AdminAuthenticationBean;
+import com.example.administrator.mysharedumbrella01.model.IsAdminAuthenticationModel;
 import com.example.administrator.mysharedumbrella01.utils.ConfigUtils;
 import com.example.administrator.mysharedumbrella01.utils.L;
 import com.google.gson.Gson;
@@ -14,32 +14,32 @@ import okhttp3.Response;
 /**
  * 项目名：MySharedUmbrella
  * 包名：com.example.administrator.mysharedumbrella01.Impl
- * 文件名：CheckBingdingImpl
- * 作者 ：梅华黎
- * 联系QQ： ：77299007
- * 创建时间： 2017/9/12 0012 14:24
- * 描述：检测用户是否有绑定过手机号码
+ * 文件名：AdminAuthenticationImpl
+ * 创建者 ：梅华黎
+ * 创建时间： 2017/10/13 0013 16:45
+ * 描述：管理员界面那个扫描后  信息认证
  */
-public class CheckBingdingImpl implements IsCheckBindingModel{
+public class AdminAuthenticationImpl implements IsAdminAuthenticationModel {
     @Override
-    public void checkbangding(final onCheckBindingLinsestes linsestes, String phone) {
-        String url  = ConfigUtils.ZHU_YU_MING+ConfigUtils.CHECK_BINGDING;
+    public void getAdminAllAuthentication(final onAdminAllAuthenticonLisenert lisenert, String phone) {
+        String url = ConfigUtils.ZHU_YU_MING+ConfigUtils.ADMIN_AUTHENICATION;
         OkGo.post(url)
                 .params("phone",phone)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
-                        L.e("绑定手机号码："+s);
+                        L.e("管理员扫描信息认证 "+s);
+
                         Gson gson = new Gson();
-                        CheckBingdingBean checkBingdingBean = gson.fromJson(s, CheckBingdingBean.class);
-                        linsestes.onComplte(checkBingdingBean);
+                        AdminAuthenticationBean bean = gson.fromJson(s, AdminAuthenticationBean.class);
+                        lisenert.onComplte(bean);
                     }
 
                     @Override
                     public void onError(Call call, Response response, Exception e) {
                         super.onError(call, response, e);
-                        L.e("绑定手机号码："+response.message());
                     }
                 });
+
     }
 }

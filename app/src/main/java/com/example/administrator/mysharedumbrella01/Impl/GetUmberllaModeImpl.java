@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.example.administrator.mysharedumbrella01.dialog.PopupWindowGuanGao;
 import com.example.administrator.mysharedumbrella01.entivity.GetumbrellaBean;
+import com.example.administrator.mysharedumbrella01.entivity.GetumbrellaBean_two;
 import com.example.administrator.mysharedumbrella01.entivity.SaoYiSaoBean;
 import com.example.administrator.mysharedumbrella01.entivity.SaoYiSaoErrorBean;
 import com.example.administrator.mysharedumbrella01.model.IsUmbrellaStandMode;
@@ -50,13 +51,18 @@ public class GetUmberllaModeImpl implements IsUmbrellaStandMode {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         L.e("ssss  "+s);
-                        Gson gson = new Gson();
+
                         try {
-                            GetumbrellaBean gb = gson.fromJson(s,GetumbrellaBean.class);
-                            List<GetumbrellaBean.DataBean> lists = gb.getData();
-                            if (liseners != null) {
+                            JSONObject obj = new JSONObject(s);
+                          int status =   obj.getInt("status");
+                            if (status == 1) {
+                                Gson gson = new Gson();
+                                GetumbrellaBean_two gb = gson.fromJson(s,GetumbrellaBean_two.class);
+                                List<GetumbrellaBean_two.DataBean> lists = gb.getData();
                                 liseners.onComlete(lists);
                             }
+
+
 
                         } catch (Exception e) {
                             Toast.makeText(activity,"获取雨伞分布接口奔了",Toast.LENGTH_SHORT).show();

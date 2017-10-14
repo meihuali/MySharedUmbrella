@@ -9,4 +9,10 @@ package com.example.administrator.mysharedumbrella01.model;
  * 描述：TODO
  */
 public interface IsAdminAuthenticationModel {
+
+    void getAdminAllAuthentication(onAdminAllAuthenticonLisenert lisenert,String phone);
+
+    interface onAdminAllAuthenticonLisenert{
+        void onComplte(Object object);
+    }
 }

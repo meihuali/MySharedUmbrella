@@ -179,14 +179,14 @@ public class ShoppingGoodsReceiptActivity extends AppCompatActivity implements V
         if (goodsBean.getStatus() == 1) {
             ShoppingConfirmGoodsBean.DataBean ddd =   goodsBean.getData();
             mList.clear();
-            if (!goodsBean.getData().getStand().equals("0") && !goodsBean.getData().getUmbrella().equals("0")) {
+         //   if (!goodsBean.getData().getStand().equals("0") && !goodsBean.getData().getUmbrella().equals("0")) {
                 adapter.addData(ddd);
                 adapter.notifyDataSetChanged();
                 String stand =   ddd.getStand();
                 String umbrella =  ddd.getUmbrella();
                 stands = Integer.parseInt(stand);
                 umbrellas = Integer.parseInt(umbrella);
-            }
+          //  }
 
 
 

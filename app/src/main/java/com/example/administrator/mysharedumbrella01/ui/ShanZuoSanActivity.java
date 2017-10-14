@@ -28,6 +28,7 @@ import com.example.administrator.mysharedumbrella01.peresenet.GetShoppingSanZuoS
 import com.example.administrator.mysharedumbrella01.peresenet.ShenQingSanZuoPerserent;
 import com.example.administrator.mysharedumbrella01.peresenet.WeChatYaJinPersernet;
 import com.example.administrator.mysharedumbrella01.utils.L;
+import com.example.administrator.mysharedumbrella01.utils.MyDialog;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
 import com.example.administrator.mysharedumbrella01.utils.ToastUtil;
 import com.example.administrator.mysharedumbrella01.view.IsAliPayYaJinView;
@@ -243,11 +244,14 @@ public class ShanZuoSanActivity extends AppCompatActivity implements View.OnClic
                 type = 2; //2表示微信
                 break;
             case R.id.btn_shenqing:
-                if (cuont == 0) {
+                if (cuont != 0) {
                     //申请 雨伞
-                    shenqingyusan();
-                } else {
                     shenqingsanzuo();
+                }
+                if (cuont == 0 && yusanCuont == 0) {
+                    MyDialog.dialog("提示", "请选择伞座个数，或者雨伞个数", "确定", "");
+                } else {
+                    shenqingyusan();
                 }
 
                 break;
@@ -259,14 +263,24 @@ public class ShanZuoSanActivity extends AppCompatActivity implements View.OnClic
     private void shenqingsanzuo() {
         if (sum != 0) {
             if (type == 1) { //  1表示支付宝  2表示微信
-                phone = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
-                AliPayYaJinPersernet apyhp = new AliPayYaJinPersernet(this);
-                apyhp.fach("2", 0.01 + "", phone, "1","1");
+                if (cuont == 6) {
+                    phone = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
+                    AliPayYaJinPersernet apyhp = new AliPayYaJinPersernet(this);
+                    apyhp.fach("2", 300.00 + "", phone, "1", "1");
+                } else {
+                    MyDialog.dialog("警告","请输入伞座个数","确定","");
+                }
+
             } else {
-                phone = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
-                //这里表示 微信支付的 网络请求 获取到服务器返回的 订单号 这里看的明白吗？
-                WeChatYaJinPersernet weixinyajin = new WeChatYaJinPersernet(this);
-                weixinyajin.wechatyajin("1",0.01,"2",phone,"1");
+                if (cuont == 6) {
+                    phone = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
+                    //这里表示 微信支付的 网络请求 获取到服务器返回的 订单号 这里看的明白吗？
+                    WeChatYaJinPersernet weixinyajin = new WeChatYaJinPersernet(this);
+                    weixinyajin.wechatyajin("1", 300.00, "2", phone, "1");
+                } else {
+                    MyDialog.dialog("警告","请输入伞座个数","确定","");
+                }
+
             }
         }
     }

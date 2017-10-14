@@ -59,7 +59,7 @@ public class AddressSelectorActivity extends AppCompatActivity implements View.O
     private String xiangxidizhiasss;
     private String statuss;
     private String youbianss;
-
+    private ImageView image_back;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +96,8 @@ public class AddressSelectorActivity extends AppCompatActivity implements View.O
     * 初始化数据
     * */
     private void initView() {
+        image_back = (ImageView) findViewById(R.id.image_back);
+        image_back.setOnClickListener(this);
         if (types.equals("1")) {
             et_xiangxidizhi = (EditText) findViewById(R.id.et_xiangxidizhi);
             et_xiangxidizhi.setText(xiangxidizhiasss);
@@ -140,6 +142,9 @@ public class AddressSelectorActivity extends AppCompatActivity implements View.O
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.image_back:
+                finish();
+                break;
             case R.id.tv_city1:
                 Intent in = new Intent(this, CitySelect1Activity.class);
                 in.putExtra("city", city);

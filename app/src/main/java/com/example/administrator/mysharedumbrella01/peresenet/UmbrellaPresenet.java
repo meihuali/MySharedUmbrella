@@ -4,6 +4,7 @@ import android.app.Activity;
 
 import com.example.administrator.mysharedumbrella01.Impl.GetUmberllaModeImpl;
 import com.example.administrator.mysharedumbrella01.entivity.GetumbrellaBean;
+import com.example.administrator.mysharedumbrella01.entivity.GetumbrellaBean_two;
 import com.example.administrator.mysharedumbrella01.entivity.SaoYiSaoBean;
 import com.example.administrator.mysharedumbrella01.model.IsUmbrellaStandMode;
 import com.example.administrator.mysharedumbrella01.view.IsUmbrellaView;
@@ -28,7 +29,7 @@ public class UmbrellaPresenet {
     public void fech(Activity activity, double longitude, double latitude, final int types) {
         isUmbrellaStand.GetUmbrellaStand(new IsUmbrellaStandMode.OnGetUmbrellaLiseners() {
             @Override
-            public void onComlete(List<GetumbrellaBean.DataBean> list) {
+            public void onComlete(List<GetumbrellaBean_two.DataBean> list) {
                 isUmbrellaViewl.showUmbrella(list,types);
             }
         },activity,longitude,latitude);

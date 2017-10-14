@@ -55,8 +55,8 @@ public class DepositRechargeActivitys extends AppCompatActivity implements View.
     private RecyclerView mRecyclerView;
     private DraAdapter myAdapter;
     private ImageView image_back;
-    private double myMoney;
-    private int type;
+    private double myMoney = 80;
+    private int type = 1;
     private ImageView image_zhifubao_weigouxuan;
     private ImageView image_weixin_gouxuan;
     private String zh;
@@ -105,6 +105,8 @@ public class DepositRechargeActivitys extends AppCompatActivity implements View.
         mRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
         myAdapter = new DraAdapter(R.layout.deprech_item,mlist,getApplicationContext());
         mRecyclerView.setAdapter(myAdapter);
+
+
         myAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int postion) {

@@ -567,6 +567,14 @@ iv 其它根据用户协议、相关说明或规则导致我们无法向您提�
     <string name="guanliyuan">管理员</string>
     <string name="saomakaisuol">扫码开锁</string>
     <string name="xinxirenzheng">信息认证</string>
+    <string name="sanzuoid">伞座 id:</string>
+    <string name="sanhao">3515315312312313</string>
+    <string name="diliweizhi">地理位置：</string>
+    <string name="xuanzeshanghu">选择商户：</string>
+    <string name="dianwo">点我选择地理位置</string>
+    <string name="dianwoxuanzshanghuming">点我选择商户名称</string>
+    <string name="tuodongdit">拖动地图选择</string>
+    <string name="qingxuanz">请选择：</string>
 
 
 </resources>

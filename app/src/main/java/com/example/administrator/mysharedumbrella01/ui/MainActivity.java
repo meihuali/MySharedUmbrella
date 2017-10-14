@@ -69,6 +69,7 @@ import com.example.administrator.mysharedumbrella01.dialog.UpdataDialog;
 import com.example.administrator.mysharedumbrella01.dialog.YaJinGuangGao;
 import com.example.administrator.mysharedumbrella01.dialog.ZhuYeGuangGao;
 import com.example.administrator.mysharedumbrella01.entivity.GetumbrellaBean;
+import com.example.administrator.mysharedumbrella01.entivity.GetumbrellaBean_two;
 import com.example.administrator.mysharedumbrella01.entivity.SaoYiSaoBean;
 import com.example.administrator.mysharedumbrella01.entivity.UpdataBean;
 import com.example.administrator.mysharedumbrella01.entivity.UserCurrentYusanBean;
@@ -239,7 +240,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String ENGLISH_SPEECH_MALE_MODEL_NAME = "bd_etts_speech_male_en.dat";
     private static final String ENGLISH_TEXT_MODEL_NAME = "bd_etts_text_en.dat";
 
-    List<GetumbrellaBean.DataBean> listInfoWindow = new ArrayList<>();
+    List<GetumbrellaBean_two.DataBean> listInfoWindow = new ArrayList<>();
     private int cuncont;
     private String cuncontnull;
     private List<GetumbrellaBean.DataBean> gbdb;
@@ -259,6 +260,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private WalkRouteOverlay walkRouteOverlay;
     private RelativeLayout tv_current;
     private Button btn_cuonst;
+    private String stringExtra;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -948,7 +950,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (resultCode != Activity.RESULT_CANCELED && resultCode == Activity.RESULT_OK) {
             if (requestCode == ScannerActivity.REQUEST_CODE_SCANNER) {
                 if (data != null) {
-                    String stringExtra = data.getStringExtra(Intents.Scan.RESULT);
+                     stringExtra = data.getStringExtra(Intents.Scan.RESULT);
                     Log.e("扫描结果 ", "" + stringExtra);
 
                     String zhanghao = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
@@ -1152,7 +1154,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /*获取 雨伞分布回调·从这里开始 ·已经开始 学习 了 MVP 架构设计模式了*/
     @Override
-    public void showUmbrella(List<GetumbrellaBean.DataBean> list, int types) {
+    public void showUmbrella(List<GetumbrellaBean_two.DataBean> list, int types) {
         L.e("雨伞个数 "+"showUmbrella");
         if (types == 1) {
             int sizes = list.size();
@@ -1162,10 +1164,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String longitude = list.get(i).getLongitude();
                 String latitude = list.get(i).getLatitude();
                 //剩余 雨伞个数
-                int umbrellanuber = list.get(i).getUmbrellanumber();
+                int umbrellanuber = (list.get(i).getStand_all()) - (list.get(i).getStand_surplus());
                 umbrellanubers = String.valueOf(umbrellanuber);
                 //剩余空位个数
-                vacancynumber = list.get(i).getVacancynumber();
+                vacancynumber = list.get(i).getStand_surplus()+"";
                 longitudes = Double.parseDouble(longitude);
                 latitudes = Double.parseDouble(latitude);
                 latLng_xianludiana = new LatLng(latitudes, longitudes);
@@ -1185,10 +1187,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String longitude = list.get(i).getLongitude();
                 String latitude = list.get(i).getLatitude();
                 //剩余 雨伞个数
-                int umbrellanuber = list.get(i).getUmbrellanumber();
-                umbrellanubers = String.valueOf(umbrellanuber);
+              //  int umbrellanuber = list.get(i).getUmbrellanumber();
+                //umbrellanubers = String.valueOf(umbrellanuber);
                 //剩余空位个数
-                vacancynumber = list.get(i).getVacancynumber();
+              //  vacancynumber = list.get(i).getVacancynumber();
 
                 longitudes = Double.parseDouble(longitude);
                 latitudes = Double.parseDouble(latitude);
@@ -1307,9 +1309,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mapView.onResume();
         userCurrentYusan();
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (!TextUtils.isEmpty(stringExtra)) {
+            plgig.setOnClickListener(null);
+        } else {
+            plgig.setOnClickListener(this);
+        }
+    }
+
     /*
-    * 用户正在使用的雨伞网络请求
-    * */
+        * 用户正在使用的雨伞网络请求
+        * */
     private void userCurrentYusan() {
         IsUserCurrentPerserent zhengzaishiyongyusan = new IsUserCurrentPerserent(this);
         //这里获取用户正在使用雨伞的 接口回调
@@ -1685,6 +1698,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     mWalkRouteResult = result;
                     final WalkPath walkPath = mWalkRouteResult.getPaths()
                             .get(0);
+
                     walkRouteOverlay = new WalkRouteOverlay(
                             MainActivity.this, aMap, walkPath,
                             mWalkRouteResult.getStartPos(),
@@ -1717,6 +1731,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onRideRouteSearched(RideRouteResult rideRouteResult, int i) {
 
+        RideRouteResult rideRouteResults = rideRouteResult;
     }
 
     /*

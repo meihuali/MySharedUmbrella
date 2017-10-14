@@ -335,6 +335,14 @@
         <activity android:name=".ui.ShoppingDataActivity"/>
         <!--管理员界面-->
         <activity android:name=".ui.AdimIstratorActivity"/>
+        <!--管理员详细信息界面-->
+        <activity android:name=".ui.AdministratorInformation"/>
+        <!--地址选择界面 poi 逆地理编码-->
+        <activity android:name=".seclectmaploction.LocationActivity"/>
+        <!--地址选择 搜索界面-->
+        <activity android:name=".seclectmaploction.SeekActivity"/>
+        <!--商户名称选择界面-->
+        <activity android:name=".ui.ShoppingNameSeclectActivity"/>
 
     </application>
 

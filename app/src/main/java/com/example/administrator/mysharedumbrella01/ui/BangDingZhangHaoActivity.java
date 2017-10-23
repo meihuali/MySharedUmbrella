@@ -131,7 +131,6 @@ public class BangDingZhangHaoActivity extends AppCompatActivity implements View.
                 pawass = edit_pawss.getText().toString().trim();
                 if (RegularUtil.isMobile(phone)) {
                     if (RegularUtil.isPhoneValidateCode(yzm)) {
-
                         CheckBingdingPerserent checkbangding = new CheckBingdingPerserent(this);
                         checkbangding.bingdingzh(phone);
 

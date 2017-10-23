@@ -9,6 +9,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.entivity.GetShoppingAddressBean;
+import com.example.administrator.mysharedumbrella01.utils.L;
+import com.example.administrator.mysharedumbrella01.utils.MyDialog;
 import com.example.administrator.mysharedumbrella01.utils.ToastUtil;
 
 import java.util.List;
@@ -25,6 +27,16 @@ import java.util.List;
 public class ShoppingHarvestAdapter extends BaseQuickAdapter<GetShoppingAddressBean.DataBean,BaseViewHolder> {
 
     private Context context;
+
+    public interface GetsteclesStatus{
+        void getstatus (String status);
+    }
+    GetsteclesStatus status;
+
+    public void setStatus(GetsteclesStatus status) {
+        this.status = status;
+    }
+
     public ShoppingHarvestAdapter(@LayoutRes int layoutResId, List<GetShoppingAddressBean.DataBean> data, Context context) {
         super(layoutResId,data);
         this.context  = context;
@@ -39,7 +51,11 @@ public class ShoppingHarvestAdapter extends BaseQuickAdapter<GetShoppingAddressB
         //收货人地址
         helper.setText(R.id.tv_address, item.getRegion()+item.getAddress());
         //获取用户默认选择的状态
-       String is_inuser =  item.getIs_inuser();
+        String is_inuser =  item.getIs_inuser();
+        //将这个勾选状态回调出去给activity
+        if (status != null) {
+            status.getstatus(is_inuser);
+        }
         if (is_inuser.equals("1")) {
             helper.getView(R.id.img_budagou).setVisibility(View.GONE);
             helper.getView(R.id.img_dagou).setVisibility(View.VISIBLE);
@@ -56,9 +72,8 @@ public class ShoppingHarvestAdapter extends BaseQuickAdapter<GetShoppingAddressB
         if (item.isSelect()) {
             helper.getView(R.id.img_budagou).setVisibility(View.GONE);
             helper.getView(R.id.img_dagou).setVisibility(View.VISIBLE);
-        } else {
-            ToastUtil.showShortToast(context,"否则");
         }
+
 
     }
 }

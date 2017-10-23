@@ -207,6 +207,7 @@
         android:background="@color/huise"
         />
 <RelativeLayout
+    android:id="@+id/rel_layout"
     android:layout_width="match_parent"
     android:layout_height="46dp">
     <TextView

@@ -75,6 +75,9 @@ public class ShoppingShangWuZhongXinActivity extends AppCompatActivity implement
     private File files;
     private View ll_layout;
     private View ll_flayout;
+    private TextView tv_shopping_Names;
+    private TextView tv_shoppingAddress;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,7 +98,7 @@ public class ShoppingShangWuZhongXinActivity extends AppCompatActivity implement
     * 获取服务器返回商务中心的所有信息
     * */
     private void initData() {
-        id =  ShareUtils.getString(getApplicationContext(),"id","");
+        id =  ShareUtils.getString(getApplicationContext(),"zhanghao","");
         ShangWuzhongxinrenzhengPersert shangwurenzhen = new ShangWuzhongxinrenzhengPersert(this);
         shangwurenzhen.shangwuzhongxinrenzhen(id);
     }
@@ -111,6 +114,8 @@ public class ShoppingShangWuZhongXinActivity extends AppCompatActivity implement
     }
 
     private void initView() {
+        tv_shoppingAddress = (TextView) findViewById(R.id.tv_shoppingAddress);
+        tv_shopping_Names = (TextView) findViewById(R.id.tv_namesss);
         image_backs = (ImageView) findViewById(R.id.image_backs);
         image_backs.setOnClickListener(this);
         image_yuanxing = (CircleImageView) findViewById(R.id.image_yuanxing);
@@ -123,9 +128,13 @@ public class ShoppingShangWuZhongXinActivity extends AppCompatActivity implement
         tv_QQ = (TextView) findViewById(R.id.tv_QQ);
         //程序进来取出服务器返回的那个头像路径因为用户上传头像到服务器成功过后通过sp保存到本地了，在下面回调中保存了
         String photoImg = ShareUtils.getString(getApplicationContext(),"touxiangURL","");
-        String url = ConfigUtils.ZHU_YU_MING+"public/avatar/"+photoImg;
         if (!TextUtils.isEmpty(photoImg)) {
-            Glide.with(getApplicationContext()).load(url).into(image_yuanxing);
+            if (photoImg.contains("https")) {
+                Glide.with(getApplicationContext()).load(photoImg).error(R.drawable.liuyifei).into(image_yuanxing);
+            } else {
+                String url = ConfigUtils.ZHU_YU_MING+"public/avatar/"+photoImg;
+                Glide.with(getApplicationContext()).load(url).error(R.drawable.liuyifei).into(image_yuanxing);
+            }
         }
     }
 
@@ -217,36 +226,25 @@ public class ShoppingShangWuZhongXinActivity extends AppCompatActivity implement
             //商家手机号码
             String phone = shangjiadata.getPhone();
             tv_UserNick.setText(phone);
-            //商家的名字
-            String shangjiaName =  shangjiadata.getNickname();
-            tv_name.setText(shangjiaName);
-            //获取微信绑定状态
-            String wechatStatus = shangjiadata.getWechat();
-            if (wechatStatus.equals("")) {
-                tv_wechat.setText("未绑定");
-            }
-            //获取QQ绑定状态
-            String qqStatus = shangjiadata.getQq();
-            if (qqStatus.equals("")) {
-                tv_QQ.setText("未绑定");
-            }
+            //联系人的名字
+            String username = ShareUtils.getString(getApplicationContext(),"username","");
+            tv_name.setText(username);
 
-            tv_shoppingRz.setText("已认证");
-/*            //获取商家认证状态
-            String AuthenStatus = shangjiadata.getIs_Authentication();
-            if (AuthenStatus.equals("1")) {
+            if (shangjiadata.getIs_Authentication() == 1) {
+                //设置认证状态
                 tv_shoppingRz.setText("已认证");
-                tv_shoppingRz.setOnClickListener(null); //这里是屏蔽到点击事件
-            } else if (AuthenStatus.equals("2")) {
-                tv_shoppingRz.setText("认证中");
-                tv_shoppingRz.setOnClickListener(null); //这里是屏蔽到点击事件
-            } else {
-                tv_shoppingRz.setText("去认证？");
-                tv_shoppingRz.setTextColor(getResources().getColor(R.color.top_red));
-            }*/
+            }
+            //设置商家名称
+            if (!TextUtils.isEmpty(shangjiadata.getMerchantname())) {
+                tv_shopping_Names.setText(shangjiadata.getMerchantname());
+            }
+            //设置商家地址
+            if (!TextUtils.isEmpty(shangjiadata.getAddress())) {
+                tv_shoppingAddress.setText(shangjiadata.getAddress());
+            }
 
         } else {
-         //   ToastUtil.showShortToast(getApplicationContext(),"服务器返回status不等于1");
+            //   ToastUtil.showShortToast(getApplicationContext(),"服务器返回status不等于1");
         }
     }
     /*

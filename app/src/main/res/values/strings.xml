@@ -474,7 +474,7 @@ iv 其它根据用户协议、相关说明或规则导致我们无法向您提�
     <string name="shanzuo">伞座/伞的数量</string>
     <string name="tupiangenggai">图片更改</string>
     <string name="jilu">记录</string>
-    <string name="shangwuzhongxin">商务中心</string>
+    <string name="shangwuzhongxin">商家中心</string>
     <string name="lianxiren">联系人</string>
     <string name="dh">电话</string>
     <string name="weixinhao">微信号</string>
@@ -576,5 +576,5 @@ iv 其它根据用户协议、相关说明或规则导致我们无法向您提�
     <string name="tuodongdit">拖动地图选择</string>
     <string name="qingxuanz">请选择：</string>
 
-
+    <string name="no_result">对不起，没有搜索到相关数据！</string>
 </resources>

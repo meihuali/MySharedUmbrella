@@ -10,9 +10,10 @@ package com.example.administrator.mysharedumbrella01.entivity;
  */
 public class ShangJiaRenZhenBean {
 
+
     /**
      * status : 1
-     * data : {"id":"11","nickname":"啊东","phone":"17620193389","pwd":"14e1b600b1fd579f47433b88e8d85291","wechat":"","qq":"","c_time":"1504927594","wechat_time":"0","qq_time":"0","money":"0","hread_img":"","ad_img":"","phone_time":"0","business_img":"","address":"啊啊啊吧","is_Authentication":"2"}
+     * data : {"id":25,"merchantname":"梅华黎","phone":"17620193389","m_money":0,"address":"星弈科技","adimg":"","proimg":"","business_img":"business/20171014/e3627451e7048bbbd029b005dfde9aac.jpg","c_time":1507958065,"is_Authentication":1,"stand":1,"umbrella_num":86,"uncollected_stand":0,"uncollected_umbrella":0,"ad_explain":""}
      */
 
     private int status;
@@ -36,55 +37,53 @@ public class ShangJiaRenZhenBean {
 
     public static class DataBean {
         /**
-         * id : 11
-         * nickname : 啊东
+         * id : 25
+         * merchantname : 梅华黎
          * phone : 17620193389
-         * pwd : 14e1b600b1fd579f47433b88e8d85291
-         * wechat :
-         * qq :
-         * c_time : 1504927594
-         * wechat_time : 0
-         * qq_time : 0
-         * money : 0
-         * hread_img :
-         * ad_img :
-         * phone_time : 0
-         * business_img :
-         * address : 啊啊啊吧
-         * is_Authentication : 2
+         * m_money : 0
+         * address : 星弈科技
+         * adimg :
+         * proimg :
+         * business_img : business/20171014/e3627451e7048bbbd029b005dfde9aac.jpg
+         * c_time : 1507958065
+         * is_Authentication : 1
+         * stand : 1
+         * umbrella_num : 86
+         * uncollected_stand : 0
+         * uncollected_umbrella : 0
+         * ad_explain :
          */
 
-        private String id;
-        private String nickname;
+        private int id;
+        private String merchantname;
         private String phone;
-        private String pwd;
-        private String wechat;
-        private String qq;
-        private String c_time;
-        private String wechat_time;
-        private String qq_time;
-        private String money;
-        private String hread_img;
-        private String ad_img;
-        private String phone_time;
-        private String business_img;
+        private int m_money;
         private String address;
-        private String is_Authentication;
+        private String adimg;
+        private String proimg;
+        private String business_img;
+        private int c_time;
+        private int is_Authentication;
+        private int stand;
+        private int umbrella_num;
+        private int uncollected_stand;
+        private int uncollected_umbrella;
+        private String ad_explain;
 
-        public String getId() {
+        public int getId() {
             return id;
         }
 
-        public void setId(String id) {
+        public void setId(int id) {
             this.id = id;
         }
 
-        public String getNickname() {
-            return nickname;
+        public String getMerchantname() {
+            return merchantname;
         }
 
-        public void setNickname(String nickname) {
-            this.nickname = nickname;
+        public void setMerchantname(String merchantname) {
+            this.merchantname = merchantname;
         }
 
         public String getPhone() {
@@ -95,92 +94,12 @@ public class ShangJiaRenZhenBean {
             this.phone = phone;
         }
 
-        public String getPwd() {
-            return pwd;
+        public int getM_money() {
+            return m_money;
         }
 
-        public void setPwd(String pwd) {
-            this.pwd = pwd;
-        }
-
-        public String getWechat() {
-            return wechat;
-        }
-
-        public void setWechat(String wechat) {
-            this.wechat = wechat;
-        }
-
-        public String getQq() {
-            return qq;
-        }
-
-        public void setQq(String qq) {
-            this.qq = qq;
-        }
-
-        public String getC_time() {
-            return c_time;
-        }
-
-        public void setC_time(String c_time) {
-            this.c_time = c_time;
-        }
-
-        public String getWechat_time() {
-            return wechat_time;
-        }
-
-        public void setWechat_time(String wechat_time) {
-            this.wechat_time = wechat_time;
-        }
-
-        public String getQq_time() {
-            return qq_time;
-        }
-
-        public void setQq_time(String qq_time) {
-            this.qq_time = qq_time;
-        }
-
-        public String getMoney() {
-            return money;
-        }
-
-        public void setMoney(String money) {
-            this.money = money;
-        }
-
-        public String getHread_img() {
-            return hread_img;
-        }
-
-        public void setHread_img(String hread_img) {
-            this.hread_img = hread_img;
-        }
-
-        public String getAd_img() {
-            return ad_img;
-        }
-
-        public void setAd_img(String ad_img) {
-            this.ad_img = ad_img;
-        }
-
-        public String getPhone_time() {
-            return phone_time;
-        }
-
-        public void setPhone_time(String phone_time) {
-            this.phone_time = phone_time;
-        }
-
-        public String getBusiness_img() {
-            return business_img;
-        }
-
-        public void setBusiness_img(String business_img) {
-            this.business_img = business_img;
+        public void setM_money(int m_money) {
+            this.m_money = m_money;
         }
 
         public String getAddress() {
@@ -191,12 +110,84 @@ public class ShangJiaRenZhenBean {
             this.address = address;
         }
 
-        public String getIs_Authentication() {
+        public String getAdimg() {
+            return adimg;
+        }
+
+        public void setAdimg(String adimg) {
+            this.adimg = adimg;
+        }
+
+        public String getProimg() {
+            return proimg;
+        }
+
+        public void setProimg(String proimg) {
+            this.proimg = proimg;
+        }
+
+        public String getBusiness_img() {
+            return business_img;
+        }
+
+        public void setBusiness_img(String business_img) {
+            this.business_img = business_img;
+        }
+
+        public int getC_time() {
+            return c_time;
+        }
+
+        public void setC_time(int c_time) {
+            this.c_time = c_time;
+        }
+
+        public int getIs_Authentication() {
             return is_Authentication;
         }
 
-        public void setIs_Authentication(String is_Authentication) {
+        public void setIs_Authentication(int is_Authentication) {
             this.is_Authentication = is_Authentication;
+        }
+
+        public int getStand() {
+            return stand;
+        }
+
+        public void setStand(int stand) {
+            this.stand = stand;
+        }
+
+        public int getUmbrella_num() {
+            return umbrella_num;
+        }
+
+        public void setUmbrella_num(int umbrella_num) {
+            this.umbrella_num = umbrella_num;
+        }
+
+        public int getUncollected_stand() {
+            return uncollected_stand;
+        }
+
+        public void setUncollected_stand(int uncollected_stand) {
+            this.uncollected_stand = uncollected_stand;
+        }
+
+        public int getUncollected_umbrella() {
+            return uncollected_umbrella;
+        }
+
+        public void setUncollected_umbrella(int uncollected_umbrella) {
+            this.uncollected_umbrella = uncollected_umbrella;
+        }
+
+        public String getAd_explain() {
+            return ad_explain;
+        }
+
+        public void setAd_explain(String ad_explain) {
+            this.ad_explain = ad_explain;
         }
     }
 }

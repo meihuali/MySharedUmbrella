@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+
 import android.widget.Toast;
 
 
@@ -246,6 +247,10 @@ public class BaseAppliction extends Application {
         });
     }
 
-
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+     //  MultiDex.install(this);
+    }
 
 }

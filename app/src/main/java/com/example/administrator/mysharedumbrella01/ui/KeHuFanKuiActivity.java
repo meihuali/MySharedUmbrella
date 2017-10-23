@@ -36,6 +36,8 @@ import com.example.administrator.mysharedumbrella01.peresenet.KefufankuiPerseren
 import com.example.administrator.mysharedumbrella01.peresenet.ShangChuanTouXiangPersernet;
 import com.example.administrator.mysharedumbrella01.transition.Utilss;
 import com.example.administrator.mysharedumbrella01.utils.L;
+import com.example.administrator.mysharedumbrella01.utils.MyDialog;
+import com.example.administrator.mysharedumbrella01.utils.NetWorkUtils;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
 import com.example.administrator.mysharedumbrella01.utils.ToastUtil;
 import com.example.administrator.mysharedumbrella01.view.IsKefufankuiView;
@@ -102,22 +104,29 @@ public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClic
         //创建dialog对象
         promptDialog = new PromptDialog(this);
         //沉浸式
-/*        ImmersionBar.with(this)
-                .statusBarColor(R.color.zhutiyanse) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
-                .fitsSystemWindows(true) //解决状态栏和布局重叠问题，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色
-                .init();*/
+
         ImmersionBar.with(this)
                 .init();
 
         initView();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         initData();
     }
 
     private void initData() {
+        if (NetWorkUtils.isNetworkConnected(getApplicationContext())) {
+            //这里请求客户反馈问题列表 的接口
+            KefufankuiPerserent wentiliebiao = new KefufankuiPerserent(this);
+            wentiliebiao.kehufankui();
+        } else {
+            MyDialog.dialog("提示","当前网络不可用！请检查您的网络","确定","");
+        }
 
-        //这里请求客户反馈问题列表 的接口
-        KefufankuiPerserent wentiliebiao = new KefufankuiPerserent(this);
-        wentiliebiao.kehufankui();
     }
 
     private void initView() {
@@ -174,19 +183,24 @@ public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClic
                 openDialog();
                 break;
             case R.id.btn_kefufankui:
-                promptDialog.showLoading("正在提交问题···");
-                String bodys = et_bodyss.getText().toString().trim();
-                String zh = ShareUtils.getString(getApplicationContext(),"zhanghao","");
-                if (!TextUtils.isEmpty(zh)) {
-                    if (!TextUtils.isEmpty(typeids)) {
-                        IsKefufankuisPerserent kefufankui = new IsKefufankuisPerserent(this);
-                        kefufankui.kefufankui(zh, typeids, file, bodys);
+                if (NetWorkUtils.isNetworkConnected(getApplicationContext())) {
+                    promptDialog.showLoading("正在提交问题···");
+                    String bodys = et_bodyss.getText().toString().trim();
+                    String zh = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
+                    if (!TextUtils.isEmpty(zh)) {
+                        if (!TextUtils.isEmpty(typeids)) {
+                            IsKefufankuisPerserent kefufankui = new IsKefufankuisPerserent(this);
+                            kefufankui.kefufankui(zh, typeids, file, bodys);
+                        } else {
+                            ToastUtil.showShortToast(getApplicationContext(), "请选择问题！");
+                        }
                     } else {
-                        ToastUtil.showShortToast(getApplicationContext(), "请选择问题！");
+                        ToastUtil.showShortToast(getApplicationContext(), "请先登录账号！");
                     }
                 } else {
-                    ToastUtil.showShortToast(getApplicationContext(),"请先登录账号！");
+                    MyDialog.dialog("提示","当前网络不可用！请检查您的网络","确定","");
                 }
+
 
                 break;
         }

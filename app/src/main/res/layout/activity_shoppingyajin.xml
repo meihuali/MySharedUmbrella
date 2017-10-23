@@ -28,7 +28,7 @@
             android:textSize="17sp"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="@string/gerenzhongxin"
+            android:text="@string/wodeyajin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView

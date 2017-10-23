@@ -137,7 +137,7 @@ public class ShoppingGoodsReceiptActivity extends AppCompatActivity implements V
                             ShoppingConmfirGoodsPerserent perserent = new ShoppingConmfirGoodsPerserent(ShoppingGoodsReceiptActivity.this);
                             perserent.confirGoods(phone, sanzuo_a + "", yusan_a + "");
                         } else {
-                            StyledDialog.buildIosAlert("警告！", "您还没有申请雨伞，何来签收雨伞了？", new MyDialogListener() {
+                            StyledDialog.buildIosAlert("警告！", "您没有可签收的伞座或雨伞", new MyDialogListener() {
                                 @Override
                                 public void onFirst() {
 

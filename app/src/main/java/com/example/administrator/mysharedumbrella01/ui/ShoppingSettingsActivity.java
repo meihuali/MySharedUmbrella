@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.appliction.BaseAppliction;
@@ -28,6 +29,7 @@ public class ShoppingSettingsActivity extends AppCompatActivity implements View.
     private Button btn_exits;
     private ImageView image_backs;
     private View rl_back;
+    private RelativeLayout ll_layrl;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +46,8 @@ public class ShoppingSettingsActivity extends AppCompatActivity implements View.
     * 初始化数据
     * */
     private void initView() {
+        ll_layrl = (RelativeLayout) findViewById(R.id.ll_layrl);
+        ll_layrl.setOnClickListener(this);
         image_backs = (ImageView) findViewById(R.id.image_backs);
         image_backs.setOnClickListener(this);
         btn_exits = (Button) findViewById(R.id.btn_exits);
@@ -60,8 +64,11 @@ public class ShoppingSettingsActivity extends AppCompatActivity implements View.
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
                 break;
             case R.id.image_backs:
-             //   finish();
+                //   finish();
                 AnimUtils.finishAmins((Activity)this,R.id.rl_back,v,R.id.ll_layout);
+                break;
+            case R.id.ll_layrl:
+                startActivity(new Intent(getApplicationContext(),ShoppingHarvestAddress.class));
                 break;
 
         }

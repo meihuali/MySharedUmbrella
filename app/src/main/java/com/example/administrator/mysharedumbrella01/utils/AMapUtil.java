@@ -268,5 +268,16 @@ public class AMapUtil {
 			return busLineName.replaceAll("\\(.*?\\)", "");
 		}
 
-
+	public static String[] getFriendlyTimeArray(int second) {
+		String[] secondArray = new String[2];
+		if (second >= 60) {
+			int miniate = second / 60;
+			secondArray[0] = miniate+"";
+			secondArray[1] = "分钟";
+			return secondArray ;
+		}
+		secondArray[0] = second+"";
+		secondArray[1] = "秒";
+		return secondArray;
+	}
 }

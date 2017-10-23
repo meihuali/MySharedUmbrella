@@ -116,7 +116,7 @@ public class ConfigUtils {
     /*
     * 检测用户是否绑定过手机号码
     * */
-    public static final String CHECK_BINGDING = "/Merchant/checkphone.php ";
+    public static final String CHECK_BINGDING = "/Merchant/checkphone.php";
     /*
     * 查询商家是否已经认证过
     * */

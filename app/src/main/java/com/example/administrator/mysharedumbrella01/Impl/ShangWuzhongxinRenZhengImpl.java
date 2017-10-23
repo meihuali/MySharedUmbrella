@@ -25,7 +25,7 @@ public class ShangWuzhongxinRenZhengImpl implements IsShoppingShangwuzhongxinMod
     public void getshangwuzhongxinData(final onShangwuzhongxindata listnts, String id) {
         String url = ConfigUtils.ZHU_YU_MING+ConfigUtils.SHANGWUZHONGXINRENZHENGJIEMIAN;
         OkGo.post(url)
-                .params("id",id)
+                .params("phone",id)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(String s, Call call, Response response) {

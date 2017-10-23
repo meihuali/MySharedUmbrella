@@ -49,7 +49,7 @@ public class ShoppingHarvestAddress extends AppCompatActivity implements View.On
     private ImageView image_back;
     private RecyclerView mRecyclerView;
     private List<GetShoppingAddressBean.DataBean> mlist = new ArrayList<>();
-    private ShoppingHarvestAdapter adapter;
+    private ShoppingHarvestAdapter mAdapter;
     private Button btn_add_address;
     private String ids;
     private View ll_layout;
@@ -87,14 +87,15 @@ public class ShoppingHarvestAddress extends AppCompatActivity implements View.On
         mRecyclerView.setHasFixedSize(true);
         //设置 mRecyclerView 的管理器
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ShoppingHarvestAdapter(R.layout.activity_getaddress,mlist,getApplicationContext());
-        mRecyclerView.setAdapter(adapter);
+        mAdapter = new ShoppingHarvestAdapter(R.layout.activity_getaddress,mlist,getApplicationContext());
+
+        mRecyclerView.setAdapter(mAdapter);
         // 这一句是开启 item 动画
-        adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
+        mAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
 
         //设置item，的子控件点击事件
 
-        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+        mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 GetShoppingAddressBean.DataBean dd  = (GetShoppingAddressBean.DataBean) adapter.getItem(position);
@@ -107,7 +108,7 @@ public class ShoppingHarvestAddress extends AppCompatActivity implements View.On
                             ShoppingDetleAddressPerserent detelAddress = new ShoppingDetleAddressPerserent(ShoppingHarvestAddress.this);
                             detelAddress.detleAddress(id);
                         } else {
-                            StyledDialog.buildIosAlert("提示", "您必须默认最低一条收获地址，次地址可以编辑！", new MyDialogListener() {
+                            StyledDialog.buildIosAlert("提示", "需要保留至少一个默认收货地址！", new MyDialogListener() {
                                 @Override
                                 public void onFirst() {
                                 }
@@ -118,8 +119,10 @@ public class ShoppingHarvestAddress extends AppCompatActivity implements View.On
                         }
 
                         break;
+                    //编辑按钮
                     case R.id.tv_edit:
-                        edites(position);
+                      String scltectStatus = dd.getIs_inuser();
+                        edites(scltectStatus,position);
                         break;
                     //勾选状态
                     case R.id.ll_layoutSeclet:
@@ -150,8 +153,8 @@ public class ShoppingHarvestAddress extends AppCompatActivity implements View.On
     /*
     * 编辑收货地址
     * */
-    private void edites(int position) {
-        GetShoppingAddressBean.DataBean dd  = (GetShoppingAddressBean.DataBean) adapter.getItem(position);
+    private void edites(String seclectStatus,int position) {
+        GetShoppingAddressBean.DataBean dd  = (GetShoppingAddressBean.DataBean) mAdapter.getItem(position);
         //获取该对象的id字段
         String id = dd.getId();
         //获取该对象的用户名
@@ -171,13 +174,13 @@ public class ShoppingHarvestAddress extends AppCompatActivity implements View.On
         Intent intent = new Intent(getApplicationContext(), AddressSelectorActivity.class);
         intent.putExtra("type","1");
         intent.putExtra("id",id);
-
         intent.putExtra("name",name);
         intent.putExtra("phone",phone);
         intent.putExtra("diqu",diqu);
         intent.putExtra("xiangxidizhi",xiangxidizhi);
         intent.putExtra("status", status);
         intent.putExtra("youbian",youbian);
+        intent.putExtra("seclectStatus",seclectStatus);
         startActivity(intent);
     }
 
@@ -226,8 +229,8 @@ public class ShoppingHarvestAddress extends AppCompatActivity implements View.On
             GetList = getaddres.getData();
 
             mlist.clear();
-            adapter.addData(GetList);
-            adapter.notifyDataSetChanged();
+            mAdapter.addData(GetList);
+            mAdapter.notifyDataSetChanged();
 
 
         } else {

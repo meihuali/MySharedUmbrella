@@ -1,5 +1,7 @@
 package com.example.administrator.mysharedumbrella01.Impl;
 
+import android.text.TextUtils;
+
 import com.example.administrator.mysharedumbrella01.entivity.SanZuoSanBean;
 import com.example.administrator.mysharedumbrella01.model.IsGetShoppingSanzuoSanModel;
 import com.example.administrator.mysharedumbrella01.utils.ConfigUtils;
@@ -7,6 +9,9 @@ import com.example.administrator.mysharedumbrella01.utils.L;
 import com.google.gson.Gson;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -30,9 +35,19 @@ public class GetShoppingSanZuoSanImpl implements IsGetShoppingSanzuoSanModel{
                     @Override
                     public void onSuccess(String s, Call call, Response response) {
                         L.e("获取商家伞座跟伞 "+s);
-                        Gson gson = new Gson();
-                        SanZuoSanBean sanzuosan =  gson.fromJson(s, SanZuoSanBean.class);
-                        linerst.onComplte(sanzuosan);
+                        try {
+                            JSONObject obj = new JSONObject(s);
+                            String addess = obj.optJSONObject("data").optString("address");
+                            if (!addess.equals("null")) {
+                                Gson gson = new Gson();
+                                SanZuoSanBean sanzuosan =  gson.fromJson(s, SanZuoSanBean.class);
+                                linerst.onComplte(sanzuosan);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                     }
 
                     @Override

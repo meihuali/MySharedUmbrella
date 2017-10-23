@@ -5,12 +5,12 @@ android {
         myconfig {
             keyAlias 'key0'
             keyPassword 'xiaoxin520'
-            storeFile file('D:/gongxiangyushanJSK/key.jks')
+            storeFile file('/Users/meihuali/Desktop/key/key.jks')
             storePassword 'xiaoxin520'
         }
     }
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion "26.0.2"
     aaptOptions {
         cruncherEnabled = false
         useNewCruncher = false

@@ -7,15 +7,12 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amap.api.maps.AMap;
-import com.amap.api.maps.AMap;
-import com.example.administrator.mysharedumbrella01.ui.MainActivity;
 import com.example.administrator.mysharedumbrella01.R;
+import com.example.administrator.mysharedumbrella01.ui.MainActivity;
 import com.example.administrator.mysharedumbrella01.ui.ShangChuanLocation;
 import com.example.administrator.mysharedumbrella01.ui.UsagelogActivity;
-import com.example.administrator.mysharedumbrella01.utils.L;
 
 import razerdp.basepopup.BasePopupWindow;
 
@@ -28,7 +25,7 @@ public class MyPopuopWindowsRigth extends BasePopupWindow implements View.OnClic
     private TextView tx2;
     private TextView tx3,tx4;
     private  AMap aMap;
-    private  MainActivity activity;
+    private MainActivity activity;
     private boolean isFrest;
     public MyPopuopWindowsRigth(MainActivity activity,  AMap aMap) {
         super(activity, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);

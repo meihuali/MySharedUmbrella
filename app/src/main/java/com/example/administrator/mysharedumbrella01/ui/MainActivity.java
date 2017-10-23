@@ -1,18 +1,16 @@
 package com.example.administrator.mysharedumbrella01.ui;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
-import android.os.Message;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -21,29 +19,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
-import com.amap.api.maps.UiSettings;
+import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
-import com.amap.api.maps.model.MyLocationStyle;
-import com.amap.api.maps.model.Polyline;
+import com.amap.api.maps.model.animation.ScaleAnimation;
 import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.route.BusRouteResult;
@@ -52,11 +48,6 @@ import com.amap.api.services.route.RideRouteResult;
 import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
-import com.baidu.tts.auth.AuthInfo;
-import com.baidu.tts.client.SpeechError;
-import com.baidu.tts.client.SpeechSynthesizer;
-import com.baidu.tts.client.SpeechSynthesizerListener;
-import com.baidu.tts.client.TtsMode;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -64,38 +55,39 @@ import com.example.administrator.mysharedumbrella01.R;
 import com.example.administrator.mysharedumbrella01.SaoYiSao.ScannerActivity;
 import com.example.administrator.mysharedumbrella01.appliction.BaseAppliction;
 import com.example.administrator.mysharedumbrella01.dialog.KaiSuohoudeGuanggao;
+import com.example.administrator.mysharedumbrella01.dialog.MarkerQipao;
+import com.example.administrator.mysharedumbrella01.dialog.MyPopuopWindowsRigth;
 import com.example.administrator.mysharedumbrella01.dialog.PopupWindowGuanGao;
-import com.example.administrator.mysharedumbrella01.dialog.UpdataDialog;
 import com.example.administrator.mysharedumbrella01.dialog.YaJinGuangGao;
 import com.example.administrator.mysharedumbrella01.dialog.ZhuYeGuangGao;
-import com.example.administrator.mysharedumbrella01.entivity.GetumbrellaBean;
 import com.example.administrator.mysharedumbrella01.entivity.GetumbrellaBean_two;
 import com.example.administrator.mysharedumbrella01.entivity.SaoYiSaoBean;
-import com.example.administrator.mysharedumbrella01.entivity.UpdataBean;
 import com.example.administrator.mysharedumbrella01.entivity.UserCurrentYusanBean;
 import com.example.administrator.mysharedumbrella01.entivity.YuSanIconBean;
+import com.example.administrator.mysharedumbrella01.lib.LocationTask;
+import com.example.administrator.mysharedumbrella01.lib.OnLocationGetListener;
+import com.example.administrator.mysharedumbrella01.lib.PositionEntity;
+import com.example.administrator.mysharedumbrella01.lib.RegeocodeTask;
+import com.example.administrator.mysharedumbrella01.lib.RouteTask;
 import com.example.administrator.mysharedumbrella01.peresenet.HaiYuSanTuIconPerserent;
 import com.example.administrator.mysharedumbrella01.peresenet.IsUserCurrentPerserent;
 import com.example.administrator.mysharedumbrella01.peresenet.UmbrellaPresenet;
-import com.example.administrator.mysharedumbrella01.peresenet.UpdataAppPerserent;
 import com.example.administrator.mysharedumbrella01.peresenet.UserGetYuSanStatusPeresent;
 import com.example.administrator.mysharedumbrella01.peresenet.YuSanTuIconPerserent;
 import com.example.administrator.mysharedumbrella01.utils.AMapUtil;
 import com.example.administrator.mysharedumbrella01.utils.ConfigUtils;
 import com.example.administrator.mysharedumbrella01.utils.L;
-import com.example.administrator.mysharedumbrella01.dialog.MyPopuopWindowsRigth;
-import com.example.administrator.mysharedumbrella01.utils.NetWorkUtils;
+import com.example.administrator.mysharedumbrella01.utils.MyDialog;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
 import com.example.administrator.mysharedumbrella01.utils.ToastUtil;
+import com.example.administrator.mysharedumbrella01.utils.Utils;
 import com.example.administrator.mysharedumbrella01.utils.WalkRouteOverlay;
 import com.example.administrator.mysharedumbrella01.utils.ZhuoBiaoZhuanHuan;
 import com.example.administrator.mysharedumbrella01.view.IsHaiYuSanJiemianIconView;
 import com.example.administrator.mysharedumbrella01.view.IsUmbrellaView;
-import com.example.administrator.mysharedumbrella01.view.IsUpdataAPPView;
 import com.example.administrator.mysharedumbrella01.view.IsUserCurrentView;
 import com.example.administrator.mysharedumbrella01.view.IsUserGetYuSanStatusView;
 import com.example.administrator.mysharedumbrella01.view.IsYuSanTuIconView;
-import com.gyf.barlibrary.BarHide;
 import com.gyf.barlibrary.ImmersionBar;
 import com.hss01248.dialog.StyledDialog;
 import com.hss01248.dialog.interfaces.MyDialogListener;
@@ -106,14 +98,8 @@ import com.yanzhenjie.permission.PermissionListener;
 import com.yanzhenjie.permission.Rationale;
 import com.yanzhenjie.permission.RationaleListener;
 
-
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -122,705 +108,405 @@ import java.util.TimerTask;
 import me.leefeng.promptlibrary.PromptDialog;
 import pl.droidsonroids.gif.GifImageView;
 
-/**
- * 项目名：MyAppDemoBaidu
- * 包名：com.example.xiao.myappdemobaidu.ui
- * 文件名：ShowBaidu
- * 创建者 ：${梅华黎}
- * 创建时间： 2017/4/26 0026 下午 3:25
- * 描述：TODO  123
- */
-public class MainActivity extends AppCompatActivity implements View.OnClickListener,
-        AMap.OnMarkerClickListener, IsUmbrellaView, IsUpdataAPPView,
-        Runnable, IsYuSanTuIconView, IsHaiYuSanJiemianIconView,
-        AMapLocationListener,AMap.InfoWindowAdapter, IsUserGetYuSanStatusView,SpeechSynthesizerListener, RouteSearch.OnRouteSearchListener, IsUserCurrentView {
-    private AMap aMap;
-    private MapView mapView;
-    private Polyline polyline;
-    private MarkerOptions markerOption;
-    private List<LatLng> list1 = new ArrayList<>();
+public class MainActivity extends AppCompatActivity implements AMap.OnCameraChangeListener,
+        AMap.OnMapLoadedListener, OnLocationGetListener, View.OnClickListener, RouteTask.OnRouteCalculateListener,
+        AMap.OnMapTouchListener, RouteSearch.OnRouteSearchListener, AMap.OnMapClickListener, AMap.InfoWindowAdapter, IsUmbrellaView, IsYuSanTuIconView, IsHaiYuSanJiemianIconView, IsUserGetYuSanStatusView, IsUserCurrentView {
+    public static final String TAG = "MainActivity";
+    public static final int REQUEST_CODE = 1;
+    //地图view
+    MapView mMapView = null;
+    //初始化地图控制器对象
+    AMap aMap;
 
+    //定位
+    private LocationTask mLocationTask;
+    //逆地理编码功能
+    private RegeocodeTask mRegeocodeTask;
+    //绘制点标记
+    private Marker mPositionMark, mInitialMark, tempMark;//可移动、圆点、点击
+    //初始坐标、移动记录坐标
+    private LatLng mStartPosition, mRecordPositon;
+    //默认添加一次
+    private boolean mIsFirst = true;
+    //就第一次显示位置
+    private boolean mIsFirstShow = true;
 
-    AMapLocationClient mlocationClient;
+    private LatLng initLocation;
 
-    List<LatLng> latLngs = new ArrayList<LatLng>();
-    private double jingdu;
-    private double weidu;
-    private String shijian;
-    private String startshijian;
-    private String stopshijian;
-    private LatLng latLng;
-    private Marker marker;
-    private double J;
-    private double W;
-    private StringBuilder nian;
-    private String qishishijian;
-    private String jiesushijian;
-    private LatLng stoplatLng;
-    private ImageView back_img;
-    private int starts;
-    private int stops;
-    private String id;
-    private AMap.OnMarkerClickListener markerClickListener;
-    /*声明一个集合用来封装有几个marke*/
-
-    private Marker marker2;
-    private Marker marker3;
-    private LatLng ll;
-    private LatLng StratlatLng;
-    private LatLng stoplatLngss;
-    private String xianlushij;
-    long db = 80000;
-    private String xianlushijs;
-
-    private String shengyu;
-    private ImageView image_backs;
-    private TextView tv_adds;
-    private GifImageView plgig;
-    private double litude;
-    private double latitude;
-    private String umbrellanubers;
-    // private UmbrellaPresenet up;
-    private String scanResult;
-    private Button btn_haisan, btn_jiesan;
-    private String vacancynumber;
-    //定时器
-    private final Timer timer = new Timer();
-    private TimerTask task, task2;
-    private double laitudes;
-    private double longitudes;
-    private int statusSaoYiSao;
-    private int a = 0;
-
-    private PopupWindowGuanGao pwgg;
-    // 扫一扫相关 颜色  如果不赋值的话· 扫描上下滚动的就是绿色这里默认 赋值为 支付宝 那种网格的
-    private int laserMode = ScannerActivity.EXTRA_LASER_LINE_MODE_0;
-    private double latitudes;
-    private LatLng latLng_xianludiana;
-    //右下角的 用户反馈按钮
-    private ImageView image_kehu;
-    private int bendiVersionCode;
-    private String bendiVersionName;
-    private int qiangzhiUdata;
-    private Thread downLoadThread;
-    private String path;
-    private int serviceVerSionCode;
-    private String urlapk;
-    private PromptDialog promptDialog;
-    private LatLng latLng_xianludian;
-    private int types = 1; //默认等于1 代表 雨伞分布的请求 点击还伞等于2 的时候表示雨伞架子的请求
-    private String yusanIconUrl;
-    private YuSanTuIconPerserent tyip;
-    private ImageView image_shuaxin;
-    private int typeHaisan = 1;
-    private HaiYuSanTuIconPerserent haisanIcon;
-    private String haisanURL;
-    private boolean FINISH;
-    MyLocationStyle myLocationStyle;
-    /* 从新构造开始 声明的变量 */
-    private AMapLocationClient mLocationClient;
-    private AMapLocationClientOption mLocationOption;
-    public static final int MY_PERMISSIONS_MAP = 0;
-    public static final int REQUEST_CODE_SETTING = 300;
-    private LatLng myLatLng;
-    private Marker myMarker;
-    private Bitmap bitmaps;
-    private String citys;
-    private String address;
-    /**************************百度语音合成客户端******************************/
-
-    private SpeechSynthesizer mSpeechSynthesizer;
-    private String mSampleDirPath;
-    private static final String SAMPLE_DIR_NAME = "baiduTTS";
-    private static final String SPEECH_FEMALE_MODEL_NAME = "bd_etts_speech_female.dat";
-    private static final String SPEECH_MALE_MODEL_NAME = "bd_etts_speech_male.dat";
-    private static final String TEXT_MODEL_NAME = "bd_etts_text.dat";
-    private static final String LICENSE_FILE_NAME = "temp_license";
-    private static final String ENGLISH_SPEECH_FEMALE_MODEL_NAME = "bd_etts_speech_female_en.dat";
-    private static final String ENGLISH_SPEECH_MALE_MODEL_NAME = "bd_etts_speech_male_en.dat";
-    private static final String ENGLISH_TEXT_MODEL_NAME = "bd_etts_text_en.dat";
-
-    List<GetumbrellaBean_two.DataBean> listInfoWindow = new ArrayList<>();
-    private int cuncont;
-    private String cuncontnull;
-    private List<GetumbrellaBean.DataBean> gbdb;
-    private String kehaistr;
-    //手机震动
-    private Vibrator vibrator;
-    private RelativeLayout ll_xxxx;
-    private RelativeLayout ll_flayout;
-    private RouteSearch routeSearch;
-    private final int ROUTE_TYPE_WALK = 3;
-    private LatLonPoint mEndPoint;
-    private LatLonPoint mStartPoint;
+    private ValueAnimator animator = null;//坐标动画
+    private BitmapDescriptor initBitmap, moveBitmap;//定位圆点、可移动、所有标识（车）
     private RouteSearch mRouteSearch;
+
     private WalkRouteResult mWalkRouteResult;
-    private String des;
-    private Bitmap bitEnd;
-    private WalkRouteOverlay walkRouteOverlay;
-    private RelativeLayout tv_current;
-    private Button btn_cuonst;
-    private String stringExtra;
+    private LatLonPoint mStartPoint = null;//起点，116.335891,39.942295
+    private LatLonPoint mEndPoint = null;//终点，116.481288,39.995576
+    private final int ROUTE_TYPE_WALK = 3;
+    private boolean isClickIdentification = false;
+    WalkRouteOverlay walkRouteOverlay;//路线
+    private String[] time;
+    private String distance;
+
+    private PromptDialog promptDialog;
+    private String yusanIconUrl;
+    private String isFiestype = "1";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        BaseAppliction.addDestoryActivity(this,"MainActivity");
-
+        BaseAppliction.addDestoryActivity(this, "MainActivity");
         //初始化下dialog
         promptDialog = new PromptDialog(this);
         //沉浸式
         ImmersionBar.with(this)
                 .statusBarColor(R.color.lanse_x_x) //指定主题颜色 意思 是在这里可以修改 styles 里面的主题颜色
+               //  .statusBarDarkFont(true,0.2f)  //  如果是白色或者透明状态的时候就加上他
                 .fitsSystemWindows(true) //解决状态栏和布局重叠问题，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色
                 .init();
-
-
         init();
         //这里请求·还伞 图标icon  跟 借伞图标 ICOn
         HttpQuestIcon();
-        //初始化地图 mapview
-        mapView = (MapView) findViewById(R.id.map);
+
+        //获取地图控件引用
+        mMapView = (MapView) findViewById(R.id.map);
+        //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图
+        mMapView.onCreate(savedInstanceState);
+        initBitmap();
+        initAMap();
         initLocation();
-        initPermission();
-        initMap();
-        // 此方法必须重写
-        mapView.onCreate(savedInstanceState);
-
-        //下面两个方法是百度语音合成
-        initialEnv();
-        startTTS();
-        //弹主页广告
-        popupwindowsss();
-
+        RouteTask.getInstance(getApplicationContext())
+                .addRouteCalculateListener(this);
     }
 
+    private void initBitmap() {
+        //定位图标
+        initBitmap = BitmapDescriptorFactory
+                .fromResource(R.drawable.locaticon_iconsssss);
 
-    /*
-    * 这里是主页弹窗
-    * 可能由于业务过于多 导致 直接 加载popupwindow 的话
-    * 加载不出来·所以这里延时了一下3秒钟
-    * */
-    private void popupwindowsss() {
-
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //主页广告
-                initShowZhuYeGuangGao();
-            }
-        },5000);
-    }
-
-
-
-    /*
-* //初始化定位参数
-* */
-    private void initLocation() {
-        //初始化定位
-        mLocationClient = new AMapLocationClient(getApplicationContext());
-        //设置定位回调监听
-        mLocationClient.setLocationListener(this);
-        //初始化定位参数
-        mLocationOption = new AMapLocationClientOption();
-        //设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        //设置是否返回地址信息（默认返回地址信息）
-        mLocationOption.setNeedAddress(true);
-        //设置是否只定位一次,默认为false
-        mLocationOption.setOnceLocation(false);
-        //设置是否强制刷新WIFI，默认为强制刷新
-        //mLocationOption.setWifiScan(true); //可选，设置是否开启wifi扫描。默认为true，如果设置为false会同时停止主动刷新，停止以后完全依赖于系统刷新，定位位置可能存在误差
-        //设置是否允许模拟位置,默认为false，不允许模拟位置
-        mLocationOption.setMockEnable(false);
-        //设置定位间隔,单位毫秒,默认为2000ms
-        mLocationOption.setInterval(2000);
-        //可选，设置是否使用缓存定位，默认为true
-        //mLocationOption.setLocationCacheEnable(true);
-        //给定位客户端对象设置定位参数
-        mLocationClient.setLocationOption(mLocationOption);
-
-    }
-
-    /*
-* 动态授权 权限
-* */
-    private void initPermission() {
-        // 申请多个权限。
-        AndPermission.with(this)
-                .requestCode(MY_PERMISSIONS_MAP)
-                .permission(
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_PHONE_STATE)
-                .callback(permissionListener)
-                // rationale作用是：用户拒绝一次权限，再次申请时先征求用户同意，再打开授权对话框；
-                // 这样避免用户勾选不再提示，导致以后无法申请权限。
-                // 你也可以不设置。
-                .rationale(new RationaleListener() {
-                    @Override
-                    public void showRequestPermissionRationale(int requestCode, Rationale rationale) {
-                        // 这里的对话框可以自定义，只要调用rationale.resume()就可以继续申请。
-                        AndPermission.rationaleDialog(MainActivity.this, rationale)
-                                .show();
-                    }
-                })
-                .start();
+        //移动覆盖物图标
+        moveBitmap = BitmapDescriptorFactory
+                .fromResource(R.drawable.purple_pin);  //icon_loaction_start .png
     }
 
     /**
-     * 初始化AMap对象
+     * 初始化地图控制器对象
      */
-    private void initMap() {
+    private void initAMap() {
         if (aMap == null) {
-            aMap = mapView.getMap();
-            aMap.setMapType(AMap.MAP_TYPE_NORMAL);
-            //自定义地图
-            setMapCustomStyleFile(this);
-            aMap.setMapCustomEnable(true);
-            // 设置自定义InfoWindow样式
-            aMap.setInfoWindowAdapter(this);
-            //设置marker点击事件
-            aMap.setOnMarkerClickListener(this);
-            //初始化不行规划的对象
-            routeSearch = new RouteSearch(this);
-            //设置数据回调监听器
-            routeSearch.setRouteSearchListener(this);
-
+            aMap = mMapView.getMap();
             mRouteSearch = new RouteSearch(this);
             mRouteSearch.setRouteSearchListener(this);
-
-            setUpMap();
+            aMap.getUiSettings().setZoomControlsEnabled(false);
+            aMap.getUiSettings().setGestureScaleByMapCenter(true);
+//            aMap.getUiSettings().setScrollGesturesEnabled(false);
+            aMap.setOnMapTouchListener(this);
+            aMap.setOnMapLoadedListener(this);
+            aMap.setOnCameraChangeListener(this);
+            aMap.setOnMapClickListener(this);
+            // 绑定 Marker 被点击事件
+            aMap.setOnMarkerClickListener(markerClickListener);
+            aMap.setInfoWindowAdapter(this);// 设置自定义InfoWindow样式
         }
     }
 
     /**
-     * 设置一些amap的属性
+     * 初始化定位
      */
-
-    private void setUpMap() {
-
-        //初始化 UiSettings
-        UiSettings uiSettings = aMap.getUiSettings();
-        // 设置默认定位按钮是否显示
-        uiSettings.setMyLocationButtonEnabled(true);
-        // 设置缩放按钮是否显示
-        uiSettings.setZoomControlsEnabled(true);
-        //缩放手势
-        uiSettings.setZoomGesturesEnabled(true);
-        // 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
-        aMap.setMyLocationEnabled(false);
-        // 设置指南针
-        aMap.getUiSettings().setCompassEnabled(false);
-        // 设置右下角的按钮缩放
-        aMap.getUiSettings().setZoomControlsEnabled(false);
-
-
+    private void initLocation() {
+        mLocationTask = LocationTask.getInstance(getApplicationContext());
+        mLocationTask.setOnLocationGetListener(this);
+        mRegeocodeTask = new RegeocodeTask(getApplicationContext());
     }
 
-    private void setMapCustomStyleFile(Context context) {
-        String styleName = "mystyle_sdk_1502163648_0100.data";
-        FileOutputStream outputStream = null;
-        InputStream inputStream = null;
-        String filePath = null;
-        try {
-            inputStream = context.getAssets().open(styleName);
-            byte[] b = new byte[inputStream.available()];
-            inputStream.read(b);
+    // 定义 Marker 点击事件监听
+    AMap.OnMarkerClickListener markerClickListener = new AMap.OnMarkerClickListener() {
 
-            filePath = context.getFilesDir().getAbsolutePath();
-            File file = new File(filePath + "/" + styleName);
-            if (file.exists()) {
-                file.delete();
-            }
-            file.createNewFile();
-            outputStream = new FileOutputStream(file);
-            outputStream.write(b);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (inputStream != null)
-                    inputStream.close();
-
-                if (outputStream != null)
-                    outputStream.close();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        aMap.setCustomMapStylePath(filePath + "/" + styleName);
-
-        aMap.showMapText(true);
-
-    }
-
-    /**
-     * 定位成功后回调函数
-     */
-    @Override
-    public void onLocationChanged(AMapLocation amapLocation) {
-        if (NetWorkUtils.isNetworkConnected(getApplicationContext())) {
-            if (amapLocation != null) {
-                if (amapLocation.getErrorCode() == 0) {
-                    ToastUtil.showShortToast(getApplicationContext(),"定位成功");
-                    //获取市区信息
-                    citys =  amapLocation.getCity();
-                    //获取地址信息
-                    address = amapLocation.getAddress();
-                    myLatLng = new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude());
-                    //点击定位按钮 能够将地图的中心移动到定位点
-                    //aMap.moveCamera(CameraUpdateFactory.changeLatLng(myLatLng));
-                    aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatLng, 16));
-                    //参数依次是：视角调整区域的中心点坐标、希望调整到的缩放级别、俯仰角0°~45°（垂直与地图时为0）、偏航角 0~360° (正北方为0)
-                    //aMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition(myLatLng, 18, 30, 0)));
-                    // 自定义定位成功后的小圆点
-                    if (myMarker != null) {
-                        myMarker.remove();
-                        myMarker.destroy();
-                    }
-                    myMarker = aMap.addMarker(new MarkerOptions().position(myLatLng).anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.fromResource(R.drawable.location_mark)));
-                    //停止定位
-                    stopLocation();
-                    // 这里请求网络获取雨伞分布
-                    UmbrellaPresenet up = new UmbrellaPresenet(this);
-                    up.fech(MainActivity.this, amapLocation.getLatitude(), amapLocation.getLongitude(), types);
-
-
-
-                } else {
-                    // ToastUtil.showShortToast(getApplicationContext(),"定位失败！ErrorCode()不等于0");
-                }
-            } else {
-                ToastUtil.showShortToast(getApplicationContext(),"定位失败！amapLocation对象为空！");
-            }
-        } else {
-            ToastUtil.showShortToast(getApplicationContext(),"您当前没有网络，定位失败！");
-        }
-
-    }
-
-
-
-    /*========================初始化一些控件=====================================*/
-
-    private void init() {
-        btn_cuonst = (Button) findViewById(R.id.btn_cuonst);
-        tv_current = (RelativeLayout) findViewById(R.id.tv_current);
-        tv_current.setOnClickListener(this);
-        ll_xxxx = (RelativeLayout) findViewById(R.id.ll_xxxx);
-        image_shuaxin = (ImageView) findViewById(R.id.image_shuaxin);
-        image_shuaxin.setOnClickListener(this);
-        image_kehu = (ImageView) findViewById(R.id.image_kehu);
-        image_kehu.setOnClickListener(this);
-        //借伞
-        btn_jiesan = (Button) findViewById(R.id.btn_jiesan);
-        btn_jiesan.setOnClickListener(this);
-        //还伞按钮
-        btn_haisan = (Button) findViewById(R.id.btn_haisan);
-        btn_haisan.setOnClickListener(this);
-//        plgig = findViewById(R.id.plgig);
-//        plgig.setOnClickListener(this);
-
-        //初始化控件以及地图
-        image_backs = (ImageView) findViewById(R.id.image_backs);
-        image_backs.setOnClickListener(this);
-        plgig = (GifImageView) findViewById(R.id.plgig);
-        plgig.setOnClickListener(this);
-
-        tv_adds = (TextView) findViewById(R.id.tv_adds);
-        tv_adds.setOnClickListener(this);
-    }
-
-
-    /*
-    * 更新app 用的
-    * */
-    private void initShowUpdataApp() {
-        UpdataAppPerserent uap = new UpdataAppPerserent(this);
-        uap.fach();
-    }
-
-
-
-    /*
-    *  更新APP 后 的接口回调
-    *  */
-    @Override
-    public void showUpdataResltout(UpdataBean updataBean) {
-        //修复过哪些内容
-        int status = updataBean.getStatus();
-        if (status == 1) {
-
-            UpdataBean.DataBean ubdb = updataBean.getData();
-            //是否为强制更新 0为不强制更新 1为强制更新
-            String qiangzhi = ubdb.getQiangzhi();
-            //新的apk 地址
-            urlapk = ubdb.getUrl();
-            //服务器版本APK versionCode
-            String serviceVersionCode = ubdb.getVersioncode();
-            serviceVerSionCode = Integer.parseInt(serviceVersionCode);
-            //服务器版本的 apk versionName
-            String servideVersionName = ubdb.getVersionName();
-        }
-
-
-        /*============下面是获取本地 APK 版本 ================= */
-        try {
-            PackageManager pm = getPackageManager();
-            PackageInfo info = pm.getPackageInfo(getPackageName(), 0);
-            //获取本地版本号
-            bendiVersionCode = info.versionCode;
-            //获取本地版本的名字
-            bendiVersionName = info.versionName;
-
-        } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "更新当前版本号获取失败", Toast.LENGTH_SHORT).show();
-        }
-        /*
-        * 判断服务器版本号是否大于本地版本号
-        *  qiangzhiUdata 为0 不强制更新, 不为0则强制更新 隐藏取消按钮
-        * */
-
-        if (serviceVerSionCode > bendiVersionCode) {
-            UpdataDialog.show(this, "修复了一些bug", "共享雨伞震撼上线", qiangzhiUdata, false, null);
-            UpdataDialog.setOutside(false);
-            //注册 取消按钮的 监听
-            UpdataDialog.btn_cancel.setOnClickListener(this);
-            //注册 确认按钮的 监听
-            UpdataDialog.btn_confirm.setOnClickListener(this);
-        }
-
-    }
-
-
-//    点击返回按钮
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.image_backs:
-                marker = null;
-                String zh = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
-                if (!TextUtils.isEmpty(zh)) {
-                    //laitudes,longitudes 当前经纬度
-                    Intent intent = new Intent(this, SettingsYusanActivity.class);
-                    intent.putExtra("laitudes", laitudes);
-                    intent.putExtra("longitudes", longitudes);
-                    //启动过场动画
-                    AnimUtils.startIntent(intent,view,MainActivity.this,R.id.ll_flayout);
-                } else {
-                    startActivity(new Intent(this, LoginActivity.class));
-                }
-                break;
-            case R.id.tv_adds:
-                MyPopuopWindowsRigth pwr = new MyPopuopWindowsRigth(this, aMap);
-                pwr.showPopupWindow(R.id.tv_adds);
-                break;
-            case R.id.plgig:
-                initViewes();
-                break;
-            //点击还伞
-            case R.id.btn_haisan:
-                //界面改动先注释辞掉
-  /*              a = 1;
-                aMap.clear();
-                //点击还伞再次设置一下·用户当前位子的覆盖物
-                myMarker = aMap.addMarker(new MarkerOptions().position(myLatLng).anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.fromResource(R.drawable.location_mark)));
-                //借伞再次请求网络查询 分布的雨伞架子还有多少雨伞
-                //然后把types赋值为2  表示·还伞的字段·用来区分mark 图标
-                types = 2;
-                UmbrellaPresenet up = new UmbrellaPresenet(this);
-                up.fech(MainActivity.this, laitudes, longitudes, types);
-                btn_haisan.setBackground(ContextCompat.getDrawable(this, R.drawable.image_conent));
-                btn_jiesan.setBackgroundColor(getResources().getColor(R.color.zhutiyanse));
-//                //点还伞后 请求 伞架子的 图标
-//                tyip.fach("11");
-                //加一个字段为typeHaisan 用来刷新
-                typeHaisan = 2;*/
-                break;
-            //点击借伞
-            case R.id.btn_jiesan:
-                //界面改动 先注释掉
-   /*             a = 2;
-                aMap.clear();
-                //点击还伞再次设置一下·用户当前位子的覆盖物
-                myMarker = aMap.addMarker(new MarkerOptions().position(myLatLng).anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.fromResource(R.drawable.location_mark)));
-
-                //借伞再次请求网络查询 分布的雨伞架子还有多少雨伞
-                //给types 赋值为 1 表示· 雨伞的图标
-                types = 1;
-                UmbrellaPresenet upIcons = new UmbrellaPresenet(this);
-                upIcons.fech(MainActivity.this, laitudes, longitudes, types);
-                //设置背景
-                btn_jiesan.setBackground(ContextCompat.getDrawable(this, R.drawable.image_conent));
-                btn_haisan.setBackgroundColor(getResources().getColor(R.color.zhutiyanse));
-                //加一个字段为typeHaisan 用来刷新
-                typeHaisan = 1;*/
-                break;
-            //右下角的客户返回 按钮
-            case R.id.image_kehu:
-                Intent intentkehu = new Intent(getApplicationContext(), KeHuFanKuiActivity.class);
-                //启动过场动画
-                AnimUtils.startIntent(intentkehu,view,MainActivity.this,R.id.ll_xxxx);
-
-                break;
-            //更新APP 弹出的dialog 取消按钮
-            case R.id.btn_cancel:
-                if (qiangzhiUdata == 0) {
-                    UpdataDialog.dialogcancle();
-                } else {
-                    return;
-                }
-                break;
-            //左下角的 刷新按钮
-            case R.id.image_shuaxin:
-                //点击刷新 请求用户正在使用的雨伞个数 左上角的那个
-                userCurrentYusan();
-
-                if (typeHaisan == 1) {
-                    a = 2;
-                    aMap.clear();
-                    //点击还伞再次设置一下·用户当前位子的覆盖物
-                    myMarker = aMap.addMarker(new MarkerOptions().position(myLatLng).anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.fromResource(R.drawable.location_mark)));
-                    //然后再次启动定位一下
-                    startLocation();
-                    //借伞再次请求网络查询 分布的雨伞架子还有多少雨伞
-                    //给types 赋值为 1 表示· 雨伞的图标
-                    types = 1;
-                    UmbrellaPresenet upIcon = new UmbrellaPresenet(this);
-                    upIcon.fech(MainActivity.this, laitudes, longitudes, types);
-                    //点击借伞后请求网络 图标
-//                   tyip.fach("10");
-
-                } else {
-                    a = 1;
-                    aMap.clear();
-                    //点击还伞再次设置一下·用户当前位子的覆盖物
-                    myMarker = aMap.addMarker(new MarkerOptions().position(myLatLng).anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.fromResource(R.drawable.location_mark)));
-                    //然后再次启动定位一下
-                    startLocation();
-                    //借伞再次请求网络查询 分布的雨伞架子还有多少雨伞
-                    //然后把types赋值为2  表示·还伞的字段·用来区分mark 图标
-                    types = 2;
-                    UmbrellaPresenet upsanjiazi = new UmbrellaPresenet(this);
-                    upsanjiazi.fech(MainActivity.this, laitudes, longitudes, types);
-                    //点还伞后 请求 伞架子的 图标
-//                    tyip.fach("11");
-                }
-
-                break;
-            //更新APP 弹出的dialog 确认按钮
-            case R.id.btn_confirm:
-                //下面这几句话是调用系统自带的浏览器打开新的APK 下载地址
-                Intent intent = new Intent();
-                intent.setAction("android.intent.action.VIEW");
-                Uri url = Uri.parse(urlapk);
-                intent.setData(url);
-                startActivity(intent);
-                //隐藏dialog
-                UpdataDialog.dialogcancle();
-                break;
-
-            case R.id.tv_current:
-                startActivity(new Intent(getApplicationContext(),UsagelogActivity.class));
-                break;
-        }
-    }
-
-
-    private int status;
-    Handler handler = new Handler() {
+        // marker 对象被点击时回调的接口
+        // 返回 true 则表示接口已响应事件，否则返回false
         @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            UpdataDialog.round_flikerbar.setProgress(msg.arg1);
-            if (msg.arg1 == 100) {
-                UpdataDialog.round_flikerbar.finishLoad();
+        public boolean onMarkerClick(final Marker marker) {
+            Log.e(TAG, "点击的Marker");
+            Log.e(TAG, marker.getPosition() + "");
+            isClickIdentification = true;
+            if (tempMark != null) {
+                tempMark.setIcon(marker.getIcons().get(0));
+                walkRouteOverlay.removeFromMap();
+                tempMark = null;
             }
+            startAnim(marker);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(300);
+                        tempMark = marker;
+                        Log.e(TAG, mPositionMark.getPosition().latitude + "===" + mPositionMark.getPosition().longitude);
+                        mStartPoint = new LatLonPoint(mRecordPositon.latitude, mRecordPositon.longitude);
+                        mPositionMark.setPosition(mRecordPositon);
+                        mEndPoint = new LatLonPoint(marker.getPosition().latitude, marker.getPosition().longitude);
+                        marker.setPosition(marker.getPosition());
+                        searchRouteResult(ROUTE_TYPE_WALK, RouteSearch.WalkDefault);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+            return true;
         }
     };
 
-
-    @Override
-    public void run() {
-        try {
-            while (!downLoadThread.isInterrupted()) {
-                float progress = UpdataDialog.round_flikerbar.getProgress();
-                progress += 2;
-                Thread.sleep(200);
-                Message message = handler.obtainMessage();
-                message.arg1 = (int) progress;
-                handler.sendMessage(message);
-                if (progress == 100) {
-                    break;
-                }
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
     /*
-    * 显示主要广告
+    * 将marker 点击后变大一点
     * */
-    private void initShowZhuYeGuangGao() {
-        ZhuYeGuangGao zygg = new ZhuYeGuangGao(MainActivity.this);
-        zygg.setPopupWindowFullScreen(true);
-        zygg.showPopupWindow();
+    private void startAnim(Marker marker) {
+        ScaleAnimation anim = new ScaleAnimation(1.0f, 1.6f, 1.0f, 1.6f);
+        anim.setDuration(300);
+        marker.setAnimation(anim);
+        marker.startAnimation();
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //在activity执行onDestroy时执行mMapView.onDestroy()，销毁地图
+        Utils.removeMarkers();
+        mMapView.onDestroy();
+        mLocationTask.onDestroy();
+        RouteTask.getInstance(getApplicationContext()).removeRouteCalculateListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //在activity执行onResume时执行mMapView.onResume ()，重新绘制加载地图
+        mMapView.onResume();
+        if (mInitialMark != null) {
+            mInitialMark.setToTop();
+        }
+        if (mPositionMark != null) {
+            mPositionMark.setToTop();
+        }
+        userCurrentYusan();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //在activity执行onPause时执行mMapView.onPause ()，暂停地图的绘制
+        mMapView.onPause();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //在activity执行onSaveInstanceState时执行mMapView.onSaveInstanceState (outState)，保存地图当前的状态
+        mMapView.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onCameraChange(CameraPosition cameraPosition) {
 
     }
 
     @Override
-    public boolean onMarkerClick(final Marker marker) {
-
-        if (walkRouteOverlay != null) {
-            walkRouteOverlay.removeFromMap();
+    public void onCameraChangeFinish(CameraPosition cameraPosition) {
+        Log.e(TAG, "onCameraChangeFinish" + cameraPosition.target);
+        if (!isClickIdentification) {
+            mRecordPositon = cameraPosition.target;
         }
-        //获取被点击的 覆盖物位子
-        LatLng mEndpostion = marker.getPosition();
-        // 被点击的覆盖物维度
-        double endlat = mEndpostion.latitude;
-        //被点击的覆盖物的经度
-        double endlog = mEndpostion.longitude;
-        //获取自己当前位置的经纬度
-        double startlat = myLatLng.latitude;
-        double startlog = myLatLng.longitude;
+        mStartPosition = cameraPosition.target;
+        mRegeocodeTask.setOnLocationGetListener(this);
+        mRegeocodeTask
+                .search(mStartPosition.latitude, mStartPosition.longitude);
+//        Utils.removeMarkers();
 
-
-        mEndPoint = new LatLonPoint(endlat,endlog);
-        mStartPoint = new LatLonPoint(startlat,startlog);
-
-        setfromandtoMarker();
-
-        searchRouteResult(ROUTE_TYPE_WALK, RouteSearch.WalkDefault);
-
-
-        String id = marker.getId();
-        L.e("marker>>> " + id);
-
-
-
-
-
-        if (aMap != null) {
-            if (marker.equals(marker2)) {
-//				jumpPoint(marker);
-            } else if (marker.equals(marker3)) {
-//                growInto(marker);
+        if (mInitialMark != null) {
+            mInitialMark.setToTop();
+        }
+        if (mPositionMark != null) {
+            mPositionMark.setToTop();
+            if (!isClickIdentification) {
+                animMarker();
             }
         }
-        return false;
+    }
+
+
+    /**
+     * 地图加载完成
+     */
+    @Override
+    public void onMapLoaded() {
+        initPermission();
+    }
+
+    /**
+     * 创建初始位置图标
+     */
+    private void createInitialPosition(double lat, double lng) {
+        MarkerOptions markerOptions = new MarkerOptions();
+//        markerOptions.setFlat(true);
+        markerOptions.anchor(0.5f, 0.5f);
+        markerOptions.position(new LatLng(lat, lng));
+        markerOptions.icon(initBitmap);
+        mInitialMark = aMap.addMarker(markerOptions);
+        mInitialMark.setClickable(false);
+    }
+
+    /**
+     * 创建移动位置图标
+     */
+    private void createMovingPosition() {
+        MarkerOptions markerOptions = new MarkerOptions();
+//        markerOptions.setFlat(true);
+//        markerOptions.anchor(0.5f, 0.5f);
+        markerOptions.position(new LatLng(0, 0));
+        markerOptions.icon(moveBitmap);
+        mPositionMark = aMap.addMarker(markerOptions);
+        mPositionMark.setPositionByPixels(mMapView.getWidth() / 2,
+                mMapView.getHeight() / 2);
+        mPositionMark.setClickable(false);
+    }
+
+    PositionEntity entity;
+
+    @Override
+    public void onLocationGet(PositionEntity entity) {
+        this.entity = entity;
+
+        // todo 这里在网络定位时可以减少一个逆地理编码
+        Log.e("onLocationGet", "onLocationGet" + entity.address);
+        RouteTask.getInstance(getApplicationContext()).setStartPoint(entity);
+        mStartPosition = new LatLng(entity.latitue, entity.longitude);
+        createInitialPosition(entity.latitue, entity.longitude);
+        createMovingPosition();
+        mIsFirst = false;
+        if (mIsFirstShow) {
+            CameraUpdate cameraUpate = CameraUpdateFactory.newLatLngZoom(
+                    mStartPosition, 17);
+            aMap.animateCamera(cameraUpate);
+            mIsFirstShow = false;
+        }
+        mInitialMark.setPosition(mStartPosition);
+        initLocation = mStartPosition;
+        Log.e("onLocationGet", "onLocationGet" + mStartPosition);
+        mLocationTask.stopLocate();
+        //定位成功后获取雨伞分布
+        UmbrellaPresenet getyusanfenbu = new UmbrellaPresenet(this);
+        getyusanfenbu.fech(MainActivity.this,entity.latitue, entity.longitude, types);
+
+    }
+
+    @Override
+    public void onRegecodeGet(PositionEntity entity) {
+        Log.e(TAG, "onRegecodeGet" + entity.address);
+        entity.latitue = mStartPosition.latitude;
+        entity.longitude = mStartPosition.longitude;
+        RouteTask.getInstance(getApplicationContext()).setStartPoint(entity);
+        RouteTask.getInstance(getApplicationContext()).search();
+        Log.e(TAG, "onRegecodeGet" + mStartPosition);
+    }
+
+    @Override
+    public void onRouteCalculate(float cost, float distance, int duration) {
+        Log.e(TAG, "cost" + cost + "---" + "distance" + distance + "---" + "duration" + duration);
+        PositionEntity endPoint = RouteTask.getInstance(getApplicationContext()).getEndPoint();
+        mRecordPositon = new LatLng(endPoint.latitue, endPoint.longitude);
+        clickMap();
+        RouteTask.getInstance(getApplicationContext()).setEndPoint(null);
+    }
+
+    @Override
+    public void onTouch(MotionEvent motionEvent) {
+        if (motionEvent.getPointerCount() >= 2) {
+            aMap.getUiSettings().setScrollGesturesEnabled(false);
+        } else {
+            aMap.getUiSettings().setScrollGesturesEnabled(true);
+        }
+    }
+
+    private void animMarker() {
+        if (animator != null) {
+            animator.start();
+            return;
+        }
+        animator = ValueAnimator.ofFloat(mMapView.getHeight() / 2, mMapView.getHeight() / 2 - 30);
+        animator.setInterpolator(new DecelerateInterpolator());
+        animator.setDuration(150);
+        animator.setRepeatCount(1);
+        animator.setRepeatMode(ValueAnimator.REVERSE);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                Float value = (Float) animation.getAnimatedValue();
+                mPositionMark.setPositionByPixels(mMapView.getWidth() / 2, Math.round(value));
+            }
+        });
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mPositionMark.setIcon(moveBitmap);
+            }
+        });
+        animator.start();
+    }
+
+    private void endAnim() {
+        if (animator != null && animator.isRunning())
+            animator.end();
+    }
+
+
+    @Override
+    public void onBusRouteSearched(BusRouteResult busRouteResult, int i) {
+
+    }
+
+    @Override
+    public void onDriveRouteSearched(DriveRouteResult driveRouteResult, int i) {
+
+    }
+
+    @Override
+    public void onWalkRouteSearched(WalkRouteResult result, int errorCode) {
+        // LoadDialog.getInstance().dismiss();
+        if (errorCode == AMapException.CODE_AMAP_SUCCESS) {
+            if (result != null && result.getPaths() != null) {
+                if (result.getPaths().size() > 0) {
+                    mWalkRouteResult = result;
+                    final WalkPath walkPath = mWalkRouteResult.getPaths()
+                            .get(0);
+                    walkRouteOverlay = new WalkRouteOverlay(
+                            this, aMap, walkPath,
+                            mWalkRouteResult.getStartPos(),
+                            mWalkRouteResult.getTargetPos());
+                    walkRouteOverlay.removeFromMap();
+                    walkRouteOverlay.addToMap();
+                    walkRouteOverlay.zoomToSpan();
+                    int dis = (int) walkPath.getDistance();
+                    int dur = (int) walkPath.getDuration();
+                    time = AMapUtil.getFriendlyTimeArray(dur);
+                    distance = AMapUtil.getFriendlyLength(dis);
+                    des = AMapUtil.getFriendlyTime(dur) + "(" + AMapUtil.getFriendlyLength(dis) + ")";
+                    tempMark.setTitle(des);
+                    tempMark.showInfoWindow();
+                    Log.e(TAG, des);
+                } else if (result != null && result.getPaths() == null) {
+                    ToastUtil.show(this, R.string.no_result);
+                }
+            } else {
+                ToastUtil.show(this, R.string.no_result);
+            }
+        } else {
+            ToastUtil.showerror(this.getApplicationContext(), errorCode);
+        }
+    }
+
+    @Override
+    public void onRideRouteSearched(RideRouteResult rideRouteResult, int i) {
+
     }
 
     /**
@@ -828,331 +514,173 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     public void searchRouteResult(int routeType, int mode) {
         if (mStartPoint == null) {
-            ToastUtil.showShortToast(getApplicationContext(),"定位中，稍后再试...");
+            ToastUtil.show(this, "定位中，稍后再试...");
             return;
         }
         if (mEndPoint == null) {
-            ToastUtil.showShortToast(getApplicationContext(),"终点未设置");
+            ToastUtil.show(this, "终点未设置");
         }
-        promptDialog.showLoading("正在搜索中···");
+        //showDialog();
 
         final RouteSearch.FromAndTo fromAndTo = new RouteSearch.FromAndTo(
                 mStartPoint, mEndPoint);
-
         if (routeType == ROUTE_TYPE_WALK) {// 步行路径规划
             RouteSearch.WalkRouteQuery query = new RouteSearch.WalkRouteQuery(fromAndTo, mode);
             mRouteSearch.calculateWalkRouteAsyn(query);// 异步路径规划步行模式查询
         }
     }
 
-    /*
-    * 步行路径规划
-    * */
-    private void setfromandtoMarker() {
-        //起始位置 bitEnd
-        aMap.addMarker(new MarkerOptions()
-                .position(AMapUtil.convertToLatLng(mStartPoint)));
+   /* private void showDialog()
+    {
+        LoadDialog loadDialog =  LoadDialog.getInstance();
+        loadDialog.setStyle(DialogFragment.STYLE_NORMAL, R.style.load_dialog);
+        LoadDialog.getInstance().show(getSupportFragmentManager(),"");
+    }*/
 
-
-        //   终点位置
-        aMap.addMarker(new MarkerOptions()
-                .position(AMapUtil.convertToLatLng(mEndPoint)));
-
-
-
-
+    @Override
+    public void onMapClick(LatLng latLng) {
+        clickMap();
     }
 
-
-
-    /*点击线条中间覆盖物显示气泡*/
-    private void addMarkers(final LatLng latLng, final String umbrellanubers, final String vacancynumber) {
-        //取出借伞图标 的路径地址
-        String jiesanUrl =  ShareUtils.getString(getApplicationContext(),"jiesantubiao","");
-        Glide.with(MainActivity.this)
-                .load(jiesanUrl)
-                // 加载网络中的静态图片
-                .asBitmap()
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        bitEnd =  resource;
-                        //在这加个图片处理的方法
-//                        Bitmap bit = ShareUtils.compressScale(resource,80f,80f);
-                        // 这里将bitmap对象图片绘制成圆形
-//                        BitmapToRound_Util round_Util = new BitmapToRound_Util();
-//                        bitmaps = round_Util.toRoundBitmap(bit);
-                        //绘制覆盖物
-                        aMap.addMarker(new MarkerOptions()
-                                .position(latLng)
-                                //  .title("KFC提供")
-                                // .snippet("可借雨伞："+umbrellanubers+"可还雨伞："+vacancynumber)
-                                .snippet(umbrellanubers+","+vacancynumber)
-                                .anchor(0.5f, 0.5f)
-                                .draggable(true)
-                                .icon(BitmapDescriptorFactory.fromBitmap(resource)))
-                                .setObject(listInfoWindow);
-
-
-                    }
-                });
-
+    private void clickRefresh() {
+        clickInitInfo();
+        if (initLocation != null) {
+            CameraUpdate cameraUpate = CameraUpdateFactory.newLatLngZoom(
+                    initLocation, 17f);
+            aMap.animateCamera(cameraUpate);
+        }
     }
 
-    /*点击线条中间覆盖物显示气泡*/
-    private void addMarkerss(final LatLng latLng, final String vacancynumber) {
-        //之类是还伞 获取到的 图标 路径
-        String haisanURLS = ShareUtils.getString(getApplicationContext(), "haisantubiao", "");
-        Glide.with(MainActivity.this)
-                .load(haisanURLS)
-                // 加载网络中的静态图片
-                .asBitmap()
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        //在这加个图片处理的方法
-//                        Bitmap bit = ShareUtils.compressScale(resource,80f,80f);
-                        // 这里将bitmap对象图片绘制成圆形
-//                        BitmapToRound_Util round_Util = new BitmapToRound_Util();
-//                        bitmaps = round_Util.toRoundBitmap(bit);
-                        //绘制覆盖物
-                        aMap.addMarker(new MarkerOptions()
-                                .position(latLng)
-                                .title("空位个数："+vacancynumber)
-                                // .snippet(vacancynumber)
-                                .anchor(0.5f, 0.5f)
-                                .icon(BitmapDescriptorFactory.fromBitmap(resource)));
-                    }
-                });
+    private void clickMap() {
+        clickInitInfo();
+        if (mRecordPositon != null) {
+            CameraUpdate cameraUpate = CameraUpdateFactory.newLatLngZoom(
+                    mRecordPositon, 17f);
+            aMap.animateCamera(cameraUpate);
+        }
     }
 
-    /*===================扫描二维码============================================*/
- /*启动扫描二维码*/
-    private void initViewes() {
-        if (ContextCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            //权限还没有授予，需要在这里写申请权限的代码
-            ActivityCompat.requestPermissions(MainActivity.this,
-                    new String[]{Manifest.permission.CAMERA}, 60);
+    private void clickInitInfo() {
+        isClickIdentification = false;
+        if (null != tempMark) {
+            tempMark.hideInfoWindow();
+            tempMark = null;
+        }
+        if (null != walkRouteOverlay) {
+            walkRouteOverlay.removeFromMap();
+        }
+    }
+
+    @Override
+    public View getInfoWindow(Marker marker) {
+        return null;
+    }
+
+    /**
+     * 自定义infowinfow窗口
+     */
+    public void render(Marker marker, View view) {
+        TextView tv_time = (TextView) view.findViewById(R.id.tv_time);
+        TextView tv_time_info = (TextView) view.findViewById(R.id.tv_time_info);
+        TextView tv_distance = (TextView) view.findViewById(R.id.tv_distance);
+        tv_time.setText(time[0]);
+        tv_time_info.setText(time[1]);
+        tv_distance.setText(distance);
+        String yusan = marker.getSnippet();
+        //L.e("测试 "+yusan);
+    }
+
+    @Override
+    public View getInfoContents(Marker marker) {
+        if (marker.getId().equals("Marker1")) {
+            View infoContents = getLayoutInflater().inflate(R.layout.custom_info_contents, null);
+            TextView myLoction = (TextView) infoContents.findViewById(R.id.title);
+            myLoction.setText(entity.address);
+            return infoContents;
         } else {
-            //权限已经被授予，在这里直接写要执行的相应方法即可
-            ScannerActivity.gotoActivity(MainActivity.this,
-                    true, laserMode);
-            //服务器返回过程中·这里 禁止掉 扫描按钮的 监听事件
-            plgig.setOnClickListener(null);
+
+            View infoContent = getLayoutInflater().inflate(R.layout.activity_infowindow, null);
+            String caonima = marker.getSnippet();
+            String kejie = caonima.substring(0,caonima.indexOf(","));
+            String kehai = caonima.substring(caonima.lastIndexOf(",", caonima.length()));
+            String[] strs=kehai.split(",");
+            for(int i=0,len=strs.length;i<len;i++){
+                System.out.println(strs[1].toString());
+                kehaistr = strs[1].toString();
+            }
+            L.e("可借 ："+kejie+"可还："+kehaistr);
+            TextView kejieYuSan = (TextView) infoContent.findViewById(R.id.tv_yusanconct);
+            TextView kehaiYuSan = (TextView) infoContent.findViewById(R.id.tv_yusanconct2);
+            TextView tv_bushu = (TextView) infoContent.findViewById(R.id.tv_bushu);
+            kejieYuSan.setText("可借："+kejie);
+            kehaiYuSan.setText("可还："+kehaistr);
+            tv_bushu.setText("步行："+des);
+            L.e("距离目标距离 "+"控件");
+            //气泡上的按钮的点击事件
+            ImageView img_cesss = (ImageView) infoContent.findViewById(R.id.img_cesss);
+            img_cesss.setOnClickListener(this);
+
+            return infoContent;
         }
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != Activity.RESULT_CANCELED && resultCode == Activity.RESULT_OK) {
-            if (requestCode == ScannerActivity.REQUEST_CODE_SCANNER) {
-                if (data != null) {
-                     stringExtra = data.getStringExtra(Intents.Scan.RESULT);
-                    Log.e("扫描结果 ", "" + stringExtra);
-
-                    String zhanghao = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
-//                    String mima = ShareUtils.getString(getApplicationContext(), "mima", "");
-                    if (!TextUtils.isEmpty(zhanghao)) {
-                        //扫描请求借伞
-                        UmbrellaPresenet up = new UmbrellaPresenet(this);
-                        String stringExtras  =  stringExtra.substring(stringExtra.length()-19);
-                        up.binds(stringExtras, zhanghao, this, "2");
-                        //扫描成功后再次请求下网络获取雨伞个数
-                        up.fech(MainActivity.this, laitudes, longitudes, types);
-//                //定时刷新
-//                        timetask(laitudes, longitudes,2);
-                        //开锁中的广告
-                        pwgg = new PopupWindowGuanGao(this, stringExtra);
-                        pwgg.showPopupWindow();
-
-                    } else {
-                        //Toast.makeText(getApplicationContext(), "请登录", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(this, LoginActivity.class));
-                        finish();
-                    }
-                }
-            }
+    public void ShowYuSanIcon(Object object) {
+        YuSanIconBean ysib = (YuSanIconBean) object;
+        int status = ysib.getStatus();
+        if (status == 1) {
+            yusanIconUrl = ysib.getData();
+            String jiesanurl = ConfigUtils.YUSANTUBIAO + yusanIconUrl;
+            ShareUtils.putString(getApplicationContext(), "jiesantubiao", jiesanurl);
+            L.e("借伞图标ICON " + yusanIconUrl);
+        } else {
+            promptDialog.showError("获取雨伞图标失败");
         }
     }
 
+    @Override
+    public void ShowHaiSanIcon(Object object) {
+        YuSanIconBean haisanIcon = (YuSanIconBean) object;
+        int status = haisanIcon.getStatus();
+        if (status == 1) {
+            haisanURL = haisanIcon.getData();
+            String haisanurl = ConfigUtils.YUSANTUBIAO + haisanURL;
+            ShareUtils.putString(getApplicationContext(), "haisantubiao", haisanurl);
+            L.e("还伞图标ICON " + haisanURL);
+        }
+    }
 
+    @Override
+    public void showGetyunsanStatus(Object object) {
+        //这句话是 用户不管取走不取走雨伞 都要再次设置 扫描按钮的监听
+        plgig.setOnClickListener(this);
+        isFiestype = "1";
+        JSONObject obj = (JSONObject) object;
+        int status = obj.optInt("status");
+        String data =  obj.optString("data");
+    }
 
-    /*
-    * 借伞的接口回调
-    *
-    *       当stauts为1时，app显示开锁成功
-           当status为2时，app显示押金不足
-           当status为3时，app显示余额不足
-           当status为4时，app显示请求超时，开锁失败
-           当status为5时，app显示无伞可借
-           当status为6或者7时，app重新发起开锁请求
-           当status为11时，app显示借伞成功
-           当status为0时，app显示通信错误
-    *
+        /*
+    * 地图坐上角的 用户正在使用雨伞的接口回调
     * */
+
     @Override
-    public void showSaoYiSao(Object syb, String mincdeID, String phone) {
-        SaoYiSaoBean object = (SaoYiSaoBean) syb;
-        statusSaoYiSao = object.getStatus();
-        String data = object.getData();
-        if (statusSaoYiSao == 11) {
-            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
-            plgig.setOnClickListener(this);
-            //手机震动
-            shoujizhengdong();
-            //promptDialog.showSuccess("借伞成功");
-            mSpeechSynthesizer.speak("您已借伞成功");
-            //停止广告上的进度条
-            pwgg.stopUpdata(statusSaoYiSao);
-            //隐藏开锁广告popup
-            pwgg.dismiss();
-        } else if (statusSaoYiSao == 1) {
-            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
-            plgig.setOnClickListener(this);
-            //手机震动
-            shoujizhengdong();
-            mSpeechSynthesizer.speak("您已开锁成功，请取走雨伞");
-            pwgg.stopUpdata(statusSaoYiSao);
-            //隐藏开锁广告popup
-            pwgg.dismiss();
-
-            //当statusSaoYiSao等于1 的时候 去请求另外一个接口判断用户是否有取消雨伞
-            UserGetYuSanStatusPeresent qusan = new UserGetYuSanStatusPeresent(this);
-            //这里截取 前面这段字符串 222222222222222202,555555555555555555
-            String stely =  data.substring(0,data.lastIndexOf(","));
-            qusan.userGetYuSan(stely);
-
-            //这里截取 后面的这段字符串 222222222222222202,555555555555555555
-            String enddata =  data.substring(data.lastIndexOf(",",data.length()));
-
-            //雨伞分布的 坐标 有多少个雨伞
-            aMap.clear();
-            //这里再次设置覆盖物
-            myMarker = aMap.addMarker(new MarkerOptions().position(myLatLng).anchor(0.5f, 0.5f).icon(BitmapDescriptorFactory.fromResource(R.drawable.location_mark)));
-            UmbrellaPresenet up = new UmbrellaPresenet(this);
-            up.fech(MainActivity.this, laitudes, longitudes, types);
-            //开锁成功 又开启一个popupwindow
-            KaiSuohoudeGuanggao zy = new KaiSuohoudeGuanggao(this, enddata);
-            zy.showPopupWindow();
-
-        } else if (statusSaoYiSao == 2) {
-            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
-            plgig.setOnClickListener(this);
-            //手机震动
-            shoujizhengdong();
-            // promptDialog.showSuccess("押金不足");
-            mSpeechSynthesizer.speak("您的押金不足");
-            pwgg.stopUpdata(statusSaoYiSao);
-            //隐藏开锁广告popup
-            pwgg.dismiss();
-            YaJinGuangGao yaJinGuangGao = new YaJinGuangGao(this);
-            yaJinGuangGao.showPopupWindow();
-
-
-        } else if (statusSaoYiSao == 3) {
-            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
-            plgig.setOnClickListener(this);
-            //手机震动
-            shoujizhengdong();
-            // promptDialog.showSuccess("余额不足");
-            mSpeechSynthesizer.speak("您的余额不足");
-            pwgg.stopUpdata(statusSaoYiSao);
-            //隐藏开锁广告popup
-            pwgg.dismiss();
-            YaJinGuangGao yaJinGuangGao = new YaJinGuangGao(this);
-            yaJinGuangGao.showPopupWindow();
-
-
-
-        } else if (statusSaoYiSao == 4) {
-            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
-            plgig.setOnClickListener(this);
-            //手机震动
-            shoujizhengdong();
-            // promptDialog.showSuccess("请求超时，开锁失败");
-            mSpeechSynthesizer.speak("请求超时，开锁失败");
-            pwgg.stopUpdata(statusSaoYiSao);
-            //隐藏开锁广告popup
-            pwgg.dismiss();
-            dialogss("借伞",data);
-
-        } else if (statusSaoYiSao == 5) {
-            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
-            plgig.setOnClickListener(this);
-            //手机震动
-            shoujizhengdong();
-            //  promptDialog.showSuccess("无伞可借");
-            mSpeechSynthesizer.speak("您已无伞可借了");
-            pwgg.stopUpdata(statusSaoYiSao);
-            //隐藏开锁广告popup
-            pwgg.dismiss();
-            dialogss("借伞",data);
-
-        } else if (statusSaoYiSao == 6) {
-            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
-            plgig.setOnClickListener(this);
-            //手机震动
-            shoujizhengdong();
-            //  promptDialog.showSuccess("重新发起开锁请求");
-            mSpeechSynthesizer.speak("重新发起开锁请求");
-            pwgg.stopUpdata(statusSaoYiSao);
-            //隐藏开锁广告popup
-            pwgg.dismiss();
-            dialogss("借伞",data);
-
-        } else if (statusSaoYiSao == 7) {
-            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
-            plgig.setOnClickListener(this);
-            //手机震动
-            shoujizhengdong();
-            //  promptDialog.showSuccess("重新发起开锁请求");
-            mSpeechSynthesizer.speak("重新发起开锁请求");
-            pwgg.stopUpdata(statusSaoYiSao);
-            //隐藏开锁广告popup
-            pwgg.dismiss();
-            dialogss("借伞",data);
-
-        } else if (statusSaoYiSao == 0) {
-            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
-            plgig.setOnClickListener(this);
-            //手机震动
-            shoujizhengdong();
-            //  promptDialog.showSuccess("通信错误");
-            mSpeechSynthesizer.speak("通信错误");
-            pwgg.stopUpdata(statusSaoYiSao);
-            //隐藏开锁广告popup
-            pwgg.dismiss();
-            dialogss("借伞",data);
-
-        } else if (statusSaoYiSao == 8){
-            dialogss("借伞",data);
-            //手机震动
-            shoujizhengdong();
-
-            //隐藏开锁广告popup
-            pwgg.dismiss();
+    public void showCurrent(Object object) {
+        UserCurrentYusanBean userYuSanBean = (UserCurrentYusanBean) object;
+        int status = userYuSanBean.getStatus();
+        if (status == 0) {
+            tv_current.setVisibility(View.GONE);
+        } else if (status == 1) {
+            tv_current.setVisibility(View.VISIBLE);
+            btn_cuonst.setText(userYuSanBean.getData());
         }
     }
 
-    public void dialogss(String title, String messgg) {
-        StyledDialog.buildIosAlert("借伞", messgg, new MyDialogListener() {
-            @Override
-            public void onFirst() {
-
-            }
-
-            @Override
-            public void onSecond() {
-
-            }
-        }).setBtnText("确定" ,"").show();
+    @Override
+    public void showErres() {
+        tv_current.setVisibility(View.GONE);
     }
 
-
-    /*获取 雨伞分布回调·从这里开始 ·已经开始 学习 了 MVP 架构设计模式了*/
     @Override
     public void showUmbrella(List<GetumbrellaBean_two.DataBean> list, int types) {
         L.e("雨伞个数 "+"showUmbrella");
@@ -1186,12 +714,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             for (int i = 0; i < list.size(); i++) {
                 String longitude = list.get(i).getLongitude();
                 String latitude = list.get(i).getLatitude();
-                //剩余 雨伞个数
-              //  int umbrellanuber = list.get(i).getUmbrellanumber();
-                //umbrellanubers = String.valueOf(umbrellanuber);
-                //剩余空位个数
-              //  vacancynumber = list.get(i).getVacancynumber();
-
                 longitudes = Double.parseDouble(longitude);
                 latitudes = Double.parseDouble(latitude);
                 latLng_xianludiana = new LatLng(latitudes, longitudes);
@@ -1206,87 +728,215 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         }
-
-    }
-
-    /*
-* 这个方法以及下面的这个方法是自定义infoWindow
-* */
-    @Override
-    public View getInfoWindow(Marker marker) {
-        return null;
     }
 
     @Override
-    public View getInfoContents(Marker marker) {
-/*        View infoContent = getLayoutInflater().inflate(R.layout.activity_infowindow, null);
-        render(marker, infoContent);
-        return infoContent;*/
-        L.e("可借 ："+address+ "marker"+marker.getId());
-        if (marker.getId().equals("Marker1")) {
-            View infoContents = getLayoutInflater().inflate(R.layout.custom_info_contents, null);
-            TextView myLoction = (TextView) infoContents.findViewById(R.id.title);
-            myLoction.setText(address);
-            return infoContents;
+    public void showSaoYiSao(Object syb, String mincdeID, String phone) {
+        SaoYiSaoBean object = (SaoYiSaoBean) syb;
+        statusSaoYiSao = object.getStatus();
+        L.e("开锁状态："+statusSaoYiSao);
+        String data = object.getData();
+        if (statusSaoYiSao == 11) {
+            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
+            plgig.setOnClickListener(this);
+            isFiestype = "1";
+            //手机震动
+            shoujizhengdong();
+
+            //停止广告上的进度条
+            pwgg.stopUpdata(statusSaoYiSao);
+            //隐藏开锁广告popup
+            pwgg.dismiss();
+        } else if (statusSaoYiSao == 1) {
+            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
+            plgig.setOnClickListener(this);
+            isFiestype = "1";
+            //手机震动
+            shoujizhengdong();
+            pwgg.stopUpdata(statusSaoYiSao);
+            //隐藏开锁广告popup
+            pwgg.dismiss();
+
+            //当statusSaoYiSao等于1 的时候 去请求另外一个接口判断用户是否有取消雨伞
+            UserGetYuSanStatusPeresent qusan = new UserGetYuSanStatusPeresent(this);
+            //这里截取 前面这段字符串 222222222222222202,555555555555555555
+            String stely = data.substring(0, data.lastIndexOf(","));
+            qusan.userGetYuSan(stely);
+
+            //这里截取 后面的这段字符串 222222222222222202,555555555555555555
+            String enddata = data.substring(data.lastIndexOf(",", data.length()));
+
+            //雨伞分布的 坐标 有多少个雨伞
+            aMap.clear();
+            mIsFirst = true;
+            //这里再次设置覆盖物
+            getResfh();
+
+            //开锁成功 又开启一个popupwindow
+            KaiSuohoudeGuanggao zy = new KaiSuohoudeGuanggao(this, enddata);
+            zy.showPopupWindow();
+
+        } else if (statusSaoYiSao == 2) {
+            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
+            plgig.setOnClickListener(this);
+            isFiestype = "1";
+            //手机震动
+            shoujizhengdong();
+            // promptDialog.showSuccess("押金不足");
+            pwgg.stopUpdata(statusSaoYiSao);
+            //隐藏开锁广告popup
+            pwgg.dismiss();
+            YaJinGuangGao yaJinGuangGao = new YaJinGuangGao(this);
+            yaJinGuangGao.showPopupWindow();
+
+
+        } else if (statusSaoYiSao == 3) {
+            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
+            plgig.setOnClickListener(this);
+            isFiestype = "1";
+            //手机震动
+            shoujizhengdong();
+            // promptDialog.showSuccess("余额不足");
+            pwgg.stopUpdata(statusSaoYiSao);
+            //隐藏开锁广告popup
+            pwgg.dismiss();
+            YaJinGuangGao yaJinGuangGao = new YaJinGuangGao(this);
+            yaJinGuangGao.showPopupWindow();
+
+
+        } else if (statusSaoYiSao == 4) {
+            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
+            plgig.setOnClickListener(this);
+            isFiestype = "1";
+            //手机震动
+            shoujizhengdong();
+            // promptDialog.showSuccess("请求超时，开锁失败");
+            pwgg.stopUpdata(statusSaoYiSao);
+            //隐藏开锁广告popup
+            pwgg.dismiss();
+            dialogss("借伞", data);
+
+        } else if (statusSaoYiSao == 5) {
+            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
+            plgig.setOnClickListener(this);
+            isFiestype = "1";
+            //手机震动
+            shoujizhengdong();
+            //  promptDialog.showSuccess("无伞可借");
+            pwgg.stopUpdata(statusSaoYiSao);
+            //隐藏开锁广告popup
+            pwgg.dismiss();
+            dialogss("借伞", data);
+
+        } else if (statusSaoYiSao == 6) {
+            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
+            plgig.setOnClickListener(this);
+            isFiestype = "1";
+            //手机震动
+            shoujizhengdong();
+            //  promptDialog.showSuccess("重新发起开锁请求");
+            pwgg.stopUpdata(statusSaoYiSao);
+            //隐藏开锁广告popup
+            pwgg.dismiss();
+            dialogss("借伞", data);
+
+        } else if (statusSaoYiSao == 7) {
+            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
+            plgig.setOnClickListener(this);
+            isFiestype = "1";
+            //手机震动
+            shoujizhengdong();
+            //  promptDialog.showSuccess("重新发起开锁请求");
+            pwgg.stopUpdata(statusSaoYiSao);
+            //隐藏开锁广告popup
+            pwgg.dismiss();
+            dialogss("借伞", data);
+
+        } else if (statusSaoYiSao == 0) {
+            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
+            plgig.setOnClickListener(this);
+            isFiestype = "1";
+            //手机震动
+            shoujizhengdong();
+            //  promptDialog.showSuccess("通信错误");
+            pwgg.stopUpdata(statusSaoYiSao);
+            //隐藏开锁广告popup
+            pwgg.dismiss();
+            dialogss("借伞", data);
+
+        } else if (statusSaoYiSao == 8) {
+            dialogss("借伞", data);
+            isFiestype = "1";
+            //手机震动
+            shoujizhengdong();
+            //隐藏开锁广告popup
+            pwgg.dismiss();
         } else {
-            View infoContent = getLayoutInflater().inflate(R.layout.activity_infowindow, null);
-            String caonima = marker.getSnippet();
-            String kejie = caonima.substring(0,caonima.indexOf(","));
-            String kehai = caonima.substring(caonima.lastIndexOf(",", caonima.length()));
-            String[] strs=kehai.split(",");
-            for(int i=0,len=strs.length;i<len;i++){
-                System.out.println(strs[1].toString());
-                kehaistr = strs[1].toString();
-            }
-            L.e("可借 ："+kejie+"可还："+kehaistr);
-            TextView kejieYuSan = (TextView) infoContent.findViewById(R.id.tv_yusanconct);
-            TextView kehaiYuSan = (TextView) infoContent.findViewById(R.id.tv_yusanconct2);
-            TextView tv_bushu = (TextView) infoContent.findViewById(R.id.tv_bushu);
-            kejieYuSan.setText("可借："+kejie);
-            kehaiYuSan.setText("可还："+kehaistr);
-
-            tv_bushu.setText("步行："+des);
-
-            L.e("距离目标距离 "+"控件");
-            return infoContent;
-        }
-
-    }
-
-
-
-    /*
-    *  该方法是定位成功后 网络请求 从服务器获取到 返回的雨伞图标
-    * */
-    @Override
-    public void ShowYuSanIcon(Object object) {
-        YuSanIconBean ysib = (YuSanIconBean) object;
-        int status = ysib.getStatus();
-        if (status == 1) {
-            yusanIconUrl = ysib.getData();
-            String jiesanurl  = ConfigUtils.YUSANTUBIAO+yusanIconUrl;
-            ShareUtils.putString(getApplicationContext(), "jiesantubiao", jiesanurl);
-            L.e("借伞图标ICON " + yusanIconUrl);
-        } else {
-            promptDialog.showError("获取雨伞图标失败");
+            //这里是第一条接口请求失败后 要设置上 扫描按钮的监听事件
+            plgig.setOnClickListener(this);
+            isFiestype = "1";
+            MyDialog.dialog("提示","开锁失败不知道服务器返回的是什么鬼，"+data,"确定","");
         }
     }
 
-    /*
-    *  该回调是还伞界面的 雨伞图标
-    * */
-    @Override
-    public void ShowHaiSanIcon(Object object) {
-        YuSanIconBean haisanIcon = (YuSanIconBean) object;
-        int status = haisanIcon.getStatus();
-        if (status == 1) {
-            haisanURL = haisanIcon.getData();
-            String haisanurl = ConfigUtils.YUSANTUBIAO+haisanURL;
-            ShareUtils.putString(getApplicationContext(), "haisantubiao",  haisanurl);
-            L.e("还伞图标ICON " + haisanURL);
-        }
-    }
+    private LinearLayout tv_current;
+    private RelativeLayout ll_xxxx;
+    private ImageView image_shuaxin;
+    private ImageView image_kehu;
+    private Button btn_haisan, btn_jiesan;
+    private ImageView image_backs;
+    private GifImageView plgig;
+    private TextView tv_adds;
+    private YuSanTuIconPerserent tyip;
+    private HaiYuSanTuIconPerserent haisanIcon;
+    public static final int MY_PERMISSIONS_MAP = 0;
+    public static final int REQUEST_CODE_SETTING = 300;
+    private int statusSaoYiSao;
+    //手机震动
+    private Vibrator vibrator;
+    private PopupWindowGuanGao pwgg;
+    private int types = 1; //默认等于1 代表 雨伞分布的请求 点击还伞等于2 的时候表示雨伞架子的请求
+    private String haisanURL;
+    private boolean FINISH;
+    private int a = 0;
+    private int typeHaisan = 1;
+    // 扫一扫相关 颜色  如果不赋值的话· 扫描上下滚动的就是绿色这里默认 赋值为 支付宝 那种网格的
+    private int laserMode = ScannerActivity.EXTRA_LASER_LINE_MODE_0;
+    private String stringExtra;
+    List<GetumbrellaBean_two.DataBean> listInfoWindow = new ArrayList<>();
+    private String umbrellanubers;
+    private double longitudes;
+    private double latitudes;
+    private String vacancynumber;
+    private LatLng latLng_xianludiana;
+    private LatLng latLng_xianludian;
+    private String kehaistr;
+    private String des;
 
+    private Button btn_cuonst;
+       /*========================初始化一些控件=====================================*/
+
+    private void init() {
+        btn_cuonst = (Button) findViewById(R.id.btn_cuonst);
+        btn_cuonst.setOnClickListener(this);
+        tv_current = (LinearLayout) findViewById(R.id.tv_current);
+        tv_current.setOnClickListener(this);
+        ll_xxxx = (RelativeLayout) findViewById(R.id.ll_xxxx);
+        image_shuaxin = (ImageView) findViewById(R.id.image_shuaxin);
+        image_shuaxin.setOnClickListener(this);
+        image_kehu = (ImageView) findViewById(R.id.image_kehu);
+        image_kehu.setOnClickListener(this);
+
+
+        //初始化控件以及地图
+        image_backs = (ImageView) findViewById(R.id.image_backs);
+        image_backs.setOnClickListener(this);
+        plgig = (GifImageView) findViewById(R.id.plgig);
+        plgig.setOnClickListener(this);
+
+        tv_adds = (TextView) findViewById(R.id.tv_adds);
+        tv_adds.setOnClickListener(this);
+    }
 
     private void HttpQuestIcon() {
         //这里定位成功后首先获取·借伞 界面的雨伞图标
@@ -1297,104 +947,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         haisanIcon.haisanIcon("1");
     }
 
-
-
-
-    /**
-     * 方法必须重写
-     */
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mapView.onResume();
-        userCurrentYusan();
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        if (!TextUtils.isEmpty(stringExtra)) {
-            plgig.setOnClickListener(null);
-        } else {
-            plgig.setOnClickListener(this);
-        }
-    }
-
     /*
-        * 用户正在使用的雨伞网络请求
-        * */
-    private void userCurrentYusan() {
-        IsUserCurrentPerserent zhengzaishiyongyusan = new IsUserCurrentPerserent(this);
-        //这里获取用户正在使用雨伞的 接口回调
-        String r_id = ShareUtils.getString(getApplicationContext(),"r_id","");
-        zhengzaishiyongyusan.currents(r_id);
+* 动态授权 权限
+* */
+    private void initPermission() {
+        // 申请多个权限。
+        AndPermission.with(this)
+                .requestCode(MY_PERMISSIONS_MAP)
+                .permission(
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_PHONE_STATE)
+                .callback(permissionListener)
+                // rationale作用是：用户拒绝一次权限，再次申请时先征求用户同意，再打开授权对话框；
+                // 这样避免用户勾选不再提示，导致以后无法申请权限。
+                // 你也可以不设置。
+                .rationale(new RationaleListener() {
+                    @Override
+                    public void showRequestPermissionRationale(int requestCode, Rationale rationale) {
+                        // 这里的对话框可以自定义，只要调用rationale.resume()就可以继续申请。
+                        AndPermission.rationaleDialog(MainActivity.this, rationale)
+                                .show();
+                    }
+                })
+                .start();
     }
 
-
-    /**
-     * 方法必须重写
-     */
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mapView.onPause();
-    }
-
-    /**
-     * 方法必须重写
-     */
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        mapView.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        destroyLocation();
-        mapView.onDestroy();
-        //取消语音合成
-        this.mSpeechSynthesizer.release();
-        //取消手机震动//   vibrator.cancel();
-    }
-
-
-
-    /**
-     * 开始定位
-     */
-    private void
-    startLocation() {
-        //启动定位
-        if (mLocationClient != null) {
-            mLocationClient.startLocation();
-        }
-    }
-
-    /**
-     * 停止定位
-     */
-    private void stopLocation() {
-        //停止定位
-        if (mLocationClient != null) {
-            mLocationClient.stopLocation();
-        }
-    }
-
-    /**
-     * 销毁定位
-     */
-    private void destroyLocation() {
-        if (mLocationClient != null) {
-            mLocationClient.stopLocation();
-            mLocationClient.onDestroy();
-        }
-        mLocationClient = null;
-    }
-
-
-    /*============================6.0 动态权限回调 ===================================*/
+     /*============================6.0 动态权限回调 ===================================*/
     /**
      * 回调监听。
      */
@@ -1405,7 +986,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case MY_PERMISSIONS_MAP: {
                     Toast.makeText(MainActivity.this, R.string.dingweiquanxianchenggong, Toast.LENGTH_SHORT).show();
                     //开始定位
-                    startLocation();
+                    //startLocation();
+                    mLocationTask.startLocate();
                     break;
                 }
             }
@@ -1423,14 +1005,82 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             } else {
                 //开始定位
-                startLocation();
+                //startLocation();
+                mLocationTask.startLocate();
             }
 
         }
     };
 
+    /*
+   * 这里是主页弹窗
+   * 可能由于业务过于多 导致 直接 加载popupwindow 的话
+   * 加载不出来·所以这里延时了一下3秒钟
+   * */
+    private void popupwindowsss() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //主页广告
+                initShowZhuYeGuangGao();
+            }
+        }, 5000);
+    }
 
-    //当点击回退键key时执行此方法
+    /*
+    * 显示主要广告
+    * */
+    private void initShowZhuYeGuangGao() {
+        ZhuYeGuangGao zygg = new ZhuYeGuangGao(MainActivity.this);
+        zygg.setPopupWindowFullScreen(true);
+        zygg.showPopupWindow();
+    }
+
+    /*
+       * 用户正在使用的雨伞网络请求
+       * */
+    private void userCurrentYusan() {
+        IsUserCurrentPerserent zhengzaishiyongyusan = new IsUserCurrentPerserent(this);
+        //这里获取用户正在使用雨伞的 接口回调
+        String r_id = ShareUtils.getString(getApplicationContext(), "r_id", "");
+        zhengzaishiyongyusan.currents(r_id);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+    }
+
+    /*
+* 手机震动
+* */
+    private void shoujizhengdong() {
+         /*
+         * 想设置震动大小可以通过改变pattern来设定，如果开启时间太短，震动效果可能感觉不到
+         * */
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        // 停止 开启 停止 开启
+        long[] pattern = {100, 400, 100, 400};
+        //重复两次上面的pattern 如果只想震动一次，index设为-1
+        vibrator.vibrate(pattern, -1);
+    }
+
+
+    public void dialogss(String title, String messgg) {
+        StyledDialog.buildIosAlert("借伞", messgg, new MyDialogListener() {
+            @Override
+            public void onFirst() {
+
+            }
+
+            @Override
+            public void onSecond() {
+
+            }
+        }).setBtnText("确定", "").show();
+    }
 
     /**
      * 退出程序提醒
@@ -1461,303 +1111,216 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return super.dispatchKeyEvent(event);
     }
 
-
-    /*
-    * 用户是否取走雨伞的 接口回调
-    * */
     @Override
-    public void showGetyunsanStatus(Object object) {
-        //这句话是 用户不管取走不取走雨伞 都要再次设置 扫描按钮的监听
-        plgig.setOnClickListener(this);
-
-        JSONObject obj = (JSONObject) object;
-        int status = obj.optInt("status");
-        String data =  obj.optString("data");
-        mSpeechSynthesizer.speak(data);
-        // Toast.makeText(getApplicationContext(),data.toString(),Toast.LENGTH_SHORT).show();
-
-    }
-
-
-    /*
-    *  百度语音合成 需要的 sdk路径获取
-    * */
-    private void initialEnv() {
-        if (mSampleDirPath == null) {
-            String sdcardPath = Environment.getExternalStorageDirectory()
-                    .toString();
-            mSampleDirPath = sdcardPath + "/" + SAMPLE_DIR_NAME;
-        }
-        makeDir(mSampleDirPath);
-        copyFromAssetsToSdcard(false, SPEECH_FEMALE_MODEL_NAME, mSampleDirPath
-                + "/" + SPEECH_FEMALE_MODEL_NAME);
-        copyFromAssetsToSdcard(false, SPEECH_MALE_MODEL_NAME, mSampleDirPath
-                + "/" + SPEECH_MALE_MODEL_NAME);
-        copyFromAssetsToSdcard(false, TEXT_MODEL_NAME, mSampleDirPath + "/"
-                + TEXT_MODEL_NAME);
-        copyFromAssetsToSdcard(false, LICENSE_FILE_NAME, mSampleDirPath + "/"
-                + LICENSE_FILE_NAME);
-        copyFromAssetsToSdcard(false, "english/"
-                + ENGLISH_SPEECH_FEMALE_MODEL_NAME, mSampleDirPath + "/"
-                + ENGLISH_SPEECH_FEMALE_MODEL_NAME);
-        copyFromAssetsToSdcard(false, "english/"
-                + ENGLISH_SPEECH_MALE_MODEL_NAME, mSampleDirPath + "/"
-                + ENGLISH_SPEECH_MALE_MODEL_NAME);
-        copyFromAssetsToSdcard(false, "english/" + ENGLISH_TEXT_MODEL_NAME,
-                mSampleDirPath + "/" + ENGLISH_TEXT_MODEL_NAME);
-    }
-
-    /*
-* 创建文件夹路径
-* */
-    private void makeDir(String dirPath) {
-        File file = new File(dirPath);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-    }
-
-
-    /**
-     * 将sample工程需要的资源文件拷贝到SD卡中使用（授权文件为临时授权文件，请注册正式授权）
-     *
-     * @param isCover
-     *            是否覆盖已存在的目标文件
-     * @param source
-     * @param dest
-     */
-    private void copyFromAssetsToSdcard(boolean isCover, String source,
-                                        String dest) {
-        File file = new File(dest);
-        if (isCover || (!isCover && !file.exists())) {
-            InputStream is = null;
-            FileOutputStream fos = null;
-            try {
-                is = getResources().getAssets().open(source);
-                String path = dest;
-                fos = new FileOutputStream(path);
-                byte[] buffer = new byte[1024];
-                int size = 0;
-                while ((size = is.read(buffer, 0, 1024)) >= 0) {
-                    fos.write(buffer, 0, size);
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.image_backs:
+                String zh = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
+                if (!TextUtils.isEmpty(zh)) {
+                    //laitudes,longitudes 当前经纬度
+                    Intent intent = new Intent(this, SettingsYusanActivity.class);
+//                    intent.putExtra("laitudes", entity.latitue);
+//                    intent.putExtra("longitudes", entity.longitude);
+                    //启动过场动画
+                    AnimUtils.startIntent(intent, view, MainActivity.this, R.id.ll_flayout);
+                } else {
+                    startActivity(new Intent(this, LoginActivity.class));
                 }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (fos != null) {
-                    try {
-                        fos.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                break;
+            case R.id.tv_adds:
+                MyPopuopWindowsRigth pwr = new MyPopuopWindowsRigth(this, aMap);
+                pwr.showPopupWindow(R.id.tv_adds);
+                break;
+            case R.id.plgig:
+                //1 表示可以点击 2表示不可以点击
+                if (isFiestype.equals("2")) {
+                    MyDialog.dialog("提示","您正在开锁状态中，请稍后点击该按钮··","确定","");
+                } else {
+                    initViewes();
                 }
-                try {
-                    if (is != null) {
-                        is.close();
+                break;
+
+
+            //右下角的客户返回 按钮
+            case R.id.image_kehu:
+                Intent intentkehu = new Intent(getApplicationContext(), KeHuFanKuiActivity.class);
+                //启动过场动画
+                AnimUtils.startIntent(intentkehu, view, MainActivity.this, R.id.ll_xxxx);
+                break;
+            //左下角的 刷新按钮
+            case R.id.image_shuaxin:
+                //点击刷新 请求用户正在使用的雨伞个数 左上角的那个
+                userCurrentYusan();
+                mIsFirstShow = true;
+                if (typeHaisan == 1) {
+                    a = 2;
+                    aMap.clear();
+                    //点击还伞再次设置一下·用户当前位子的覆盖物
+                    // 然后再次启动定位一下
+                    mLocationTask.startLocate();
+                    //借伞再次请求网络查询 分布的雨伞架子还有多少雨伞
+                    //给types 赋值为 1 表示· 雨伞的图标
+                    types = 1;
+                    UmbrellaPresenet upIcon = new UmbrellaPresenet(this);
+                    upIcon.fech(MainActivity.this, entity.latitue, entity.longitude, types);
+                    //点击借伞后请求网络 图标
+//                   tyip.fach("10");
+
+                } else {
+                    a = 1;
+                    aMap.clear();
+                    //点击还伞再次设置一下·用户当前位子的覆盖物
+                    // 然后再次启动定位一下
+                    mLocationTask.startLocate();
+                    //借伞再次请求网络查询 分布的雨伞架子还有多少雨伞
+                    //然后把types赋值为2  表示·还伞的字段·用来区分mark 图标
+                    types = 2;
+                    UmbrellaPresenet upsanjiazi = new UmbrellaPresenet(this);
+                    upsanjiazi.fech(MainActivity.this, entity.latitue, entity.longitude, types);
+                    //点还伞后 请求 伞架子的 图标
+//                    tyip.fach("11");
+                }
+
+                break;
+            case R.id.tv_current:
+                startActivity(new Intent(getApplicationContext(), UsagelogActivity.class));
+                break;
+                //这个是气泡上的按钮点击事件
+                case R.id.img_cesss:
+                    MarkerQipao mq = new MarkerQipao(this);
+                    mq.showPopupWindow();
+                    break;
+        }
+    }
+
+    /*===================扫描二维码============================================*/
+ /*启动扫描二维码*/
+    private void initViewes() {
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            //权限还没有授予，需要在这里写申请权限的代码
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.CAMERA}, 60);
+        } else {
+            //权限已经被授予，在这里直接写要执行的相应方法即可
+            ScannerActivity.gotoActivity(MainActivity.this,
+                    true, laserMode);
+            //服务器返回过程中·这里 禁止掉 扫描按钮的 监听事件
+          //  plgig.setOnClickListener(null);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_CANCELED && resultCode == Activity.RESULT_OK) {
+            if (requestCode == ScannerActivity.REQUEST_CODE_SCANNER) {
+                if (data != null) {
+                    stringExtra = data.getStringExtra(Intents.Scan.RESULT);
+                    Log.e("扫描结果 ", "" + stringExtra);
+
+                    String zhanghao = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
+//                    String mima = ShareUtils.getString(getApplicationContext(), "mima", "");
+                    if (!TextUtils.isEmpty(zhanghao)) {
+                        //将该字段设置为2 以免用户重复点击扫描按钮
+                        isFiestype = "2";
+                        //扫描请求借伞
+                       UmbrellaPresenet up = new UmbrellaPresenet(this);
+                        if (stringExtra.length()==19) {
+                            up.binds(stringExtra, zhanghao, this, "2");
+                            // 扫描成功后再次请求下网络获取雨伞个数
+                         //   getResfh();
+                            //开锁中的广告
+                            pwgg = new PopupWindowGuanGao(this, stringExtra);
+                            pwgg.showPopupWindow();
+
+                        } else if (stringExtra.length() > 19) {
+                            String stringExtras = stringExtra.substring(stringExtra.length() - 19);
+                            up.binds(stringExtras, zhanghao, this, "2");
+                            // 扫描成功后再次请求下网络获取雨伞个数
+                         //   getResfh();
+                        } else {
+                            MyDialog.dialog("提示","无效的二维码","确定","");
+                            //将该字段重置为1 让用户可以继续点击扫描按钮
+                            isFiestype = "1";
+                        }
+
+
+
+                    } else {
+                        //Toast.makeText(getApplicationContext(), "请登录", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(this, LoginActivity.class));
+                        finish();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
             }
         }
     }
 
-
-
-
-    // 初始化语音合成客户端并启动
-    private void startTTS() {
-        this.mSpeechSynthesizer = SpeechSynthesizer.getInstance();
-        this.mSpeechSynthesizer.setContext(this);
-        this.mSpeechSynthesizer.setSpeechSynthesizerListener(this);
-        // 文本模型文件路径 (离线引擎使用)
-        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_TEXT_MODEL_FILE, mSampleDirPath+ "/" + TEXT_MODEL_NAME);
-        // 声学模型文件路径 (离线引擎使用)
-        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_SPEECH_MODEL_FILE, mSampleDirPath+ "/" + SPEECH_FEMALE_MODEL_NAME);
-        // 本地授权文件路径,如未设置将使用默认路径.设置临时授权文件路径，LICENCE_FILE_NAME请替换成临时授权文件的实际路径，仅在使用临时license文件时需要进行设置，如果在[应用管理]中开通了正式离线授权，不需要设置该参数，建议将该行代码删除（离线引擎）
-        // 如果合成结果出现临时授权文件将要到期的提示，说明使用了临时授权文件，请删除临时授权即可。
-        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_TTS_LICENCE_FILE, mSampleDirPath + "/"+ LICENSE_FILE_NAME);
-        // 请替换为语音开发者平台上注册应用得到的App ID (离线授权)
-        this.mSpeechSynthesizer.setAppId("9959735");
-        // 请替换为语音开发者平台注册应用得到的apikey和secretkey (在线授权)
-        this.mSpeechSynthesizer.setApiKey("EfZlabSvnGbdvoQnE4s7blGH","71cd434667f8fa9a15f090a3e4a3f5d2");
-        // 发音人（在线引擎），可用参数为0,1,2,3。。。（服务器端会动态增加，各值含义参考文档，以文档说明为准。0--普通女声，1--普通男声，2--特别男声，3--情感男声。。。）
-        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_SPEAKER, "0");
-        // 设置Mix模式的合成策略
-        this.mSpeechSynthesizer.setParam(SpeechSynthesizer.PARAM_MIX_MODE,SpeechSynthesizer.MIX_MODE_DEFAULT);
-        // 授权检测接口(只是通过AuthInfo进行检验授权是否成功。)
-        // AuthInfo接口用于测试开发者是否成功申请了在线或者离线授权，如果测试授权成功了，可以删除AuthInfo部分的代码（该接口首次验证时比较耗时），不会影响正常使用（合成使用时SDK内部会自动验证授权）
-        AuthInfo authInfo = this.mSpeechSynthesizer.auth(TtsMode.MIX);
-        if (authInfo.isSuccess()) {
-            Toast.makeText(getApplicationContext(),"授权成功",Toast.LENGTH_SHORT).show();
-        } else {
-            String errorMsg = authInfo.getTtsError().getDetailMessage();
-            Toast.makeText(getApplicationContext(),"授权失败 " +errorMsg ,Toast.LENGTH_SHORT).show();
-        }
-
-        // 初始化tts
-        mSpeechSynthesizer.initTts(TtsMode.MIX);
-        // 加载离线英文资源（提供离线英文合成功能）
-        int result = mSpeechSynthesizer.loadEnglishModel(mSampleDirPath + "/"
-                + ENGLISH_TEXT_MODEL_NAME, mSampleDirPath + "/"
-                + ENGLISH_SPEECH_FEMALE_MODEL_NAME);
-        //  toPrint("loadEnglishModel result=" + result);
-
-    }
-
-
-
-
-    /*
-    *  下面6个方法都是 百度语音合成从写的
-     *  SpeechSynthesizerListener接口的方法
-    * */
-
-    @Override
-    public void onSynthesizeStart(String s) {
-        // 监听到合成开始，在此添加相关操作
-        L.e("测试 "+"onSynthesizeStart");
-    }
-
-    @Override
-    public void onSynthesizeDataArrived(String s, byte[] bytes, int i) {
-        // 监听到有合成数据到达，在此添加相关操作
-        L.e("测试"+"onSynthesizeDataArrived");
-    }
-
-    @Override
-    public void onSynthesizeFinish(String s) {
-        // 监听到合成结束，在此添加相关操作
-        L.e("测试"+"onSynthesizeFinish");
-    }
-
-    @Override
-    public void onSpeechStart(String s) {
-        // 监听到合成并播放开始，在此添加相关操作
-        L.e("测试"+"onSpeechStart");
-    }
-
-    @Override
-    public void onSpeechProgressChanged(String s, int i) {
-        // 监听到播放进度有变化，在此添加相关操作
-        L.e("测试"+"onSpeechProgressChanged");
-    }
-
-    @Override
-    public void onSpeechFinish(String s) {
-        // 监听到播放结束，在此添加相关操作
-        L.e("测试"+"onSpeechFinish");
-    }
-
-    @Override
-    public void onError(String s, SpeechError speechError) {
-        // 监听到出错，在此添加相关操作
-        L.e("测试"+"onError");
-        L.e("测试error "+s+" 测试 SpeechError "+speechError.description);
-    }
-
-    /*
-* 手机震动
-* */
-    private void shoujizhengdong() {
-         /*
-         * 想设置震动大小可以通过改变pattern来设定，如果开启时间太短，震动效果可能感觉不到
-         * */
-        vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-        // 停止 开启 停止 开启
-        long [] pattern = {100,400,100,400};
-        //重复两次上面的pattern 如果只想震动一次，index设为-1
-        vibrator.vibrate(pattern,-1);
-    }
-
-
-    /*
-    * 下面4个方法都是不行规划 的回调
-    * 我也不知道是什么鸡巴东西
-    * */
-    @Override
-    public void onBusRouteSearched(BusRouteResult busRouteResult, int i) {
-
-    }
-
-    @Override
-    public void onDriveRouteSearched(DriveRouteResult driveRouteResult, int i) {
-
-    }
-
-    @Override
-    public void onWalkRouteSearched(WalkRouteResult result, int errorCode) {
-        promptDialog.dismiss();
-        mWalkRouteResult = result;
-
-        if (errorCode == AMapException.CODE_AMAP_SUCCESS) {
-            if (result != null && result.getPaths() != null) {
-                if (result.getPaths().size() > 0) {
-                    mWalkRouteResult = result;
-                    final WalkPath walkPath = mWalkRouteResult.getPaths()
-                            .get(0);
-
-                    walkRouteOverlay = new WalkRouteOverlay(
-                            MainActivity.this, aMap, walkPath,
-                            mWalkRouteResult.getStartPos(),
-                            mWalkRouteResult.getTargetPos());
-                    //清空地图上的线条
-                    //   walkRouteOverlay.removeFromMap();
-                    walkRouteOverlay.setNodeIconVisibility(false);
-                    walkRouteOverlay.addToMap();
-                    walkRouteOverlay.zoomToSpan();
-
-                    // mBottomLayout .setVisibility(View.VISIBLE);
-                    int dis = (int) walkPath.getDistance();
-                    int dur = (int) walkPath.getDuration();
-                    //获取离目标 需要多少时间
-                    des = AMapUtil.getFriendlyTime(dur)+"("+AMapUtil.getFriendlyLength(dis)+")";
-                    L.e("距离目标距离 "+des);
-
-                } else if (result != null && result.getPaths() == null) {
-                    ToastUtil.showShortToast(this, "对不起没有相关数据");
-                }
-            } else {
-                ToastUtil.showShortToast(this, "对不起没有搜索到相关地图");
-            }
-        } else {
-            ToastUtil.showShortToast(this.getApplicationContext(), errorCode+"");
-        }
-
-    }
-
-    @Override
-    public void onRideRouteSearched(RideRouteResult rideRouteResult, int i) {
-
-        RideRouteResult rideRouteResults = rideRouteResult;
-    }
-
-    /*
-    * 用户正在使用雨伞的接口回调
-    * */
-    @Override
-    public void showCurrent(Object object) {
-/*        UserCurrentYusanBean userYuSanBean = (UserCurrentYusanBean) object;
-        int status = userYuSanBean.getStatus();
-        if (status == 0) {
-            tv_current.setVisibility(View.GONE);
-        } else if (status == 1) {
-            tv_current.setVisibility(View.VISIBLE);
-            btn_cuonst.setText(userYuSanBean.getData());
-        }*/
-    }
-
-    /*
+        /*
+    *    扫描成功后再次请求下网络获取雨伞个数
     *
-    * 用户使用雨伞请求失败 走了那个onErrer
     * */
 
-    @Override
-    public void showErres() {
-        tv_current.setVisibility(View.GONE);
+    public void getResfh() {
+        //开锁后获取雨伞分布
+        UmbrellaPresenet getyusanfenbu = new UmbrellaPresenet(this);
+        getyusanfenbu.fech(MainActivity.this,entity.latitue, entity.longitude, types);
+
     }
 
 
+    /*点击线条中间覆盖物显示气泡*/
+    private void addMarkerss(final LatLng latLng, final String vacancynumber) {
+        //之类是还伞 获取到的 图标 路径
+        String haisanURLS = ShareUtils.getString(getApplicationContext(), "haisantubiao", "");
+        Glide.with(MainActivity.this)
+                .load(haisanURLS)
+                // 加载网络中的静态图片
+                .asBitmap()
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        //在这加个图片处理的方法
+//                        Bitmap bit = ShareUtils.compressScale(resource,80f,80f);
+                        // 这里将bitmap对象图片绘制成圆形
+//                        BitmapToRound_Util round_Util = new BitmapToRound_Util();
+//                        bitmaps = round_Util.toRoundBitmap(bit);
+                        //绘制覆盖物
+                        aMap.addMarker(new MarkerOptions()
+                                .position(latLng)
+                                .title("空位个数："+vacancynumber)
+                                // .snippet(vacancynumber)
+                                .anchor(0.5f, 0.5f)
+                                .icon(BitmapDescriptorFactory.fromBitmap(resource)));
+                    }
+                });
+    }
+
+    /*点击线条中间覆盖物显示气泡*/
+    private void addMarkers(final LatLng latLng, final String umbrellanubers, final String vacancynumber) {
+        //取出借伞图标 的路径地址
+        String jiesanUrl =  ShareUtils.getString(getApplicationContext(),"jiesantubiao","");
+        Glide.with(MainActivity.this)
+                .load(jiesanUrl)
+                // 加载网络中的静态图片
+                .asBitmap()
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        //绘制覆盖物
+                        aMap.addMarker(new MarkerOptions()
+                                .position(latLng)
+                                .snippet(umbrellanubers+","+vacancynumber)
+
+                                .anchor(0.5f, 0.5f)
+                                .draggable(true)
+                                .icon(BitmapDescriptorFactory.fromBitmap(resource)))
+                                .setObject(listInfoWindow);
+
+                    }
+                });
+
+    }
 }

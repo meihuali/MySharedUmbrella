@@ -31,6 +31,8 @@ import com.example.administrator.mysharedumbrella01.peresenet.WalletManeyPersere
 import com.example.administrator.mysharedumbrella01.transition.Utilss;
 import com.example.administrator.mysharedumbrella01.utils.ConfigUtils;
 import com.example.administrator.mysharedumbrella01.utils.GlideUtils;
+import com.example.administrator.mysharedumbrella01.utils.MyDialog;
+import com.example.administrator.mysharedumbrella01.utils.NetWorkUtils;
 import com.example.administrator.mysharedumbrella01.utils.ToastUtil;
 import com.example.administrator.mysharedumbrella01.view.IsShopingQueryAuthentionView;
 import com.example.administrator.mysharedumbrella01.view.IsWalletManeyView;
@@ -155,10 +157,10 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
             }
             GlideUtils.loadImageViewCache(getApplicationContext(), imageurl, image_yuanxing);
             if (imageurl.contains("http")) {
-                GlideUtils.loadImageViewCache(getApplicationContext(), imageurl, image_yuanxing);
+                Glide.with(this).load(imageurl).error(R.drawable.liuyifei).into(image_yuanxing);
             } else {
                 String url = ConfigUtils.ZHU_YU_MING + "public/avatar/" + imageurl;
-                GlideUtils.loadImageViewCache(getApplicationContext(), url, image_yuanxing);
+                Glide.with(this).load(url).error(R.drawable.liuyifei).into(image_yuanxing);
             }
         } else {
             //这里表示用户第一次登录并没有上传头像
@@ -223,7 +225,6 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
 
                 break;
             case R.id.image_yuanxing:
-                // startActivity(new Intent(this, YuanXingTouxiangSettingsActivity.class));
                 Intent intent2 = new Intent(this,YuanXingTouxiangSettingsActivity.class);
                 AnimUtils.startIntent(intent2,view, (Activity)SettingsYusanActivity.this,R.id.ll_layout_amin);
                 break;
@@ -252,14 +253,17 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
                 break;
             //这里点击 跳转到商家界面
             case R.id.rl_layout_shopping:
-                StyledDialog.buildLoading("加载中···").show();
+                if (NetWorkUtils.isNetworkConnected(getApplicationContext())) {
+                    StyledDialog.buildLoading("加载中···").show();
                 /* 这里入驻商家
                 * 网络请求获取该用户是否认证商家通过
                 * */
-                // startActivity(new Intent(getApplicationContext(), ShoppingShangjiaxinxiActivity.class));
-                ShoppingQueryAuthentionPerserent shoppingAut = new ShoppingQueryAuthentionPerserent(this);
-                shoppingAut.shoppingAut(zhanghao);
-                v = view;
+                    ShoppingQueryAuthentionPerserent shoppingAut = new ShoppingQueryAuthentionPerserent(this);
+                    shoppingAut.shoppingAut(zhanghao);
+                    v = view;
+                } else {
+                    MyDialog.dialog("提示","无网络，请检查当前网络状态","确认","");
+                }
                 break;
                 //跳转到管理员界面
             case R.id.rl_layout_isroot:
@@ -347,7 +351,6 @@ public class SettingsYusanActivity extends AppCompatActivity implements View.OnC
             if (aut.equals("1")) { // 1表示 已经认证
                 String shoppingId = spaut.getId();
                 ShareUtils.putString(getApplicationContext(),"shoppingId",shoppingId);
-                // startActivity(new Intent(getApplicationContext(), ShoppingShangjiaxinxiActivity.class));
                 Intent intent = new Intent(SettingsYusanActivity.this,ShoppingShangjiaxinxiActivity.class);
                 AnimUtils.startIntent(intent,v, (Activity)this,R.id.rl_layout_shopping);
 

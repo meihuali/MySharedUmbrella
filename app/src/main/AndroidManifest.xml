@@ -6,15 +6,14 @@
     <application
         android:name=".appliction.BaseAppliction"
         android:allowBackup="true"
-        android:icon="@drawable/appicon"
+        android:icon="@drawable/icon_themssss"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/icon"
+
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:name,android:label,android:theme"
 
         >
-
         <activity android:name=".ui.SplashActivity"
             android:theme="@style/AppThems"
             >
@@ -23,6 +22,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".ui.MainActivity"
+            android:theme="@style/AppTheme"
+            >
+
         </activity>
         <!--扫一扫-->
         <activity android:name=".ui.SaoYiSaoActivity"/>
@@ -62,9 +66,6 @@
         <!--原型头像进入后的activity-->
         <activity android:name=".ui.YuanXingTouxiangSettingsActivity"
             android:theme="@style/noAnimTheme"
-            />
-        <activity android:name=".ui.MainActivity"
-            android:theme="@style/AppTheme.Transparent"
             />
         <!--注册的界面-->
         <activity android:name=".ui.RegisterActivity"/>

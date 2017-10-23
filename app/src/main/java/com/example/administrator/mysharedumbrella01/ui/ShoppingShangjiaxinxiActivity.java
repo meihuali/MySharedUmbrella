@@ -133,8 +133,13 @@ public class ShoppingShangjiaxinxiActivity extends AppCompatActivity implements 
         //程序进来取出服务器返回的那个头像路径因为用户上传头像到服务器成功过后通过sp保存到本地了，在下面回调中保存了
         String photoImg = ShareUtils.getString(getApplicationContext(),"touxiangURL","");
         if (!TextUtils.isEmpty(photoImg)) {
-            String url = ConfigUtils.ZHU_YU_MING+"public/avatar/"+photoImg;
-            Glide.with(getApplicationContext()).load(url).into(image_yuanxing);
+            if (photoImg.contains("https")) {
+                Glide.with(getApplicationContext()).load(photoImg).error(R.drawable.liuyifei).into(image_yuanxing);
+            } else {
+                String url = ConfigUtils.ZHU_YU_MING+"public/avatar/"+photoImg;
+                Glide.with(getApplicationContext()).load(url).error(R.drawable.liuyifei).into(image_yuanxing);
+            }
+
         }
     }
 

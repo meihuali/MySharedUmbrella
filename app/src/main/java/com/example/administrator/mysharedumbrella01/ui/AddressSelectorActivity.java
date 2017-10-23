@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.administrator.mysharedumbrella01.R;
@@ -16,6 +17,8 @@ import com.example.administrator.mysharedumbrella01.entivity.EditShoppingAddress
 import com.example.administrator.mysharedumbrella01.entivity.ShoppingAddressBean;
 import com.example.administrator.mysharedumbrella01.peresenet.AddAddressPerserent;
 import com.example.administrator.mysharedumbrella01.peresenet.EditShoppingAddressPerserent;
+import com.example.administrator.mysharedumbrella01.utils.MyDialog;
+import com.example.administrator.mysharedumbrella01.utils.RegularUtil;
 import com.example.administrator.mysharedumbrella01.utils.ShareUtils;
 import com.example.administrator.mysharedumbrella01.utils.ToastUtil;
 import com.example.administrator.mysharedumbrella01.view.IsAddAddressView;
@@ -48,7 +51,7 @@ public class AddressSelectorActivity extends AppCompatActivity implements View.O
     private LinearLayout img_status;
     private EditText et_xiangxidizhi;
     private boolean isFrist = false;
-    private ImageView img_gouxuan,img_weigouxuan;
+    private ImageView img_gouxuan, img_weigouxuan;
     private int type;
     private String dizhia;
     private String types;
@@ -60,6 +63,10 @@ public class AddressSelectorActivity extends AppCompatActivity implements View.O
     private String statuss;
     private String youbianss;
     private ImageView image_back;
+    private String seclectStatus;
+    private RelativeLayout rel_layout;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +84,7 @@ public class AddressSelectorActivity extends AppCompatActivity implements View.O
     private void initData() {
         Intent intent = getIntent();
         types = intent.getStringExtra("type");
-        id =  intent.getStringExtra("id");
+        id = intent.getStringExtra("id");
         //获取用户名
         namesss = intent.getStringExtra("name");
         //获取手机号码
@@ -90,12 +97,24 @@ public class AddressSelectorActivity extends AppCompatActivity implements View.O
         statuss = intent.getStringExtra("status");
         //获取邮编
         youbianss = intent.getStringExtra("youbian");
+        //获取被点击的地址的下标
+        rel_layout = (RelativeLayout) findViewById(R.id.rel_layout);
+        seclectStatus = intent.getStringExtra("seclectStatus");
+        if (seclectStatus != null) {
+            type = Integer.parseInt(seclectStatus);
+            if (seclectStatus.equals("1")) {
+                rel_layout.setVisibility(View.GONE);
+            }
+        }
+
+
     }
 
     /*
     * 初始化数据
     * */
     private void initView() {
+
         image_back = (ImageView) findViewById(R.id.image_back);
         image_back.setOnClickListener(this);
         if (types.equals("1")) {
@@ -170,6 +189,7 @@ public class AddressSelectorActivity extends AppCompatActivity implements View.O
                 break;
         }
     }
+
     /*
     * 点击保存地址到服务器
     * */
@@ -179,23 +199,47 @@ public class AddressSelectorActivity extends AppCompatActivity implements View.O
         //邮编
         String youbian = et_youbian.getText().toString().trim();
         //手机号码
-        String mobile =  et_Mobile.getText().toString().trim();
+        String mobile = et_Mobile.getText().toString().trim();
         // 地区
-        String diqu =  tv_city1.getText().toString().trim();
+        String diqu = tv_city1.getText().toString().trim();
         //详细地址
         String xiangxidizhi = et_xiangxidizhi.getText().toString().trim();
+
         //获取商家主键ID
-        String shoppingid =  ShareUtils.getString(getApplicationContext(),"shoppingId","");
+        String shoppingid = ShareUtils.getString(getApplicationContext(), "shoppingId", "");
         if (types.equals("1")) { //types 等于1 表示 是修改联系地址
-            EditShoppingAddressPerserent editAddress = new EditShoppingAddressPerserent(this);
-            editAddress.editAddress(shouhuoren,mobile,youbian,diquss,xiangxidizhi,shoppingid, String.valueOf(type),id);
-        } else { //否则就是新增收获地址
-            if (!TextUtils.isEmpty(shouhuoren) & !TextUtils.isEmpty(youbian) & !TextUtils.isEmpty(mobile) & !TextUtils.isEmpty(diqu)& !TextUtils.isEmpty(xiangxidizhi) ) {
-                StyledDialog.buildLoading("添加中···").show();
-                AddAddressPerserent mAddress = new AddAddressPerserent(this);
-                mAddress.addAddress(shouhuoren,mobile,youbian,dizhia,xiangxidizhi,shoppingid,type);
+            if (RegularUtil.isMobile(mobile)) {
+                if (RegularUtil.isPostalCode(youbian)) {
+                    EditShoppingAddressPerserent editAddress = new EditShoppingAddressPerserent(this);
+                    editAddress.editAddress(shouhuoren, mobile, youbian, diqu, xiangxidizhi, shoppingid, String.valueOf(type), id);
+                } else {
+                    MyDialog.dialog("提示", "请输入6位数邮政编码", "确定", "");
+                }
+
             } else {
-                ToastUtil.showShortToast(getApplicationContext(),"输入框内不能为空");
+                MyDialog.dialog("提示", "请输入正确的手机号码！", "确定", "");
+            }
+
+
+        } else { //否则就是新增收获地址
+            if (!TextUtils.isEmpty(shouhuoren) & !TextUtils.isEmpty(diqu) & !TextUtils.isEmpty(xiangxidizhi)) {
+                //判断手机号码
+                if (RegularUtil.isMobile(mobile)) {
+                    //判断邮政编码
+                    if (RegularUtil.isPostalCode(youbian)) {
+                        StyledDialog.buildLoading("添加中···").show();
+                        AddAddressPerserent mAddress = new AddAddressPerserent(this);
+                        mAddress.addAddress(shouhuoren, mobile, youbian, dizhia, xiangxidizhi, shoppingid, type);
+                    } else {
+                        MyDialog.dialog("提示", "请输入6位数邮政编码", "确定", "");
+                    }
+
+                } else {
+                    MyDialog.dialog("提示", "请输入正确的手机号码！", "确定", "");
+                }
+
+            } else {
+                ToastUtil.showShortToast(getApplicationContext(), "输入框内不能为空");
             }
         }
 
@@ -207,26 +251,27 @@ public class AddressSelectorActivity extends AppCompatActivity implements View.O
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == 8){
-            if(requestCode == 1){
+        if (resultCode == 8) {
+            if (requestCode == 1) {
                 city = data.getParcelableExtra("city");
-                dizhia = city.getProvince()+city.getCity()+city.getDistrict();
+                dizhia = city.getProvince() + city.getCity() + city.getDistrict();
                 tv_city1.setText(dizhia);
 
-            }else if(requestCode == 2){
+            } else if (requestCode == 2) {
                 toCitys = data.getParcelableArrayListExtra("toCitys");
                 StringBuffer ab = new StringBuffer();
                 for (int i = 0; i < toCitys.size(); i++) {
-                    if(i==toCitys.size()-1){//如果是最后一个城市就不需要逗号
+                    if (i == toCitys.size() - 1) {//如果是最后一个城市就不需要逗号
                         ab.append(toCitys.get(i).getCity());
-                    }else{
-                        StringBuffer a = ab.append(toCitys.get(i).getCity()+"， ");//如果不是最后一个城市就需要逗号
+                    } else {
+                        StringBuffer a = ab.append(toCitys.get(i).getCity() + "， ");//如果不是最后一个城市就需要逗号
                         tv_city1.setText(a);
                     }
                 }
             }
         }
     }
+
     /*
     * 添加收获地址 回调
     * */
@@ -252,6 +297,7 @@ public class AddressSelectorActivity extends AppCompatActivity implements View.O
             StyledDialog.dismissLoading();
         }
     }
+
     /*
     *  修改某一条 联系地址
     * */
@@ -273,7 +319,7 @@ public class AddressSelectorActivity extends AppCompatActivity implements View.O
                 public void onSecond() {
 
                 }
-            }).setBtnText("确定","").show();
+            }).setBtnText("确定", "").show();
         }
     }
 }

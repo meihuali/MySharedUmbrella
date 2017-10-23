@@ -54,6 +54,15 @@ public class RegularUtil {
         return m.matches();
     }
     /*
+    * 判断邮编
+    * */
+    public static final boolean isPostalCode(String value){
+        String pattern = "^[0-9]{6,6}+$";
+        Pattern r = Pattern.compile(pattern);
+        Matcher m = r.matcher(value);
+        return m.matches();
+    }
+    /*
     * 判断用户昵称
     * */
     public static final boolean isUserNick(String value){

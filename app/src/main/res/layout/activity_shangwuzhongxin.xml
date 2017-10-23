@@ -54,7 +54,8 @@
             android:layout_height="100dp">
 
             <TextView
-                android:layout_marginBottom="15dp"
+                android:id="@+id/tv_namesss"
+                android:layout_marginBottom="25dp"
                 android:layout_alignParentBottom="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -201,10 +202,41 @@
             android:layout_height="0.4dp"
             android:layout_marginTop="5dp"
             android:background="@color/huise" />
+
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50dp">
+            <TextView
+                android:textColor="@color/qianheise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="@string/shangjiadizhi"
+                android:textSize="18sp" />
 
+            <TextView
+                android:textColor="@color/qianhuise"
+                android:id="@+id/tv_shoppingAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:text="@string/yijrenzheng" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.4dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/huise" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
             <TextView
                 android:textColor="@color/qianheise"
                 android:layout_width="wrap_content"
@@ -224,6 +256,11 @@
                 android:text="@string/yijrenzheng" />
         </RelativeLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.4dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/huise" />
 
 
 

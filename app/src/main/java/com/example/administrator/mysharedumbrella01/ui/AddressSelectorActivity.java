@@ -231,6 +231,7 @@ public class AddressSelectorActivity extends AppCompatActivity implements View.O
                         AddAddressPerserent mAddress = new AddAddressPerserent(this);
                         mAddress.addAddress(shouhuoren, mobile, youbian, dizhia, xiangxidizhi, shoppingid, type);
                     } else {
+
                         MyDialog.dialog("提示", "请输入6位数邮政编码", "确定", "");
                     }
 

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:background="@drawable/zhujiemlanse_x"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <ImageView
+            android:id="@+id/image_back"
+            android:layout_marginLeft="8dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/btn_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+        <TextView
+            android:textColor="@color/white"
+            android:textSize="19sp"
+            android:gravity="center"
+            android:text="@string/shurusanzuobianhao"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/ed_body"
+            android:hint="                  请输入16位编号"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/button_yuanjiao_baise"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/btn_confmir"
+            android:background="@drawable/jianbian_x"
+            android:text="@string/queding"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="110dp"
+            android:layout_height="48dp" />
+    </LinearLayout>
+
+</LinearLayout>

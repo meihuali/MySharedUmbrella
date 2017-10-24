@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aliandroid="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:background="@drawable/zhujiemlanse_x"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <ImageView
+            android:id="@+id/image_back"
+            android:layout_marginLeft="8dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/btn_back"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+        <TextView
+            android:textColor="@color/white"
+            android:textSize="19sp"
+            android:gravity="center"
+            android:text="@string/shangjiazil"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_mingxi"
+            android:layout_marginRight="10dp"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:text="@string/mingxi"
+            android:gravity="center"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:textSize="18sp"
+            android:textColor="@color/lanse_x_x"
+            android:text="@string/shanghumingcheng"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_centerVertical="true"
+            android:textSize="24sp"
+            android:layout_marginRight="15dp"
+            android:layout_alignParentRight="true"
+            android:text="@string/leduhui"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <TextView
+            android:id="@+id/tv_dizhisss"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:textSize="18sp"
+            android:textColor="@color/lanse_x_x"
+            android:text="@string/shanghudizhi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+
+            android:id="@+id/tv_xiangxidizhi"
+            android:layout_centerVertical="true"
+            android:textSize="16sp"
+            android:layout_marginRight="15dp"
+            android:layout_alignParentRight="true"
+            android:text="@string/xiangxidizhi"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="18sp"
+            android:textColor="@color/lanse_x_x"
+            android:layout_marginLeft="15dp"
+            android:text="@string/nindeyingyezhizhao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/img_zhizao"
+            android:layout_marginTop="20dp"
+            android:src="@color/huise"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="230dp" />
+    </LinearLayout>
+
+</LinearLayout>

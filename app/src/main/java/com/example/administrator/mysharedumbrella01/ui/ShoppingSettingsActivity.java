@@ -30,6 +30,12 @@ public class ShoppingSettingsActivity extends AppCompatActivity implements View.
     private ImageView image_backs;
     private View rl_back;
     private RelativeLayout ll_layrl;
+    private RelativeLayout rl_guanyuwomen;
+    private RelativeLayout rl_yjshuoming;
+    private RelativeLayout rl_yjshuomings;
+    private RelativeLayout rl_lejie;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +52,14 @@ public class ShoppingSettingsActivity extends AppCompatActivity implements View.
     * 初始化数据
     * */
     private void initView() {
+        rl_lejie = (RelativeLayout) findViewById(R.id.rl_lejie);
+        rl_lejie.setOnClickListener(this);
+        rl_yjshuomings = (RelativeLayout) findViewById(R.id.rl_yjshuomings);
+        rl_yjshuomings.setOnClickListener(this);
+        rl_yjshuoming = (RelativeLayout) findViewById(R.id.rl_yjshuoming);
+        rl_yjshuoming.setOnClickListener(this);
+        rl_guanyuwomen = (RelativeLayout) findViewById(R.id.rl_guanyuwomen);
+        rl_guanyuwomen.setOnClickListener(this);
         ll_layrl = (RelativeLayout) findViewById(R.id.ll_layrl);
         ll_layrl.setOnClickListener(this);
         image_backs = (ImageView) findViewById(R.id.image_backs);
@@ -70,6 +84,22 @@ public class ShoppingSettingsActivity extends AppCompatActivity implements View.
             case R.id.ll_layrl:
                 startActivity(new Intent(getApplicationContext(),ShoppingHarvestAddress.class));
                 break;
+                //关于我们
+                case R.id.rl_guanyuwomen:
+                    startActivity(new Intent(getApplicationContext(),AboutusActivity.class));
+                    //押金说明
+                    break;
+                    case R.id.rl_yjshuoming:
+                        startActivity(new Intent(this,YajinshuomingActivity.class));
+                        //用户协议
+                        break;
+                        case R.id.rl_yjshuomings:
+                            startActivity(new Intent(this,UserXieYiActivitys.class));
+                            break;
+                            //充值说明
+                            case R.id.rl_lejie:
+                                startActivity(new Intent(this,User_chongzhixieyiActivity.class));
+                                break;
 
         }
     }

@@ -184,18 +184,19 @@ public class KeHuFanKuiActivity extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.btn_kefufankui:
                 if (NetWorkUtils.isNetworkConnected(getApplicationContext())) {
-                    promptDialog.showLoading("正在提交问题···");
+
                     String bodys = et_bodyss.getText().toString().trim();
                     String zh = ShareUtils.getString(getApplicationContext(), "zhanghao", "");
                     if (!TextUtils.isEmpty(zh)) {
                         if (!TextUtils.isEmpty(typeids)) {
+                            promptDialog.showLoading("正在提交问题···");
                             IsKefufankuisPerserent kefufankui = new IsKefufankuisPerserent(this);
                             kefufankui.kefufankui(zh, typeids, file, bodys);
                         } else {
-                            ToastUtil.showShortToast(getApplicationContext(), "请选择问题！");
+                            MyDialog.dialog("提示","请选择您的问题","确定","");
                         }
                     } else {
-                        ToastUtil.showShortToast(getApplicationContext(), "请先登录账号！");
+                        MyDialog.dialog("提示","请先登录账号","确定","");
                     }
                 } else {
                     MyDialog.dialog("提示","当前网络不可用！请检查您的网络","确定","");

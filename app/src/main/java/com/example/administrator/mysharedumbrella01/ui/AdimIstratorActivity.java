@@ -119,6 +119,8 @@ public class AdimIstratorActivity extends AppCompatActivity implements View.OnCl
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_CANCELED && resultCode == Activity.RESULT_OK) {
             if (requestCode == ScannerActivity.REQUEST_CODE_SCANNER) {
+                StyledDialog.buildLoading("开锁中···").setActivity(AdimIstratorActivity.this).show();
+
                 if (type == 1) {
                     if (data != null) {
                         String stringExtra = data.getStringExtra(Intents.Scan.RESULT);
@@ -126,13 +128,13 @@ public class AdimIstratorActivity extends AppCompatActivity implements View.OnCl
 
                         if (!TextUtils.isEmpty(stringExtra)) {
                             if (stringExtra.contains("CS") && stringExtra.length() == 20) {
-                                StyledDialog.buildLoading("请求数据···").show();
+                               // StyledDialog.buildLoading("请求数据···").show();
                                 String jiequhou = stringExtra.substring(stringExtra.length() - 18);
                                 AdminSearchPerenset searchPerenset = new AdminSearchPerenset(this);
                                 searchPerenset.adminsearch(jiequhou);
 
                             } else if (stringExtra.length() > 19) {
-                                StyledDialog.buildLoading("请求数据···").show();
+                              //  StyledDialog.buildLoading("请求数据···").show();
                                 String jiequhou = stringExtra.substring(stringExtra.length() - 19);
                                 AdminSearchAllPerserent searchPerserent = new AdminSearchAllPerserent(this);
                                 String phone = ShareUtils.getString(getApplicationContext(), "zhanghao", "");

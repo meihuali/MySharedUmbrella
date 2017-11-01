@@ -649,7 +649,10 @@ public class MainActivity extends AppCompatActivity implements AMap.OnCameraChan
             L.e("还伞图标ICON " + haisanURL);
         }
     }
-
+        /*
+        *
+        * 判断用户是否取走雨伞
+        * */
     @Override
     public void showGetyunsanStatus(Object object) {
         //这句话是 用户不管取走不取走雨伞 都要再次设置 扫描按钮的监听
@@ -658,6 +661,7 @@ public class MainActivity extends AppCompatActivity implements AMap.OnCameraChan
         JSONObject obj = (JSONObject) object;
         int status = obj.optInt("status");
         String data =  obj.optString("data");
+
     }
 
         /*

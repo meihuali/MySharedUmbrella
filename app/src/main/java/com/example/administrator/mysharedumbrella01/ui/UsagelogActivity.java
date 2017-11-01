@@ -68,7 +68,6 @@ public class UsagelogActivity extends AppCompatActivity implements HisyoricalRec
         mRecyclerView.setHasFixedSize(true);
         //设置 mRecyclerView 的管理器
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         historicalAdapter = new HistoricalAdapter(R.layout.hisyoriccal_item,list1,getApplicationContext());
         mRecyclerView.setAdapter(historicalAdapter);
 //        这一句是开启 item 动画

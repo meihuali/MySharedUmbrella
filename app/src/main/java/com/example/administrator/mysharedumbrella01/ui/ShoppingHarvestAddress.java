@@ -131,8 +131,6 @@ public class ShoppingHarvestAddress extends AppCompatActivity implements View.On
                             if (i == position) {
                                 //mlist.get(i).setSelect(true);
                                 mlist.get(i).setIs_inuser("1");
-
-
                                 ShoppingSettingAddressPerserent settingaddress = new ShoppingSettingAddressPerserent(ShoppingHarvestAddress.this);
                                 settingaddress.setttingaddress( mlist.get(i).getMerchant_id(), mlist.get(i).getId());
                             } else {

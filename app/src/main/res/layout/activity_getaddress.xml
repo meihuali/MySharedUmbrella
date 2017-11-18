@@ -50,13 +50,14 @@
                 android:id="@+id/ll_layoutSeclet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/img_budagou"
-                android:layout_marginLeft="15dp"
-                android:layout_centerVertical="true"
-                android:src="@drawable/budagou_x"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp" />
+
+                <ImageView
+                    android:id="@+id/img_budagou"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/budagou_x" />
             <ImageView
                 android:id="@+id/img_dagou"
                 android:visibility="gone"
